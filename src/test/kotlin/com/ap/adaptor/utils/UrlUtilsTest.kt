@@ -4,7 +4,7 @@ import org.junit.jupiter.api.Test
 
 import org.junit.jupiter.api.Assertions.*
 
-internal class UtilsTest {
+internal class UrlUtilsTest {
 
     @Test
     fun makeParam() {

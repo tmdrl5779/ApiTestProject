@@ -1,6 +1,7 @@
 package com.ap.adaptor.controller
 
 import com.ap.adaptor.constants.Constants
+import com.ap.adaptor.entity.CombinationDataList
 import com.ap.adaptor.entity.RequestData
 import com.ap.adaptor.service.AdaptorService
 import io.swagger.v3.oas.annotations.Operation
@@ -46,7 +47,8 @@ class ApiController(
 
     @Operation(summary = "COMBINE", description = "API 조합 요청")
     @GetMapping("/api/combine")
-    suspend fun callCombineApi(){
+    suspend fun callCombineApi(@RequestBody combinationDataList: CombinationDataList){
+        adaptorService.combineApi()
 
     }
 }

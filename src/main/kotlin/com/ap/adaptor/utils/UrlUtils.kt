@@ -1,6 +1,6 @@
 package com.ap.adaptor.utils
 
-object Utils {
+object UrlUtils {
 
     fun makeParam(param: MutableMap<String, String>): String{
         return param.map{ "${it.key}=${it.value}" }.joinToString ( "&" )

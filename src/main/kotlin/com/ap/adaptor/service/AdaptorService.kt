@@ -3,7 +3,7 @@ package com.ap.adaptor.service
 import com.ap.adaptor.constants.Constants
 import com.ap.adaptor.entity.RequestData
 import com.ap.adaptor.entity.ResponseData
-import com.ap.adaptor.utils.Utils
+import com.ap.adaptor.utils.UrlUtils
 import com.ap.adaptor.utils.logger
 import io.netty.channel.ChannelOption
 import io.netty.handler.timeout.ReadTimeoutHandler
@@ -27,7 +27,7 @@ class AdaptorService(
 
     val log = logger()
 
-    suspend fun callApi(requestData: RequestData, method: String) = coroutineScope{
+    suspend fun callApi(requestData: RequestData, method: String):MutableList<ResponseData> = coroutineScope{
 
         val count = requestData.count
         var responses = mutableListOf<ResponseData>()
@@ -43,7 +43,13 @@ class AdaptorService(
             }
         }
 
+        responses
     }
+
+    suspend fun combineApi() = coroutineScope {
+
+    }
+
 
     suspend fun responseApiWithTime(requestData: RequestData, method: String): ResponseData{
         val stopWatch = StopWatch()
@@ -60,11 +66,11 @@ class AdaptorService(
         val readTime = requestData.time.readTime
         val writeTime = requestData.time.writeTime
 
-        val baseurlAndUri = Utils.splitUrl(requestData.url)
+        val baseurlAndUri = UrlUtils.splitUrl(requestData.url)
         val baseUrl = baseurlAndUri.first
         val uri = baseurlAndUri.second
 
-        val param = Utils.makeParam(requestData.param)
+        val param = UrlUtils.makeParam(requestData.param)
         val auth = requestData.auth
         val header = requestData.header
         val body = requestData.body
