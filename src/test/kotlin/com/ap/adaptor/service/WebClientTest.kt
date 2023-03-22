@@ -57,35 +57,32 @@ class WebClientTest {
     suspend fun responseApiWithTime(): ResponseData {
         val stopWatch = StopWatch()
         stopWatch.start()
-        val response = `suspend webclient Test`()
+
+        var response = mutableMapOf<String, Any>()
+        var status = ""
+        try{
+            response = `suspend webclient Test`()
+            status = HttpStatus.OK.toString()
+        }catch (e: WebClientResponseException){
+            status = e.statusText
+        }
         stopWatch.stop()
 
-        response.responseTime = stopWatch.totalTimeMillis
-        return response
+        return ResponseData(stopWatch.totalTimeMillis, status, response)
     }
 
 
-    suspend fun `suspend webclient Test`(): ResponseData{
+    suspend fun `suspend webclient Test`(): MutableMap<String, Any>{
 
-        val responseData = ResponseData()
-
-        try{
-            val response = webClient.mutate()
+        return webClient.mutate()
                 .baseUrl("https://jsonplaceholder.typicode.com")
                 .build()
                 .get()
-                .uri("/todos/1")
+                .uri("/todos/1/123")
                 .accept(MediaType.APPLICATION_JSON)
                 .retrieve()
                 .awaitBody<MutableMap<String, Any>>()
 
-            responseData.body = response
-            responseData.status = HttpStatus.OK.toString()
-        }catch (e: WebClientResponseException){
-            responseData.status = e.statusCode.toString()
-        }
-
-        return responseData
     }
 
 

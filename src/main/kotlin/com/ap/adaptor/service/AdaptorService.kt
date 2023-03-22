@@ -11,11 +11,13 @@ import io.netty.handler.timeout.WriteTimeoutHandler
 import kotlinx.coroutines.async
 import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.coroutineScope
+import org.springframework.http.HttpStatus
 import org.springframework.http.MediaType
 import org.springframework.http.client.reactive.ReactorClientHttpConnector
 import org.springframework.stereotype.Service
 import org.springframework.util.StopWatch
 import org.springframework.web.reactive.function.client.WebClient
+import org.springframework.web.reactive.function.client.WebClientResponseException
 import org.springframework.web.reactive.function.client.awaitBody
 import reactor.netty.http.client.HttpClient
 import kotlin.system.measureTimeMillis
@@ -53,11 +55,17 @@ class AdaptorService(
 
     suspend fun responseApiWithTime(requestData: RequestData, method: String): ResponseData{
         val stopWatch = StopWatch()
+        var response = mutableMapOf<String, Any>()
+        var status = HttpStatus.OK.toString()
         stopWatch.start()
-        val response = responseApi(requestData, method)
+        try{
+            response = responseApi(requestData, method)
+        }catch (e: WebClientResponseException){
+            status = e.statusCode.toString()
+        }
         stopWatch.stop()
 
-        return ResponseData(stopWatch.totalTimeMillis, response)
+        return ResponseData(stopWatch.totalTimeMillis, response, status)
     }
 
 
