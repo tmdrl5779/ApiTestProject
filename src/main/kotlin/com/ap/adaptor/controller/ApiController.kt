@@ -4,6 +4,7 @@ import com.ap.adaptor.constants.Constants
 import com.ap.adaptor.entity.CombinationDataList
 import com.ap.adaptor.entity.RequestData
 import com.ap.adaptor.service.AdaptorService
+import com.ap.adaptor.utils.logger
 import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.tags.Tag
 import org.springframework.stereotype.Controller
@@ -15,39 +16,47 @@ class ApiController(
     val adaptorService: AdaptorService
 ) {
 
+    val log = logger()
+
     @Operation(summary = "GET", description = "GET 요청")
     @GetMapping("/api/call")
     suspend fun callGetApi(@RequestBody requestData: RequestData){
-        adaptorService.callApi(requestData, Constants.HTTP_METHOD_GET)
+        log.info("Call GET Request : $requestData")
+        adaptorService.responses(requestData, Constants.HTTP_METHOD_GET)
     }
 
     @Operation(summary = "POST", description = "POST 요청")
     @PostMapping("/api/call")
     suspend fun callPostApi(@RequestBody requestData: RequestData){
-        adaptorService.callApi(requestData, Constants.HTTP_METHOD_POST)
+        log.info("Call POST Request : $requestData")
+        adaptorService.responses(requestData, Constants.HTTP_METHOD_POST)
     }
 
     @Operation(summary = "DELETE", description = "DELETE 요청")
     @DeleteMapping("/api/call")
     suspend fun callDeleteApi(@RequestBody requestData: RequestData){
-        adaptorService.callApi(requestData, Constants.HTTP_METHOD_DELETE)
+        log.info("Call DELETE Request : $requestData")
+        adaptorService.responses(requestData, Constants.HTTP_METHOD_DELETE)
     }
 
     @Operation(summary = "PUT", description = "PUT 요청")
     @PutMapping("/api/call")
     suspend fun callPutApi(@RequestBody requestData: RequestData){
-        adaptorService.callApi(requestData, Constants.HTTP_METHOD_PUT)
+        log.info("Call PUT Request : $requestData")
+        adaptorService.responses(requestData, Constants.HTTP_METHOD_PUT)
     }
 
     @Operation(summary = "PATCH", description = "PATCH 요청")
     @PatchMapping("/api/call")
     suspend fun callPatchApi(@RequestBody requestData: RequestData){
-        adaptorService.callApi(requestData, Constants.HTTP_METHOD_PATCH)
+        log.info("Call PATCH Request : $requestData")
+        adaptorService.responses(requestData, Constants.HTTP_METHOD_PATCH)
     }
 
     @Operation(summary = "COMBINE", description = "API 조합 요청")
     @GetMapping("/api/combine")
     suspend fun callCombineApi(@RequestBody combinationDataList: CombinationDataList){
+        log.info("Call COMBINE Request : $combinationDataList")
         adaptorService.combineApi()
 
     }

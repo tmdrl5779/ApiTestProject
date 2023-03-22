@@ -29,23 +29,28 @@ class AdaptorService(
 
     val log = logger()
 
-    suspend fun callApi(requestData: RequestData, method: String):MutableList<ResponseData> = coroutineScope{
+    suspend fun responses(requestData: RequestData, method: String):MutableList<ResponseData> = coroutineScope{
 
         val count = requestData.count
-        var responses = mutableListOf<ResponseData>()
+        var responsesResult = mutableListOf<ResponseData>()
+        var totalTime: Long = 0
 
         if(count == 1){
-            val responseApiWithTime = responseApiWithTime(requestData, method)
-            responses.add(responseApiWithTime)
+            val responseWithTime = responseWithTime(requestData, method)
+            responsesResult.add(responseWithTime)
+            totalTime = responseWithTime.responseTime
         }else{
-            val totalTime = measureTimeMillis {
-                val defferedValue = List(count) { async { responseApiWithTime(requestData, method) }}
-                val totalResponseApiWithTime = defferedValue.awaitAll()
-                responses = totalResponseApiWithTime as MutableList<ResponseData>
+            totalTime = measureTimeMillis {
+                val defferedValue = List(count) { async { responseWithTime(requestData, method) }}
+                val totalResponseWithTime = defferedValue.awaitAll()
+                responsesResult = totalResponseWithTime as MutableList<ResponseData>
             }
         }
 
-        responses
+        log.info("Response API result : $responsesResult")
+        log.info("Total API Call Time : $totalTime")
+
+        responsesResult
     }
 
     suspend fun combineApi() = coroutineScope {
@@ -53,15 +58,17 @@ class AdaptorService(
     }
 
 
-    suspend fun responseApiWithTime(requestData: RequestData, method: String): ResponseData{
+    suspend fun responseWithTime(requestData: RequestData, method: String): ResponseData{
         val stopWatch = StopWatch()
         var response = mutableMapOf<String, Any>()
         var status = HttpStatus.OK.toString()
         stopWatch.start()
         try{
-            response = responseApi(requestData, method)
+            response = callApi(requestData, method)
+            log.info("API Call success : $response")
         }catch (e: WebClientResponseException){
             status = e.statusCode.toString()
+            log.info("API Call Fail")
         }
         stopWatch.stop()
 
@@ -69,7 +76,7 @@ class AdaptorService(
     }
 
 
-    suspend fun responseApi(requestData: RequestData, method: String): MutableMap<String, Any> {
+    suspend fun callApi(requestData: RequestData, method: String): MutableMap<String, Any> {
         val connectionTime = requestData.time.connectionTime
         val readTime = requestData.time.readTime
         val writeTime = requestData.time.writeTime
@@ -89,6 +96,8 @@ class AdaptorService(
                 .addHandlerLast(ReadTimeoutHandler(readTime))
                 .addHandlerLast(WriteTimeoutHandler(writeTime))
             }
+
+        log.info("Request Data Info : ${requestData.toString()}")
 
         return webClient.mutate().clientConnector(ReactorClientHttpConnector(httpClient))
             .baseUrl(baseUrl).build()

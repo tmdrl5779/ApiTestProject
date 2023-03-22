@@ -11,7 +11,7 @@ import org.springframework.util.StopWatch
 class CoroutineTest {
 
     @Test
-    suspend fun coroutineTest() = runBlocking {
+    fun coroutineTest() = runBlocking {
 
         val list = mutableListOf<Long>()
 
@@ -30,7 +30,7 @@ class CoroutineTest {
     }
 
     @Test
-    private suspend fun busyApi(){
+    suspend fun busyApi(){
         delay(1000)
     }
 

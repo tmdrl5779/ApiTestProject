@@ -20,7 +20,7 @@ internal class CoroutineTest {
 
             val deferredValue = List(10) { async { callBigApiWithTIme() }}
             val results = deferredValue.awaitAll()
-            println("api 호출 결과 : $results")
+            println("API Call result : $results")
         }
 
         println("수행시간 : $time")
