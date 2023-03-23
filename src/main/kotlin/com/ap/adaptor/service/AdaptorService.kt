@@ -1,6 +1,7 @@
 package com.ap.adaptor.service
 
 import com.ap.adaptor.constants.Constants
+import com.ap.adaptor.entity.CombinationDataList
 import com.ap.adaptor.entity.RequestData
 import com.ap.adaptor.entity.ResponseData
 import com.ap.adaptor.utils.UrlUtils
@@ -51,10 +52,6 @@ class AdaptorService(
         log.info("Total API Call Time : $totalTime")
 
         responsesResult
-    }
-
-    suspend fun combineApi() = coroutineScope {
-
     }
 
 

@@ -2,8 +2,10 @@ package com.ap.adaptor.controller
 
 import com.ap.adaptor.constants.Constants
 import com.ap.adaptor.entity.CombinationDataList
+import com.ap.adaptor.entity.CombinationDataLists
 import com.ap.adaptor.entity.RequestData
 import com.ap.adaptor.service.AdaptorService
+import com.ap.adaptor.service.CombinationApiService
 import com.ap.adaptor.utils.logger
 import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.tags.Tag
@@ -13,7 +15,8 @@ import org.springframework.web.bind.annotation.*
 @Tag(name = "테스트", description = "API 테스트")
 @Controller
 class ApiController(
-    val adaptorService: AdaptorService
+    val adaptorService: AdaptorService,
+    val combinationApiService: CombinationApiService
 ) {
 
     val log = logger()
@@ -55,9 +58,9 @@ class ApiController(
 
     @Operation(summary = "COMBINE", description = "API 조합 요청")
     @GetMapping("/api/combine")
-    suspend fun callCombineApi(@RequestBody combinationDataList: CombinationDataList){
-        log.info("Call COMBINE Request : $combinationDataList")
-        adaptorService.combineApi()
+    suspend fun callCombineApi(@RequestBody combinationDataLists: CombinationDataLists){
+        log.info("Call COMBINE Request : $combinationDataLists")
+        combinationApiService.combineApi(combinationDataLists)
 
     }
 }
