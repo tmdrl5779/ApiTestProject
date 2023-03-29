@@ -31,7 +31,13 @@ class CombinationApiService(
 
     val log = logger()
 
-    suspend fun combineApi(combinationDataLists: CombinationDataLists) = coroutineScope {
+    suspend fun combineApis(combinationDataLists: CombinationDataLists) = coroutineScope {
+
+        val newResponse = mutableMapOf<String, Any>()
+
+
+
+
 
     }
 

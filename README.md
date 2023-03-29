@@ -5,33 +5,44 @@ REST API
 
 # 기능
 > API Send
-- header
-- body
+- header, body
+  - REST API를 위한 header, body를 세팅할 수 있다.
 - GET, POST, PUT, DELETE
+  - GET :
+  - POST :
+  - PUT :
+  - DELETE :
+    
 - Authorization
+  - d
 - parameter
-- ...
+  - d
+- API 필드 결합(Combination)
+  - d
+- ...*
 
-> Scenario
+> API 필드 결합(Combination)
+- concat -> new key생성 -> key체크
+- Insert -> key 체크
+
+
+> 스케쥴링
+- Time 주기
+- Count 호출 횟수
+- Postman Import
+
+> Test Case
+- API 정상 호출 Status에 따른 Pass
 - Key가 있는지 확인
 - Assertion Value값 확인
-- Status에 따른 Pass
 - Time - 시간안에 호출하는지 확인
 - ...
 
-> 스케쥴링
-- Time주기
-- Count 호출 횟수
-- Import
-- Postman
- 
-
-> 테스트는 한번에 실행되어야함 빨리 끝나는 테스트가 있으면 이후 기다리고 있는 테스트가 실행됨
- - NonBlocking, Async 사용??
- - WebClient 사용??
- - 생각해보기
-
- 
+> 테스트는 한번에 실행되어야함 ex) 10개의 API를 쐈을때 한번에 실행
+- Async
+- NonBlocking
+- WebClient
+- Coroutine
 
 > 테스트 조건 통과
 - PASS

@@ -60,7 +60,7 @@ class ApiController(
     @GetMapping("/api/combine")
     suspend fun callCombineApi(@RequestBody combinationDataLists: CombinationDataLists){
         log.info("Call COMBINE Request : $combinationDataLists")
-        combinationApiService.combineApi(combinationDataLists)
+        combinationApiService.combineApis(combinationDataLists)
 
     }
 }
