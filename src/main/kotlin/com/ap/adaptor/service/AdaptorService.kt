@@ -51,6 +51,7 @@ class AdaptorService(
         log.info("Response API result : $responsesResult")
         log.info("Total API Call Time : $totalTime")
 
+        //return
         responsesResult
     }
 

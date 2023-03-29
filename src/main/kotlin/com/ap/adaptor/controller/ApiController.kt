@@ -2,7 +2,6 @@ package com.ap.adaptor.controller
 
 import com.ap.adaptor.constants.Constants
 import com.ap.adaptor.entity.CombinationDataList
-import com.ap.adaptor.entity.CombinationDataLists
 import com.ap.adaptor.entity.RequestData
 import com.ap.adaptor.service.AdaptorService
 import com.ap.adaptor.service.CombinationApiService
@@ -58,7 +57,7 @@ class ApiController(
 
     @Operation(summary = "COMBINE", description = "API 조합 요청")
     @GetMapping("/api/combine")
-    suspend fun callCombineApi(@RequestBody combinationDataLists: CombinationDataLists){
+    suspend fun callCombineApi(@RequestBody combinationDataLists: MutableList<CombinationDataList>){
         log.info("Call COMBINE Request : $combinationDataLists")
         combinationApiService.combineApis(combinationDataLists)
 
