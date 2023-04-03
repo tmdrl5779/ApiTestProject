@@ -1,49 +1,77 @@
 package com.ap.adaptor.service
 
+import com.ap.adaptor.entity.Combination
 import com.ap.adaptor.entity.CombinationDataList
 import com.ap.adaptor.entity.Rule
 import com.ap.adaptor.utils.logger
-import kotlinx.coroutines.async
-import kotlinx.coroutines.awaitAll
-import kotlinx.coroutines.coroutineScope
+import kotlinx.coroutines.*
 import org.springframework.stereotype.Service
-import org.springframework.web.reactive.function.client.WebClient
 
 @Service
-class CombinationApiService(
-    val webClient: WebClient,
-) {
+class CombinationApiService{
 
     val log = logger()
 
-    suspend fun combineApis(combinationDataLists: MutableList<CombinationDataList>): MutableMap<String, Any> = coroutineScope {
+    suspend fun combineApis(combination: Combination): MutableMap<String, Any> = coroutineScope {
 
         val newResponse = mutableMapOf<String, Any>()
 
-        val deferredValue = combinationDataLists.map { async {
-            when(it.rule){
-                Rule.CONCAT -> concat(it, newResponse)
-                Rule.INSERT -> insert(it, newResponse)
-            }
-        } }
+        val combinationDataLists = combination.combinationDataLists
+        val uriMap = combination.uri
 
-        deferredValue.awaitAll()
+        val job = combinationDataLists.map {
+            launch {
+                when (it.rule) {
+                    Rule.CONCAT -> concat(it, uriMap, newResponse)
+                    Rule.INSERT -> insert(it, uriMap, newResponse)
+                }
+            }
+        }
+
+        job.joinAll()
 
         //return
         newResponse
 
     }
 
-    suspend fun concat(combinationDataList: CombinationDataList, newResponse: MutableMap<String, Any>) {
+    suspend fun concat(combinationDataList: CombinationDataList, uriMap: MutableMap<String, MutableMap<String, Any>>,
+                       newResponse: MutableMap<String, Any>) {
+        val newKey = combinationDataList.newKey
+
+
+        newResponse[newKey] = ""
 
     }
 
-    suspend fun insert(combinationDataList: CombinationDataList, newResponse: MutableMap<String, Any>) {
+    suspend fun insert(combinationDataList: CombinationDataList, uriMap: MutableMap<String, MutableMap<String, Any>>,
+                       newResponse: MutableMap<String, Any>) {
+
+        val combinationData = combinationDataList.dataList[0]
+        val uri = combinationData.responseUri
+        val path = combinationData.path
+
+        var key = path.split(".").last()
+        var idx = 0
+
+        while(isDuplication(newResponse, key)){
+            idx++
+            key += idx
+        }
+
+        val response = uriMap[uri]!!
+        val findValue = findValue(response, path)
+
+        newResponse[key] = findValue
 
     }
 
-    suspend fun checkDuplication(newResponse: MutableMap<String, Any>, path: String){
+    private fun findValue(response: MutableMap<String, Any>, path: String): Any {
+        TODO("Not yet implemented")
+    }
 
+    suspend fun isDuplication(newResponse: MutableMap<String, Any>, key: String): Boolean{
+        return newResponse.containsKey(key)
     }
 
 }
