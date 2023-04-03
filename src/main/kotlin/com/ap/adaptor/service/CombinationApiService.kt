@@ -67,7 +67,24 @@ class CombinationApiService{
     }
 
     private fun findValue(response: MutableMap<String, Any>, path: String): Any {
-        TODO("Not yet implemented")
+
+        val pathSplit = path.split(".")
+
+        var tmpResponse = response
+
+        for(key in pathSplit){
+
+            val value = tmpResponse[key]
+
+            if(value is MutableMap<*, *>){
+                tmpResponse = value as MutableMap<String, Any>
+            }else{
+                return value!!
+            }
+        }
+
+        return tmpResponse
+
     }
 
     suspend fun isDuplication(newResponse: MutableMap<String, Any>, key: String): Boolean{
