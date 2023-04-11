@@ -30,19 +30,19 @@ class AdaptorService(
 
     val log = logger()
 
-    suspend fun responses(requestData: RequestData, method: String):MutableList<ResponseData> = coroutineScope{
+    suspend fun responses(requestData: RequestData):MutableList<ResponseData> = coroutineScope{
 
         val count = requestData.count
         var responsesResult = mutableListOf<ResponseData>()
         var totalTime: Long = 0
 
         if(count == 1){
-            val responseWithTime = responseWithTime(requestData, method)
+            val responseWithTime = responseWithTime(requestData)
             responsesResult.add(responseWithTime)
             totalTime = responseWithTime.responseTime
         }else{
             totalTime = measureTimeMillis {
-                val defferedValue = List(count) { async { responseWithTime(requestData, method) }}
+                val defferedValue = List(count) { async { responseWithTime(requestData) }}
                 val totalResponseWithTime = defferedValue.awaitAll()
                 responsesResult = totalResponseWithTime as MutableList<ResponseData>
             }
@@ -56,13 +56,13 @@ class AdaptorService(
     }
 
 
-    suspend fun responseWithTime(requestData: RequestData, method: String): ResponseData{
+    suspend fun responseWithTime(requestData: RequestData): ResponseData{
         val stopWatch = StopWatch()
         var response = mutableMapOf<String, Any>()
         var status = HttpStatus.OK.toString()
         stopWatch.start()
         try{
-            response = callApi(requestData, method)
+            response = callApi(requestData)
             log.info("API Call success : $response")
         }catch (e: WebClientResponseException){
             status = e.statusCode.toString()
@@ -74,7 +74,7 @@ class AdaptorService(
     }
 
 
-    suspend fun callApi(requestData: RequestData, method: String): MutableMap<String, Any> {
+    suspend fun callApi(requestData: RequestData): MutableMap<String, Any> {
         val connectionTime = requestData.time.connectionTime
         val readTime = requestData.time.readTime
         val writeTime = requestData.time.writeTime
@@ -82,6 +82,7 @@ class AdaptorService(
         val baseurlAndUri = UrlUtils.splitUrl(requestData.url)
         val baseUrl = baseurlAndUri.first
         val uri = baseurlAndUri.second
+        var method = requestData.httpMethod
 
         val param = UrlUtils.makeParam(requestData.param)
         val auth = requestData.auth
