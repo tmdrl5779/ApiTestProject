@@ -4,8 +4,6 @@ import com.ap.adaptor.constants.Constants
 
 data class RequestData(
     var time: Time = Time(30, 30, 30),
-//    var readTime: Int = 30,
-//    var writeTime: Int = 30,
     var count: Int = 1,
     var url: String = "",
     var httpMethod: String = "",
