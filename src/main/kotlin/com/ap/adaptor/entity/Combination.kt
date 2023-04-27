@@ -1,7 +1,7 @@
 package com.ap.adaptor.entity
 
 data class Combination(
-    var uri: MutableMap<String, MutableMap<String, Any>> = mutableMapOf(),
+    var ResponseOfUri: MutableMap<String, MutableMap<String, Any>> = mutableMapOf(),
     var combinationDataLists: MutableList<CombinationDataList> = mutableListOf()
 
 //    test1.test2.test3

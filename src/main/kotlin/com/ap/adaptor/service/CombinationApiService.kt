@@ -17,13 +17,13 @@ class CombinationApiService{
         val newResponse = mutableMapOf<String, Any>()
 
         val combinationDataLists = combination.combinationDataLists
-        val uriMap = combination.uri
+        val responseOfUri = combination.ResponseOfUri
 
         val job = combinationDataLists.map {
             launch {
                 when (it.rule) {
-                    Rule.CONCAT -> concat(it, uriMap, newResponse)
-                    Rule.INSERT -> insert(it, uriMap, newResponse)
+                    Rule.CONCAT -> concat(it, responseOfUri, newResponse)
+                    Rule.ADD -> add(it, responseOfUri, newResponse)
                 }
             }
         }
@@ -35,6 +35,12 @@ class CombinationApiService{
 
     }
 
+    /**
+     * 같은 타입 필드 합치기
+     * string + string
+     * list + list
+     * object + object
+     */
     suspend fun concat(combinationDataList: CombinationDataList, uriMap: MutableMap<String, MutableMap<String, Any>>,
                        newResponse: MutableMap<String, Any>) {
         val newKey = combinationDataList.newKey
@@ -44,8 +50,23 @@ class CombinationApiService{
 
     }
 
+    /**
+     * 한 필드에 다른 필드 삽입
+     */
     suspend fun insert(combinationDataList: CombinationDataList, uriMap: MutableMap<String, MutableMap<String, Any>>,
                        newResponse: MutableMap<String, Any>) {
+        val newKey = combinationDataList.newKey
+
+
+        newResponse[newKey] = ""
+
+    }
+
+    /**
+     * 단순 필드 추가
+     */
+    suspend fun add(combinationDataList: CombinationDataList, uriMap: MutableMap<String, MutableMap<String, Any>>,
+                    newResponse: MutableMap<String, Any>) {
 
         val combinationData = combinationDataList.dataList[0]
         val uri = combinationData.responseUri
