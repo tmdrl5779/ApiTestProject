@@ -1,7 +1,6 @@
 package com.ap.adaptor.service
 
 import com.ap.adaptor.constants.Constants
-import com.ap.adaptor.entity.CombinationDataList
 import com.ap.adaptor.entity.RequestData
 import com.ap.adaptor.entity.ResponseData
 import com.ap.adaptor.utils.UrlUtils
@@ -58,7 +57,7 @@ class AdaptorService(
 
     suspend fun responseWithTime(requestData: RequestData): ResponseData{
         val stopWatch = StopWatch()
-        var response = mutableMapOf<String, Any>()
+        var response: Any ?= null
         var status = HttpStatus.OK.toString()
         stopWatch.start()
         try{
@@ -74,14 +73,14 @@ class AdaptorService(
     }
 
 
-    suspend fun callApi(requestData: RequestData): MutableMap<String, Any> {
+    suspend fun callApi(requestData: RequestData): Any{
         val connectionTime = requestData.time.connectionTime
         val readTime = requestData.time.readTime
         val writeTime = requestData.time.writeTime
 
         val baseurlAndUri = UrlUtils.splitUrl(requestData.url)
         val baseUrl = baseurlAndUri.first
-        val uri = baseurlAndUri.second
+        val uri = UrlUtils.splitParam(baseurlAndUri.second)
         var method = requestData.httpMethod
 
         val param = UrlUtils.makeParam(requestData.param)
@@ -144,7 +143,7 @@ class AdaptorService(
                 }
             }
             .retrieve()
-            .awaitBody<MutableMap<String, Any>>()
+            .awaitBody<Any>()
 
     }
 }

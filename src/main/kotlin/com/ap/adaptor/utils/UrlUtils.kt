@@ -18,4 +18,13 @@ object UrlUtils {
 
         return Pair("", "")
     }
+
+    fun splitParam(url: String): String{
+        val splitParams = url.split("?")
+        return if(splitParams.size > 1){
+            splitParams[0]
+        }else{
+            url
+        }
+    }
 }
