@@ -41,8 +41,8 @@ class AdaptorService(
             totalTime = responseWithTime.responseTime
         }else{
             totalTime = measureTimeMillis {
-                val defferedValue = List(count) { async { responseWithTime(requestData) }}
-                val totalResponseWithTime = defferedValue.awaitAll()
+                val deferredValue = List(count) { async { responseWithTime(requestData) }}
+                val totalResponseWithTime = deferredValue.awaitAll()
                 responsesResult = totalResponseWithTime as MutableList<ResponseData>
             }
         }
