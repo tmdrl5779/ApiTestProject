@@ -2,7 +2,7 @@ package com.ap.adaptor.service
 
 import com.ap.adaptor.entity.Combination
 import com.ap.adaptor.entity.CombinationDataList
-import com.ap.adaptor.entity.Rule
+import com.ap.adaptor.entity.enumData.Rule
 import com.ap.adaptor.utils.logger
 import kotlinx.coroutines.*
 import org.springframework.stereotype.Service
