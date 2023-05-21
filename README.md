@@ -36,6 +36,10 @@ REST API
 > API Performance Test
 - 성능 테스트
 
+![image](https://github.com/tmdrl5779/adaptor/assets/45285712/eb888c0c-2f4e-423c-a46b-7aa6a901cdc6)
+![image](https://github.com/tmdrl5779/adaptor/assets/45285712/7732b24a-d3ae-48d9-94ae-3dc62f8bc4aa)
+
+
 > 테스트는 한번에 실행되어야함 ex) 10개의 API를 쐈을때 한번에 실행
 - Async
 - NonBlocking
