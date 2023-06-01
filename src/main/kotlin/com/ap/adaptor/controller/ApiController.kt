@@ -42,4 +42,9 @@ class ApiController(
         combinationApiService.combineApis(combination)
 
     }
+
+    @PostMapping("/api/test")
+    suspend fun testApi():MutableMap<String, Any>{
+        return performService.measureTestPerform()
+    }
 }
