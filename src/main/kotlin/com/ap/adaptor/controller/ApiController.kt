@@ -8,6 +8,9 @@ import com.ap.adaptor.service.PerformService
 import com.ap.adaptor.utils.logger
 import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.tags.Tag
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.coroutineScope
+import kotlinx.coroutines.withContext
 import org.springframework.stereotype.Controller
 import org.springframework.web.bind.annotation.*
 
@@ -44,7 +47,20 @@ class ApiController(
     }
 
     @PostMapping("/api/test")
-    suspend fun testApi():MutableMap<String, Any>{
-        return performService.measureTestPerform()
+    suspend fun testApi():MutableMap<String, Any> = withContext(Dispatchers.IO){
+        log.info(">>>>>>>>>>>> start suspend")
+        performService.measureTestPerform()
+    }
+
+    @PostMapping("/api/test2")
+    fun testApi2():MutableMap<String, Any>{
+        log.info(">>>>>>>>>>>> start normal")
+        return performService.measureTestPerform2()
+    }
+
+    @PostMapping("/api/test3")
+    suspend fun testApi3():MutableMap<String, Any> = coroutineScope{
+        log.info(">>>>>>>>>>>> start suspend")
+        performService.measureTestPerform3()
     }
 }
