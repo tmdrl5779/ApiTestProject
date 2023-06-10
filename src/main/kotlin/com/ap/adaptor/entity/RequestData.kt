@@ -7,7 +7,7 @@ data class RequestData(
     var count: Int = 1,
     var url: String = "",
     var httpMethod: String = "",
-    var auth: MutableMap<String, Any> = mutableMapOf(),
+//    var auth: MutableMap<String, Any> = mutableMapOf(),
     var param: MutableMap<String, String> = mutableMapOf(),
     var header: MutableMap<String, String> = mutableMapOf(),
     var body: MutableMap<String, Any> = mutableMapOf()

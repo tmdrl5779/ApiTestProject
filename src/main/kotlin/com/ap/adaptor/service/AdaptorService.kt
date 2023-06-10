@@ -84,7 +84,7 @@ class AdaptorService(
         var method = requestData.httpMethod
 
         val param = UrlUtils.makeParam(requestData.param)
-        val auth = requestData.auth
+//        val auth = requestData.auth
         val header = requestData.header
         val body = requestData.body
 
