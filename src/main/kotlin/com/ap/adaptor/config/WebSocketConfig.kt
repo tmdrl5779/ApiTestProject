@@ -1,17 +1,34 @@
 package com.ap.adaptor.config
 
 import com.ap.adaptor.handler.WebSocketHandler
+import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
-import org.springframework.web.socket.config.annotation.EnableWebSocket
-import org.springframework.web.socket.config.annotation.WebSocketConfigurer
-import org.springframework.web.socket.config.annotation.WebSocketHandlerRegistry
+import org.springframework.core.Ordered
+import org.springframework.web.reactive.HandlerMapping
+import org.springframework.web.reactive.handler.SimpleUrlHandlerMapping
+//import org.springframework.web.socket.config.annotation.EnableWebSocket
+//import org.springframework.web.socket.config.annotation.WebSocketConfigurer
+//import org.springframework.web.socket.config.annotation.WebSocketHandlerRegistry
 
 
 @Configuration
-@EnableWebSocket
-class WebSocketConfig : WebSocketConfigurer {
-    override fun registerWebSocketHandlers(registry: WebSocketHandlerRegistry) {
-        registry.addHandler(WebSocketHandler(), "/api/perform/socket-connect")
-            .setAllowedOrigins("*")
+class WebSocketConfig {
+
+    @Bean
+    fun handler(webSocketHandler: WebSocketHandler): HandlerMapping {
+        val handlerMapping = SimpleUrlHandlerMapping()
+        handlerMapping.urlMap = mapOf("/api/perform/socket-connect" to webSocketHandler)
+        handlerMapping.order = Ordered.HIGHEST_PRECEDENCE
+        return handlerMapping
     }
 }
+
+//@EnableWebSocket
+//class WebSocketConfig(
+//    val webSocketHandler: WebSocketHandler
+//) : WebSocketConfigurer {
+//    override fun registerWebSocketHandlers(registry: WebSocketHandlerRegistry) {
+//        registry.addHandler(webSocketHandler, "/api/perform/socket-connect")
+//            .setAllowedOrigins("*")
+//    }
+//}
