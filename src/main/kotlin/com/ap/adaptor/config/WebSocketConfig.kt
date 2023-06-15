@@ -6,10 +6,6 @@ import org.springframework.context.annotation.Configuration
 import org.springframework.core.Ordered
 import org.springframework.web.reactive.HandlerMapping
 import org.springframework.web.reactive.handler.SimpleUrlHandlerMapping
-//import org.springframework.web.socket.config.annotation.EnableWebSocket
-//import org.springframework.web.socket.config.annotation.WebSocketConfigurer
-//import org.springframework.web.socket.config.annotation.WebSocketHandlerRegistry
-
 
 @Configuration
 class WebSocketConfig {

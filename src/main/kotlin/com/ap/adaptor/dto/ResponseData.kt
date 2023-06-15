@@ -1,8 +1,7 @@
-package com.ap.adaptor.entity
+package com.ap.adaptor.dto
 
 data class ResponseData(
     var responseTime: Long = 0,
-//    var body: MutableMap<String, Any> = mutableMapOf(),
     var body: Any ?= null,
     var status: String = ""
 )

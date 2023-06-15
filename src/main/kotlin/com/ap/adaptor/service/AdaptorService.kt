@@ -1,8 +1,8 @@
 package com.ap.adaptor.service
 
 import com.ap.adaptor.constants.Constants
-import com.ap.adaptor.entity.RequestData
-import com.ap.adaptor.entity.ResponseData
+import com.ap.adaptor.dto.RequestData
+import com.ap.adaptor.dto.ResponseData
 import com.ap.adaptor.utils.UrlUtils
 import com.ap.adaptor.utils.logger
 import io.netty.channel.ChannelOption
@@ -50,7 +50,6 @@ class AdaptorService(
         log.info("Response API result : $responsesResult")
         log.info("Total API Call Time : $totalTime")
 
-        //return
         responsesResult
     }
 
@@ -84,7 +83,6 @@ class AdaptorService(
         var method = requestData.httpMethod
 
         val param = UrlUtils.makeParam(requestData.param)
-//        val auth = requestData.auth
         val header = requestData.header
         val body = requestData.body
 

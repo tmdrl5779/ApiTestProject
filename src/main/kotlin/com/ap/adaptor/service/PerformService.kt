@@ -1,8 +1,8 @@
 package com.ap.adaptor.service
 
-import com.ap.adaptor.entity.RequestDataList
-import com.ap.adaptor.entity.ResponseDataList
-import com.ap.adaptor.entity.enumData.ScenarioType
+import com.ap.adaptor.dto.RequestDataList
+import com.ap.adaptor.dto.ResponseDataList
+import com.ap.adaptor.dto.enumData.PerformType
 import com.ap.adaptor.utils.logger
 import kotlinx.coroutines.*
 import org.springframework.stereotype.Service
@@ -17,9 +17,9 @@ class PerformService(
     val log = logger()
 
     suspend fun measurePerform(requestDataList: RequestDataList): ResponseDataList {
-        return when (requestDataList.scenarioType) {
-            ScenarioType.SEQ -> runSequential()
-            ScenarioType.CONCUR -> runConcurrently()
+        return when (requestDataList.performType) {
+            PerformType.SEQ -> runSequential()
+            PerformType.CONCUR -> runConcurrently()
             else -> throw Exception()
         }
     }

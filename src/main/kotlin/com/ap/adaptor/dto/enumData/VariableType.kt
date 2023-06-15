@@ -1,4 +1,4 @@
-package com.ap.adaptor.entity.enumData
+package com.ap.adaptor.dto.enumData
 
 enum class VariableType(val value: String) {
     STRING("String"),

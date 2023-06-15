@@ -1,4 +1,4 @@
-package com.ap.adaptor.entity
+package com.ap.adaptor.dto
 
 data class Combination(
     var ResponseOfUri: MutableMap<String, MutableMap<String, Any>> = mutableMapOf(),

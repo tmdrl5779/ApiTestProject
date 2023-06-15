@@ -1,6 +1,5 @@
 package com.ap.adaptor.service
 
-import com.ap.adaptor.entity.ResponseData
 import kotlinx.coroutines.async
 import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.coroutineScope

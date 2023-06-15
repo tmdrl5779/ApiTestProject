@@ -1,7 +1,6 @@
 package com.ap.adaptor.controller
 
-import com.ap.adaptor.constants.Constants
-import com.ap.adaptor.entity.*
+import com.ap.adaptor.dto.*
 import com.ap.adaptor.service.AdaptorService
 import com.ap.adaptor.service.CombinationApiService
 import com.ap.adaptor.service.PerformService
@@ -11,7 +10,6 @@ import io.swagger.v3.oas.annotations.tags.Tag
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.withContext
-import org.springframework.stereotype.Controller
 import org.springframework.web.bind.annotation.*
 
 @Tag(name = "테스트", description = "API 테스트")

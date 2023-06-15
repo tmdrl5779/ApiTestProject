@@ -1,7 +1,7 @@
-package com.ap.adaptor.entity
+package com.ap.adaptor.dto
 
-import com.ap.adaptor.entity.enumData.Rule
-import com.ap.adaptor.entity.enumData.VariableType
+import com.ap.adaptor.dto.enumData.Rule
+import com.ap.adaptor.dto.enumData.VariableType
 
 data class CombinationDataList(
     var dataList: MutableList<CombinationData> = mutableListOf(),
