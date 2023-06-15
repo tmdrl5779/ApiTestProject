@@ -22,13 +22,3 @@ class WebSocketConfig {
         return handlerMapping
     }
 }
-
-//@EnableWebSocket
-//class WebSocketConfig(
-//    val webSocketHandler: WebSocketHandler
-//) : WebSocketConfigurer {
-//    override fun registerWebSocketHandlers(registry: WebSocketHandlerRegistry) {
-//        registry.addHandler(webSocketHandler, "/api/perform/socket-connect")
-//            .setAllowedOrigins("*")
-//    }
-//}
