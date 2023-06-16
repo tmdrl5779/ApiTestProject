@@ -2,7 +2,10 @@ package com.ap.adaptor.service
 
 import com.ap.adaptor.constants.Constants
 import com.ap.adaptor.dto.RequestData
+import com.ap.adaptor.dto.RequestDataList
 import com.ap.adaptor.dto.ResponseData
+import com.ap.adaptor.dto.ResponseDataList
+import com.ap.adaptor.dto.enumData.PerformType
 import com.ap.adaptor.utils.UrlUtils
 import com.ap.adaptor.utils.logger
 import io.netty.channel.ChannelOption
@@ -29,19 +32,63 @@ class AdaptorService(
 
     val log = logger()
 
-    suspend fun responses(requestData: RequestData):MutableList<ResponseData> = coroutineScope{
+    suspend fun responsesForPerForm(requestDataList: RequestDataList): ResponseDataList = coroutineScope {
+        val requestList = requestDataList.requestList
+        var responsesResult = mutableListOf<ResponseData>()
+        var totalTime: Long = 0
+        var result = true
+
+        when (requestDataList.performType) {
+            PerformType.SEQ -> {
+                for (i in 1..requestList.size) {
+                    val responseWithTime = async { responseWithTime(requestList[i]) }
+                    val deferredValue = responseWithTime.await()
+                    responsesResult.add(deferredValue)
+                    totalTime += deferredValue.responseTime
+                    if(deferredValue.status != HttpStatus.OK.toString()){
+                        result = false
+                    }
+                }
+            }
+            PerformType.CONCUR -> {
+                totalTime = measureTimeMillis {
+                    val deferredValue = requestList.map { async { responseWithTime(it) }}
+                    val totalResponseWithTime = deferredValue.awaitAll()
+                    responsesResult = totalResponseWithTime as MutableList<ResponseData>
+                }
+
+                responsesResult.forEach{ response ->
+                    if(response.status != HttpStatus.OK.toString()){
+                        result = false
+                        return@forEach
+                    }
+                }
+
+            }
+            else -> {
+                throw Exception()
+            }
+        }
+
+        log.info("Response API result : $responsesResult")
+        log.info("Total API Call Time : $totalTime")
+
+        ResponseDataList(responsesResult, totalTime, result)
+    }
+
+    suspend fun responsesForCallApi(requestData: RequestData): MutableList<ResponseData> = coroutineScope {
 
         val count = requestData.count
         var responsesResult = mutableListOf<ResponseData>()
         var totalTime: Long = 0
 
-        if(count == 1){
+        if (count == 1) {
             val responseWithTime = responseWithTime(requestData)
             responsesResult.add(responseWithTime)
             totalTime = responseWithTime.responseTime
-        }else{
+        } else {
             totalTime = measureTimeMillis {
-                val deferredValue = List(count) { async { responseWithTime(requestData) }}
+                val deferredValue = List(count) { async { responseWithTime(requestData) } }
                 val totalResponseWithTime = deferredValue.awaitAll()
                 responsesResult = totalResponseWithTime as MutableList<ResponseData>
             }
@@ -54,15 +101,15 @@ class AdaptorService(
     }
 
 
-    suspend fun responseWithTime(requestData: RequestData): ResponseData{
+    suspend fun responseWithTime(requestData: RequestData): ResponseData {
         val stopWatch = StopWatch()
-        var response: Any ?= null
+        var response: Any? = null
         var status = HttpStatus.OK.toString()
         stopWatch.start()
-        try{
+        try {
             response = callApi(requestData)
             log.info("API Call success : $response")
-        }catch (e: WebClientResponseException){
+        } catch (e: WebClientResponseException) {
             status = e.statusCode.toString()
             log.info("API Call Fail")
         }
@@ -72,7 +119,7 @@ class AdaptorService(
     }
 
 
-    suspend fun callApi(requestData: RequestData): Any{
+    suspend fun callApi(requestData: RequestData): Any {
         val connectionTime = requestData.time.connectionTime
         val readTime = requestData.time.readTime
         val writeTime = requestData.time.writeTime
@@ -88,9 +135,10 @@ class AdaptorService(
 
         val httpClient = HttpClient.create()
             .option(ChannelOption.CONNECT_TIMEOUT_MILLIS, connectionTime * 1000)
-            .doOnConnected { conn -> conn
-                .addHandlerLast(ReadTimeoutHandler(readTime))
-                .addHandlerLast(WriteTimeoutHandler(writeTime))
+            .doOnConnected { conn ->
+                conn
+                    .addHandlerLast(ReadTimeoutHandler(readTime))
+                    .addHandlerLast(WriteTimeoutHandler(writeTime))
             }
 
         log.info("Request Data Info : ${requestData.toString()}")

@@ -7,9 +7,6 @@ import com.ap.adaptor.service.PerformService
 import com.ap.adaptor.utils.logger
 import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.tags.Tag
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.coroutineScope
-import kotlinx.coroutines.withContext
 import org.springframework.web.bind.annotation.*
 
 @Tag(name = "테스트", description = "API 테스트")
@@ -26,15 +23,15 @@ class ApiController(
     @PostMapping("/api/call")
     suspend fun callApi(@RequestBody requestData: RequestData):MutableList<ResponseData>{
         log.info("Api Call Request : $requestData")
-        return adaptorService.responses(requestData)
+        return adaptorService.responsesForCallApi(requestData)
     }
 
-    @Operation(summary = "API 성능 테스트", description = "API 성능 테스트")
-    @PostMapping("/api/perform")
-    suspend fun performApi(@RequestBody requestDataList: RequestDataList): ResponseDataList{
-        log.info("Api Performance : $requestDataList")
-        return performService.measurePerform(requestDataList)
-    }
+//    @Operation(summary = "API 성능 테스트", description = "API 성능 테스트")
+//    @PostMapping("/api/perform")
+//    suspend fun performApi(@RequestBody requestDataList: RequestDataList): ResponseDataList{
+//        log.info("Api Performance : $requestDataList")
+//        return performService.measurePerform(requestDataList)
+//    }
 
     @Operation(summary = "COMBINE", description = "API 조합 요청")
     @PostMapping("/api/combine")

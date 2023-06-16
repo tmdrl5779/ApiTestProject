@@ -1,8 +1,7 @@
 package com.ap.adaptor.handler
 
-import com.ap.adaptor.dto.PerformData
-import com.ap.adaptor.dto.RequestData
-import com.ap.adaptor.dto.ResponseData
+import com.ap.adaptor.dto.*
+import com.ap.adaptor.dto.enumData.PerformType
 import com.ap.adaptor.service.AdaptorService
 import kotlinx.coroutines.*
 import org.springframework.stereotype.Component
@@ -62,7 +61,7 @@ class WebSocketHandler(
     private suspend fun callApi(performData: PerformData, session: WebSocketSession) {
         coroutineScope {
             List(performData.userCount) {
-                val async = async { adaptorService.responses(performData.requestData) }
+                val async = async { adaptorService.responsesForPerForm(performData.requestDataList) }
                 val response = async.await()
                 session.send(Mono.just(session.textMessage(response.toString()))).subscribe()
             }

@@ -10,6 +10,9 @@ import org.springframework.util.StopWatch
 import java.lang.Thread.sleep
 import kotlin.system.measureTimeMillis
 
+
+//안쓰는 서비스 -> WebSocketHandler로 교체 또는 Handler에 있는 함수 여기로 분리하는 작업 필요
+
 @Service
 class PerformService(
     val adaptorService: AdaptorService
