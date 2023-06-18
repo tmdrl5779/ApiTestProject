@@ -33,6 +33,8 @@ module.exports = {
     '^.+\\.(js|jsx|ts|tsx)$': 'ts-jest',
   },
   moduleNameMapper: {
+    '^.+\\.(css|less|scss)$': 'babel-jest',
     '@/(.*)': '<rootDir>/src/$1',
   },
+  restoreMocks: true,
 }
