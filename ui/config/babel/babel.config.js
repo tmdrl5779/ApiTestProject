@@ -11,12 +11,13 @@ const presets = [
     '@babel/preset-react',
     {
       runtime: 'automatic',
+      importSource: '@emotion/react',
     },
   ],
   '@babel/preset-typescript',
 ]
 
-const plugins = []
+const plugins = ['@emotion/babel-plugin']
 if (process.env['NODE_ENV'] === 'development') {
   plugins.push(require.resolve('react-refresh/babel'))
 }
