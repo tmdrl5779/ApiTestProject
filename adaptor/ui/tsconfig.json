@@ -24,7 +24,7 @@
     "useUnknownInCatchVariables": true,
 
     // Modules Configuration
-    "baseUrl": ".",
+    "baseUrl": "./",
     "paths": {
       "@/*": [
         "src/*"
@@ -45,5 +45,7 @@
     "esModuleInterop": true,
     "isolatedModules": true
   },
-  "include": ["src"]
+  "include": [
+    "src"
+  ]
 }

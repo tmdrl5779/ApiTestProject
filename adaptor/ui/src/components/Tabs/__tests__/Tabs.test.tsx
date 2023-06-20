@@ -1,6 +1,6 @@
 import { cleanup, render, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
-import { Tabs } from '..'
+import { Tabs } from '../index'
 
 describe('<Tabs />', () => {
   test('탭 아이템 렌더링', () => {

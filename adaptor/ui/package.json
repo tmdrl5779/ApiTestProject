@@ -2,7 +2,7 @@
   "name": "fe-jhw-react-boilerplate",
   "version": "1.0.0",
   "description": "react-boilerplate with webpack, babel, jest, lint, typescript",
-  "main": "./src/index.tsx",
+  "main": "src/index.tsx",
   "packageManager": "yarn@3.3.0",
   "author": "fe-jhw",
   "license": "MIT",
@@ -73,13 +73,13 @@
     "webpack-merge": "^5.8.0"
   },
   "scripts": {
-    "dev": "cross-env NODE_ENV=development webpack server --config ./config/webpack/webpack.config.dev.js --open",
-    "build": "cross-env NODE_ENV=production webpack --config ./config/webpack/webpack.config.prod.js",
+    "dev": "cross-env NODE_ENV=development webpack server --config config/webpack/webpack.config.dev.js --open",
+    "build": "cross-env NODE_ENV=production webpack --config config/webpack/webpack.config.prod.js",
     "prepare": "husky install",
     "lint-staged": "lint-staged",
     "lint": "eslint './src/**/*.{ts,tsx,js,jsx}'",
     "lint:fix": "eslint --fix './src/**/*.{ts,tsx,js,jsx}'",
-    "test": "jest --config ./config/jest/jest.config.js"
+    "test": "jest --config config/jest/jest.config.js"
   },
   "lint-staged": {
     "*.{js,jsx}": [
