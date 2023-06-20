@@ -1,0 +1,33 @@
+server:
+  port: 8081
+
+spring:
+  h2:
+    console:
+      enabled: true
+      path: /h2-console
+  datasource:
+    driver-class-name: org.h2.Driver
+    url: jdbc:h2:mem:testdb
+    username: sa
+    password:
+  redis:
+    host: localhost
+    port: 6379
+
+  jpa:
+    database-platform: org.hibernate.dialect.H2Dialect
+    hibernate:
+      ddl-auto: create-drop
+    properties:
+      hibernate:
+        format_sql: true
+        show_sql: true
+    defer-datasource-initialization: true
+
+jwt:
+  access: accessToken
+  refresh: refreshToken
+  secret: tmdrl5779tmdrl5779tmdfl5779tmdrl5779tmdrl5779tmdfl5779tmdrl5779tmdrl5779tmdfl5779tmdrl5779tmdrl5779tmdfl5779
+  token-expiresIn: 60000 #1min
+
