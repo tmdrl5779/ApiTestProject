@@ -1,9 +1,12 @@
+import { Tabs } from './components/Tabs'
+
 function App() {
   return (
     <div className="App">
-      <header className="App-header">
-        <p>정현우의 React Boilerplate</p>
-      </header>
+      <Tabs>
+        <Tabs.Item value="1">1</Tabs.Item>
+        <Tabs.Item value="2">2</Tabs.Item>
+      </Tabs>
     </div>
   )
 }
