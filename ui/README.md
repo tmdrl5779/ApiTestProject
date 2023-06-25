@@ -22,10 +22,12 @@
 ### 전역 상태관리
 - recoil만 사용?
 
+### 에러처리
+- ErrorBoundary, Suspense 활용하기
 
 
 ### 할 일
 
 1. 레이아웃 코드로 구현
 
-2. Tabs 컴포넌트 개발
+2. Tabs 컴포넌트 개발 (진행중, 코드에 TODO)

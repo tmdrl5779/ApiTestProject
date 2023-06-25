@@ -36,7 +36,7 @@
     // Language and Environment Configuration
     "target": "esnext",
     "jsx": "react-jsx",
-
+    "jsxImportSource": "@emotion/react",
     // JavaScript Support Confuguration
     "allowJs": true,
     "checkJs": true,
