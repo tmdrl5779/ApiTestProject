@@ -24,6 +24,7 @@ dependencies {
     implementation("org.springdoc:springdoc-openapi-ui:1.6.15")
 //    implementation("org.springframework.boot:spring-boot-starter-web") //swagger 쓰려면 필요
 //    implementation("org.springframework.boot:spring-boot-starter-websocket")
+    implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
     developmentOnly("org.springframework.boot:spring-boot-devtools")
     testImplementation("org.springframework.boot:spring-boot-starter-test")
     testImplementation("io.projectreactor:reactor-test")

@@ -3,11 +3,13 @@ package com.ap.adaptor.handler
 import com.ap.adaptor.dto.*
 import com.ap.adaptor.dto.enumData.PerformType
 import com.ap.adaptor.service.AdaptorService
+import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 import kotlinx.coroutines.*
 import org.springframework.stereotype.Component
 import org.springframework.web.reactive.socket.WebSocketHandler
 import org.springframework.web.reactive.socket.WebSocketSession
 import reactor.core.publisher.Mono
+import kotlin.IllegalArgumentException
 
 
 @Component
@@ -20,13 +22,13 @@ class WebSocketHandler(
         val receiveAndCallApi = session.receive()
             .flatMap { message ->
                 val requestData = message.payloadAsText
-
-                val performData = parseRequestData(requestData)
-
                 val coroutineScope = CoroutineScope(Dispatchers.IO)
+
                 coroutineScope.launch {
-                    repeat(performData.repeatCount) {
-                        callApi(performData, session)
+                    val performData = parseRequestData(requestData)
+                    if(performData != null){
+                        repeat(performData.repeatCount) {
+                            callApi(performData, session)
 
 //                        List(performData.userCount) {
 //                            val deferredValue = async { adaptorService.responses(performData.requestData) }
@@ -34,8 +36,11 @@ class WebSocketHandler(
 //                            session.send(Mono.just(session.textMessage(response.toString()))).subscribe()
 //                        }
 
-                        delay(performData.interval)
+                            delay(performData.interval)
+                        }
                     }
+
+
                     session.send(Mono.just(session.textMessage("connection close success")))
                         .then(session.close())
                         .subscribe()
@@ -68,8 +73,20 @@ class WebSocketHandler(
         }
     }
 
-    private fun parseRequestData(payload: String): PerformData {
-        TODO("Not yet implemented")
+    private suspend fun parseRequestData(payload: String): PerformData? = withContext(Dispatchers.IO){
+        try{
+            if(payload.isBlank()){
+                val objectMapper = jacksonObjectMapper()
+                val map = objectMapper.readValue(payload, MutableMap::class.java)
+
+                PerformData()
+
+            }else{
+                throw IllegalArgumentException("Input string cannot be blank.")
+            }
+        }catch (e: Exception){
+            null
+        }
     }
 
 
