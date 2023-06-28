@@ -22,6 +22,7 @@ dependencies {
     implementation("org.jetbrains.kotlin:kotlin-reflect")
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-reactor")
     implementation("org.springdoc:springdoc-openapi-ui:1.6.15")
+//    implementation("org.springframework.boot:spring-boot-starter-web") //swagger 쓰려면 필요
 //    implementation("org.springframework.boot:spring-boot-starter-websocket")
     developmentOnly("org.springframework.boot:spring-boot-devtools")
     testImplementation("org.springframework.boot:spring-boot-starter-test")
