@@ -7,7 +7,8 @@
 
 
 ### API Call 규격
-request
+Request
+```
 {
   "time": {
     "connectionTime": 0,
@@ -31,8 +32,10 @@ request
     ...
   }
 }
+```
 
 Response
+```
 [
   {
     "responseTime": 0, //응답 시간
@@ -41,7 +44,7 @@ Response
   },
   ... //Request의 count횟수 만큼 list에 담아서 전달
 ]
-
+```
 
 
 
