@@ -1,1 +1,14 @@
 /* global */
+html {
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  min-width: 480px;
+  min-height: 600px;
+  width: 100vw;
+  height: 100vh;
+}

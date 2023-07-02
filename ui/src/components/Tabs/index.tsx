@@ -8,7 +8,7 @@ import { css } from '@emotion/react'
 
 interface TabsProps {
   type?: 'card' | 'line'
-  position?: 'vertical' | 'horizontal'
+  position?: 'left' | 'right' | 'top' | 'bottom'
   style?: React.CSSProperties
   onTabClick?: (key: string) => void
   children: React.ReactNode
@@ -46,8 +46,10 @@ const Tabs: React.FC<TabsProps> & TabsComposition = ({
 
   return (
     <TabsContext.Provider value={{ selectedTab, onTabSelect }}>
-      <nav role="tablist">
-        <div css={tabsWrapCss}>{children}</div>
+      <nav role="tablist" css={[tabsNavCss, tabsNavLeftCss]}>
+        <div className="navWrap">
+          <div className="navList">{children}</div>
+        </div>
       </nav>
     </TabsContext.Provider>
   )
@@ -56,24 +58,72 @@ const Tabs: React.FC<TabsProps> & TabsComposition = ({
 Tabs.Item = TabsItem
 
 // antd꺼 가져옴
-const tabsWrapCss = css`
-  box-sizing: border-box;
-  margin: 0;
-  padding: 0;
-  color: rgba(0, 0, 0, 0.88);
-  font-size: 14px;
-  line-height: 1.5714;
-  list-style: none;
+
+const tabsNavCss = css`
   position: relative;
   display: flex;
-  flex: auto;
+  flex: none;
   align-items: center;
-  align-self: stretch;
-  font-family: "Poppins", sans-serif;
-  // overflow: hidden;
-  white-space: nowrap;
-  // width: 100%;
-  transform: translate(0px, 0px);
+
+  .navWrap {
+    box-sizing: border-box;
+    display: flex;
+    flex: auto;
+    align-self: stretch;
+    overflow: hidden;
+    white-space: nowrap;
+    transform: translate(0);
+  }
+
+  .navList {
+    transform: translate(0px, 0px);
+    position: relative;
+    display: flex;
+    transition: opacity 0.3s;
+  }
+
+  .navItem {
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+  }
+
+  .navItemText {
+    position: relative;
+    display: inline-flex;
+    padding: 10px 15px;
+    align-items: center;
+    align-self: stretch;
+    font-size: 14px;
+    background: 0 0;
+    border: 0;
+    outline: none;
+    cursor: pointer;
+    border-radius: 5px;
+    border-bottom-left-radius: 0;
+    border-bottom-right-radius: 0;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+    min-width: 40px;
+    justify-content: center;
+  }
+
+  .navItemUnderline {
+  }
+`
+
+const tabsNavLeftCss = css`
+  flex-direction: column;
+  min-width: 40px;
+  .navWrap {
+    flex-direction: column;
+  }
+
+  .navList {
+    flex: 1 0 auto;
+    flex-direction: column;
+  }
 `
 
 export { Tabs }
