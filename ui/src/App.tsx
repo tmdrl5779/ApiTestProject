@@ -4,15 +4,12 @@ import { GNB } from './layouts/GNB'
 import { SNB } from './layouts/SNB'
 import '../src/assets/global.css'
 import { Layout } from './layouts/Layout'
+import { APIs } from './pages/APIs'
 
 function App() {
   return (
     <div className="App">
-      <Layout>
-        <GNB />
-        <SNB />
-        <Content />
-      </Layout>
+      <APIs />
     </div>
   )
 }
