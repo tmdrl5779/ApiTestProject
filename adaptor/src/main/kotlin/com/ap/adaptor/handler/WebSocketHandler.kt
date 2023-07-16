@@ -3,6 +3,7 @@ package com.ap.adaptor.handler
 import com.ap.adaptor.dto.*
 import com.ap.adaptor.dto.enumData.PerformType
 import com.ap.adaptor.service.AdaptorService
+import com.ap.adaptor.utils.logger
 import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 import kotlinx.coroutines.*
 import org.springframework.stereotype.Component
@@ -17,6 +18,8 @@ class WebSocketHandler(
     val adaptorService: AdaptorService
 ) : WebSocketHandler {
 
+    val log = logger()
+
     override fun handle(session: WebSocketSession): Mono<Void> {
 
         val receiveAndCallApi = session.receive()
@@ -30,11 +33,12 @@ class WebSocketHandler(
                         repeat(performData.repeatCount) {
                             callApi(performData, session)
 
-//                        List(performData.userCount) {
-//                            val deferredValue = async { adaptorService.responses(performData.requestData) }
-//                            val response = deferredValue.await()
-//                            session.send(Mono.just(session.textMessage(response.toString()))).subscribe()
-//                        }
+//                            callApi 함수로 옮김
+//                            List(performData.userCount) {
+//                                val deferredValue = async { adaptorService.responses(performData.requestData) }
+//                                val response = deferredValue.await()
+//                                session.send(Mono.just(session.textMessage(response.toString()))).subscribe()
+//                            }
 
                             delay(performData.interval)
                         }
@@ -79,7 +83,8 @@ class WebSocketHandler(
                 val objectMapper = jacksonObjectMapper()
                 val map = objectMapper.readValue(payload, MutableMap::class.java)
 
-                PerformData()
+                val performData: PerformData = objectMapper.convertValue(map, PerformData::class.java)
+                performData
 
             }else{
                 throw IllegalArgumentException("Input string cannot be blank.")
