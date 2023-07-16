@@ -17,13 +17,30 @@ export const TabsItem: React.FC<TabsItemProps> = ({ value, children }) => {
   const onSelect = useCallback(() => {
     onTabSelect(value)
   }, [value, onTabSelect])
-  
+
   const css = selected ? [tabsItemCss, selectedTabsItemCss] : tabsItemCss
 
   return (
-    <div role="tab" aria-selected={selected} onClick={onSelect} css={css} title={children?.toString()}>
-      <span css={tabsItemTextCss}>{children}</span>
-      {selected ? <motion.div css={underlineCss} initial={{scaleX: 0, attrScale: -5}} animate={{scaleX:1}} transition={{ease: 'easeInOut', duration: 0.3}}/> : null}
+    <div
+      role="tab"
+      className="navItem"
+      aria-selected={selected}
+      onClick={onSelect}
+      css={css}
+      title={children?.toString()}
+    >
+      <span className="navItemText" css={tabsItemTextCss}>
+        {children}
+      </span>
+      {selected ? (
+        <motion.div
+          className="navItemUnderline"
+          css={underlineCss}
+          initial={{ scaleX: 0, attrScale: -5 }}
+          animate={{ scaleX: 1 }}
+          transition={{ ease: 'easeInOut', duration: 0.3 }}
+        />
+      ) : null}
     </div>
   )
 }
