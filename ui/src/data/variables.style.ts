@@ -1,5 +1,5 @@
 export const color = {
-  'accent': '#8855ff'
+  accent: '#8855ff',
 }
 
 export const height = {

@@ -1,4 +1,4 @@
-import { httpMethods } from "./constants"
+import { httpMethods } from './data/constants'
 
 export interface TabItem {
   tabTitle: string
@@ -13,6 +13,6 @@ export interface ReqData {
 
 export type DataNames = 'Params' | 'Headers' | 'Body'
 
-export type Datas = Record<DataNames, Array<ReqData>>
+export type Datas = Record<DataNames, ReqData[]>
 
-export type HttpMethods = typeof httpMethods[number]
+export type HttpMethods = (typeof httpMethods)[number]

@@ -32,7 +32,7 @@ module.exports = {
   rules: {
     'prettier/prettier': ['error', { endOfLine: 'auto', semi: false }],
     'no-implicit-coercion': 'error',
-    'react/no-unknown-property': ['error', {'ignore': ['css']}]
+    'react/no-unknown-property': ['error', {'ignore': ['css']}],
     'no-undef': 'off',
 
     indent: 'off',
