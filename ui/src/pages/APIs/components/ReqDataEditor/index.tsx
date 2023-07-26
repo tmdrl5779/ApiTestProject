@@ -37,7 +37,7 @@ export const ReqDataEditor: React.FC<{ name: DataNames }> = ({ name }) => {
   )
 
   const onDataInputChange = useCallback(
-    (idx: number, key: keyof ReqData, value: string) => {
+    (idx: number, key: keyof ReqData, value: string | boolean) => {
       dispatchForDatas({
         type: 'INPUT_CHANGE',
         dataName: name,

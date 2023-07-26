@@ -11,7 +11,7 @@ export const DataRow = ({
 }: {
   data: ReqData
   idx: number
-  onDataInputChange: (idx: number, key: keyof ReqData, value: string) => void
+  onDataInputChange: (idx: number, key: keyof ReqData, value: string | boolean) => void
   deleteData: (idx: number) => void
 }) => {
   const [deletable, setDeletable] = useState(false)
@@ -22,14 +22,25 @@ export const DataRow = ({
     }
     setDeletable(true)
   }, [idx])
+
   const onMouseLeave = useCallback(() => setDeletable(false), [])
+
+  const omitIncluded = (data: ReqData): Omit<ReqData, 'included'> => {
+    const { included, ...result } = data
+    return result
+  }
 
   return (
     <tr key={idx} onMouseEnter={onMouseEnter} onMouseLeave={onMouseLeave}>
       <td css={tableCellCss}>
-        <input type="checkbox" css={inputCss} defaultChecked />
+        <input
+          type="checkbox"
+          css={inputCss}
+          checked={data['included']}
+          onChange={e => onDataInputChange(idx, 'included', !data['included'])}
+        />
       </td>
-      {getObjectKeys(data).map(key => (
+      {getObjectKeys(omitIncluded(data)).map(key => (
         <td key={`data-${idx}-${key}`} css={tableCellCss}>
           <input
             css={inputCss}

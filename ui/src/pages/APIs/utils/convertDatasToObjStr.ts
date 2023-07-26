@@ -1,6 +1,6 @@
 import { ReqData } from '../types'
 
-export const convertDatsToObjStr = (datas: ReqData[]): string => {
+export const convertDatasToObjStr = (datas: ReqData[]): string => {
   return JSON.stringify(
     datas.reduce((acc: any, cur) => {
       const added = Object.create(null)
