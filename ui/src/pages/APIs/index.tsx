@@ -5,15 +5,16 @@ import { ReqDataEditor } from './components/ReqDataEditor'
 import { ReqDataTabs } from './components/ReqDataTabs'
 import { Datas, HttpMethods, ReqData, ReqPayload, TabItem } from './types'
 import { initialReqDatas, reqDataReducer } from './data/reqDataReducer'
-import { Funnel } from '@/components/Funnel'
 import { useMutation } from 'react-query'
-import { convertDatasToObjStr } from './utils/convertDatasToObjStr'
-import { getQueryString } from './utils/getQueryString'
-import { getHeaderObj } from './utils/getHeaderObj'
+import { FetchApiRequest } from 'api-types'
+import axios, { AxiosError } from 'axios'
+import { convertDatasToObj } from './utils/convertDatasToObj'
+import { fetchApi } from '@/remotes/fetchApi'
+import { Funnel } from '@/components/Funnel'
+import { makeFetchApiRequest } from '@/utils/makeFetchApiRequest'
 
 // TODO: Funnel (O), Tab으로 컴포넌트 추상화 - 2
 // TODO: 스타일링, 모션 = 3
-// TODO: react query fetch 규격에 맞게 변경 + post 관련 데이터 어케 처리할지 고민 - 1
 // TODO: Body쪽 json, text 입력창도 만들기
 export const APIs: React.FC = () => {
   const [selectedTab, setSelectedTab] = useState<TabItem>(tabItems[0])
@@ -21,16 +22,9 @@ export const APIs: React.FC = () => {
   const [url, setUrl] = useState<string>('')
   const [datas, dispatchForDatas] = useReducer(reqDataReducer, initialReqDatas)
 
-  const { data, mutate, isLoading, isError, error, isSuccess } = useMutation(
-    (metaData: { payload: ReqPayload; method: HttpMethods; url: string }) => {
-      const { payload, method, url } = metaData
-      return fetch(url + payload.Params, {
-        method,
-        body: method === 'GET' ? null : payload.Body,
-        headers: payload.Headers,
-      }).then(result => result)
-    }
-  )
+  const { data, mutate, isLoading, isError, error, isSuccess } = useMutation((request: FetchApiRequest) => {
+    return fetchApi(request)
+  })
 
   const onInputUrl = useCallback((e: ChangeEvent) => {
     const target = e.target as HTMLInputElement
@@ -38,13 +32,14 @@ export const APIs: React.FC = () => {
   }, [])
 
   const onClickSend = useCallback(() => {
-    console.log(method, url, datas)
-    const payload = {
-      Body: convertDatasToObjStr(datas.Body.filter(e => e.included)),
-      Params: getQueryString(datas.Params.filter(e => e.included)),
-      Headers: getHeaderObj(datas.Headers.filter(e => e.included)),
-    }
-    mutate({ method, url, payload })
+    const request = makeFetchApiRequest(
+      url,
+      method,
+      convertDatasToObj(datas.Params.filter(e => e.included)),
+      convertDatasToObj(datas.Headers.filter(e => e.included)),
+      convertDatasToObj(datas.Body.filter(e => e.included))
+    )
+    mutate(request)
   }, [datas, method, mutate, url])
 
   const onSelectMethod = useCallback((e: ChangeEvent) => {
@@ -86,8 +81,8 @@ export const APIs: React.FC = () => {
             '요청 중입니다...'
           ) : (
             <>
-              {isError && <p>실패~</p>}
-              {isSuccess && <p>성공~</p>}
+              {isError && <p>{(error as Error)?.message}</p>}
+              {isSuccess && <p>{JSON.stringify(data, null, 4)}</p>}
             </>
           )}
         </section>

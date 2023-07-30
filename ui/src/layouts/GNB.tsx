@@ -1,14 +1,20 @@
-import { height } from '@/data/variables.style'
+import { ReactNode } from 'react'
 import { css } from '@emotion/react'
+import { color } from '@/data/variables.style'
 
-export const GNB = () => {
-  return <header css={GNBCss}></header>
+export const GNB: React.FC<{ children: ReactNode }> = ({ children }) => {
+  return <header css={GNBCss}>{children}</header>
 }
 
 const GNBCss = css`
-  background-color: black;
-  grid-column-start: 1;
-  grid-column-end: 3;
-  grid-row-start: 1;
-  grid-row-end: 2;
+  height: 64px;
+  padding: 0 16px;
+  color: ${color.primaryText};
+  line-height: 64px;
+  background: ${color.navBar};
+  flex: 0 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  // border-bottom: 1px solid #ebebeb;
 `

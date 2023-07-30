@@ -1,19 +1,18 @@
-import { height, width } from '@/data/variables.style'
+import { color, height } from '@/data/variables.style'
 import { css } from '@emotion/react'
 import { ReactNode } from 'react'
 
-interface ContentProps {
-  children?: ReactNode
-}
-
-export const Content = ({ children }: ContentProps) => {
+export const Content: React.FC<{ children: ReactNode }> = ({ children }) => {
   return <main css={contentCss}>{children}</main>
 }
 
 const contentCss = css`
-  background-color: orange;
-  grid-column-start: 1;
-  grid-column-end: 3;
-  grid-row-start: 2;
-  // grid-row-end: 2;
+  padding: 16px;
+  background-color: ${color.background};
+  color: ${color.primaryText};
+  min-height: 600px;
+  height: calc(100vh - ${height.GNB});
+  max-height: calc(100vh - ${height.GNB};
+  overflow-y: auto;
+  flex: auto;
 `
