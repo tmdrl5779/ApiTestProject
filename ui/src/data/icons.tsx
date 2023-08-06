@@ -3,6 +3,7 @@ import {
   BarChartOutlined,
   DoubleLeftOutlined,
   DoubleRightOutlined,
+  LoadingOutlined,
   MergeCellsOutlined,
 } from '@ant-design/icons'
 import { EmptyObj } from 'common-types'
@@ -21,4 +22,8 @@ export const DoubleLeftOutlinedIcon: React.FC<EmptyObj> = () => (
 )
 export const DoubleRightOutlinedIcon: React.FC<EmptyObj> = () => (
   <DoubleRightOutlined rev={'?'} style={navItemIconStyle} />
+)
+
+export const LoadingOutlinedIcon: React.FC<EmptyObj> = () => (
+  <LoadingOutlined rev={'?'} style={{ marginRight: '4px' }} />
 )

@@ -4,7 +4,7 @@ export const handlers = [
   // mocking할 api들을 넣어주세요.
   rest.post('/call/api', (req, res, ctx) => {
     return res(
-      ctx.delay(300),
+      ctx.delay(2000),
       ctx.status(200),
       ctx.json([
         {

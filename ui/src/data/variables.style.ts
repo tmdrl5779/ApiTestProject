@@ -1,9 +1,10 @@
 export const color = {
-  accent: '#8855ff',
+  accent: '#007acc',
   background: '#121212',
   navBar: '#181818',
   primaryText: '#FFFFFF',
   secondaryText: '#B3B3B3',
+  topGradient: '#404040',
 }
 
 export const height = {

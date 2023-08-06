@@ -6,6 +6,7 @@ import { Navigator } from './components/Navigator'
 import { useCallback, useState } from 'react'
 import { Funnel } from './components/Funnel'
 import { AnimatePresence, motion } from 'framer-motion'
+import { css } from '@emotion/react'
 
 const navItems = [
   {
@@ -45,6 +46,7 @@ function App() {
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
               transition={{ duration: 0.2 }}
+              css={contentWrapperCss}
             >
               <Funnel steps={navItems.map(item => item.code)} step={selectedItemCode}>
                 <Funnel.Step name="callApi">
@@ -64,5 +66,9 @@ function App() {
     </div>
   )
 }
+
+const contentWrapperCss = css`
+  height: 100%;
+`
 
 export default App

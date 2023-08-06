@@ -1,4 +1,4 @@
-import { color, height } from '@/data/variables.style'
+import { color, height, width } from '@/data/variables.style'
 import { css } from '@emotion/react'
 import { ReactNode } from 'react'
 
@@ -12,7 +12,8 @@ const contentCss = css`
   color: ${color.primaryText};
   min-height: 600px;
   height: calc(100vh - ${height.GNB});
-  max-height: calc(100vh - ${height.GNB};
+  max-height: calc(100vh - ${height.GNB});
+  width: calc(100% - ${width.SNB});
   overflow-y: auto;
   flex: auto;
 `
