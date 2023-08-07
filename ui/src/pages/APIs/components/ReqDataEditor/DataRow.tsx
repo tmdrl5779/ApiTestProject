@@ -1,7 +1,8 @@
+import { capitalize } from '@/utils/capitalize'
 import { getObjectKeys } from '@/utils/ObjectHandler'
 import { useCallback, useState } from 'react'
 import { ReqData } from '../../types'
-import { inputCss, tableCellCss } from './styles'
+import { inputCss, rowDeleteBtnCss, tableCellCss, tableRowCss } from './styles'
 
 export const DataRow = ({
   data,
@@ -31,8 +32,8 @@ export const DataRow = ({
   }
 
   return (
-    <tr key={idx} onMouseEnter={onMouseEnter} onMouseLeave={onMouseLeave}>
-      <td css={tableCellCss}>
+    <tr key={idx} onMouseEnter={onMouseEnter} onMouseLeave={onMouseLeave} css={tableRowCss}>
+      <td css={tableCellCss} style={{ width: '4%' }}>
         <input
           type="checkbox"
           css={inputCss}
@@ -41,7 +42,7 @@ export const DataRow = ({
         />
       </td>
       {getObjectKeys(omitIncluded(data)).map(key => (
-        <td key={`data-${idx}-${key}`} css={tableCellCss}>
+        <td key={`data-${idx}-${key}`} css={tableCellCss} style={{ width: '32%' }}>
           <input
             css={inputCss}
             name={key}
@@ -52,16 +53,15 @@ export const DataRow = ({
         </td>
       ))}
       {deletable ? (
-        <td css={tableCellCss}>
-          <button
-            onClick={e => {
-              e.preventDefault()
-              deleteData(idx)
-            }}
-          >
-            X
-          </button>
-        </td>
+        <button
+          css={rowDeleteBtnCss}
+          onClick={e => {
+            e.preventDefault()
+            deleteData(idx)
+          }}
+        >
+          X
+        </button>
       ) : null}
     </tr>
   )

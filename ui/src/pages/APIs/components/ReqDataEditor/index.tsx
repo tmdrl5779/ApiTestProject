@@ -50,7 +50,7 @@ export const ReqDataEditor: React.FC<{ name: DataNames }> = ({ name }) => {
   )
 
   return (
-    <table css={tableCss}>
+    <table css={tableCss} frame>
       <thead>
         <tr>
           {dataColumns.map(col => (
