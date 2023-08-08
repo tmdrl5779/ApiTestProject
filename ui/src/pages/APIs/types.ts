@@ -10,6 +10,7 @@ export interface ReqData {
   value: string
   description: string
   included: boolean
+  uuid: string
 }
 
 export type DataNames = 'Params' | 'Headers' | 'Body'

@@ -5,6 +5,7 @@ import {
   DoubleRightOutlined,
   LoadingOutlined,
   MergeCellsOutlined,
+  DeleteOutlined,
 } from '@ant-design/icons'
 import { EmptyObj } from 'common-types'
 
@@ -27,3 +28,5 @@ export const DoubleRightOutlinedIcon: React.FC<EmptyObj> = () => (
 export const LoadingOutlinedIcon: React.FC<EmptyObj> = () => (
   <LoadingOutlined rev={'?'} style={{ marginRight: '4px' }} />
 )
+
+export const DeleteOutlinedIcon: React.FC<EmptyObj> = () => <DeleteOutlined rev={'?'} />

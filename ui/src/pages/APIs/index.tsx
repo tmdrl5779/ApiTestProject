@@ -11,7 +11,7 @@ import axios, { AxiosError } from 'axios'
 import { convertDatasToObj } from './utils/convertDatasToObj'
 import { fetchApi } from '@/remotes/fetchApi'
 import { Funnel, Select, Input, Button } from '@/components'
-import { makeFetchApiRequest } from '@/utils/makeFetchApiRequest'
+import { makeFetchApiRequest } from '@/utils'
 import { css } from '@emotion/react'
 
 // TODO: Funnel (O), Tab으로 컴포넌트 추상화 - 2
@@ -60,7 +60,12 @@ export const APIs: React.FC = () => {
             ))}
           </Select>
           <Input style={{ flex: '1 1 auto' }} value={url} onChange={onInputUrl} />
-          <Button className="sendBtn" onClick={onClickSend} style={{ flex: '0 0 80px' }} disabled={isLoading}>
+          <Button
+            className="sendBtn"
+            onClick={onClickSend}
+            style={{ flex: '0 0 80px', marginLeft: '8px' }}
+            disabled={isLoading}
+          >
             Send
           </Button>
         </div>

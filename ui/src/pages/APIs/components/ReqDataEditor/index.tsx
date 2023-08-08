@@ -1,6 +1,7 @@
 import { getObjectKeys } from '@/utils/ObjectHandler'
 import { useContext } from '@/utils/RobustContext'
 import { css } from '@emotion/react'
+import { AnimatePresence } from 'framer-motion'
 import { useCallback, useState } from 'react'
 import { APIsContext } from '../../APIsContext'
 import { dataColumns, getDefaultData } from '../../data/constants'
@@ -50,7 +51,7 @@ export const ReqDataEditor: React.FC<{ name: DataNames }> = ({ name }) => {
   )
 
   return (
-    <table css={tableCss} frame>
+    <table css={tableCss}>
       <thead>
         <tr>
           {dataColumns.map(col => (
@@ -61,15 +62,17 @@ export const ReqDataEditor: React.FC<{ name: DataNames }> = ({ name }) => {
         </tr>
       </thead>
       <tbody>
-        {datas[name].map((data, idx) => (
-          <DataRow
-            key={`${name}-${idx}`}
-            data={data}
-            idx={idx}
-            onDataInputChange={onDataInputChange}
-            deleteData={deleteData}
-          />
-        ))}
+        <AnimatePresence>
+          {datas[name].map((data, idx) => (
+            <DataRow
+              key={data.uuid}
+              data={data}
+              idx={idx}
+              onDataInputChange={onDataInputChange}
+              deleteData={deleteData}
+            />
+          ))}
+        </AnimatePresence>
       </tbody>
     </table>
   )

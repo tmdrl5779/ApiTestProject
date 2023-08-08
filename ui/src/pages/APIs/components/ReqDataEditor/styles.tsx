@@ -31,12 +31,8 @@ export const inputCss = css`
 `
 
 export const rowDeleteBtnCss = css`
-  border: none;
-  outline: none;
-  background: transparent;
   position: absolute;
-  color: ${color.secondaryText};
-  right: 4px;
+  right: 8px;
   height: 100%;
   width: 20px;
 `

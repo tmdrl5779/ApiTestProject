@@ -1,21 +1,36 @@
-import { capitalize } from '@/utils/capitalize'
+import { Button } from '@/components'
+import { DeleteOutlinedIcon } from '@/data/icons'
+import { capitalize } from '@/utils'
 import { getObjectKeys } from '@/utils/ObjectHandler'
+import { AnimatePresence, motion, useIsPresent, usePresence } from 'framer-motion'
 import { useCallback, useState } from 'react'
 import { ReqData } from '../../types'
 import { inputCss, rowDeleteBtnCss, tableCellCss, tableRowCss } from './styles'
 
-export const DataRow = ({
-  data,
-  idx,
-  onDataInputChange,
-  deleteData,
-}: {
+export interface DataRowProps {
   data: ReqData
   idx: number
   onDataInputChange: (idx: number, key: keyof ReqData, value: string | boolean) => void
   deleteData: (idx: number) => void
-}) => {
+}
+
+const transition = { type: 'spring', stiffness: 500, damping: 50, mass: 1, duration: 0.2 }
+
+export const DataRow: React.FC<DataRowProps> = ({ data, idx, onDataInputChange, deleteData }) => {
   const [deletable, setDeletable] = useState(false)
+
+  const [isPresent, safeToRemove] = usePresence()
+  const animations = {
+    layout: true,
+    initial: 'out',
+    animate: isPresent ? 'in' : 'out',
+    variants: {
+      in: { opacity: 1, scaleY: 1, zIndex: 0 },
+      out: { opacity: 0, scaleY: 0, zIndex: -1 },
+    },
+    onAnimationComplete: () => !isPresent && safeToRemove?.(),
+    transition,
+  }
 
   const onMouseEnter = useCallback(() => {
     if (idx === 0) {
@@ -26,43 +41,54 @@ export const DataRow = ({
 
   const onMouseLeave = useCallback(() => setDeletable(false), [])
 
-  const omitIncluded = (data: ReqData): Omit<ReqData, 'included'> => {
-    const { included, ...result } = data
-    return result
-  }
+  const { included, uuid, ...dataToShow } = data
 
   return (
-    <tr key={idx} onMouseEnter={onMouseEnter} onMouseLeave={onMouseLeave} css={tableRowCss}>
-      <td css={tableCellCss} style={{ width: '4%' }}>
-        <input
-          type="checkbox"
-          css={inputCss}
-          checked={data['included']}
-          onChange={e => onDataInputChange(idx, 'included', !data['included'])}
-        />
-      </td>
-      {getObjectKeys(omitIncluded(data)).map(key => (
-        <td key={`data-${idx}-${key}`} css={tableCellCss} style={{ width: '32%' }}>
-          <input
-            css={inputCss}
-            name={key}
-            value={data[key] as string}
-            onChange={e => onDataInputChange(idx, key, e.target.value)}
-            autoComplete="off"
-          />
-        </td>
-      ))}
-      {deletable ? (
-        <button
-          css={rowDeleteBtnCss}
-          onClick={e => {
-            e.preventDefault()
-            deleteData(idx)
-          }}
-        >
-          X
-        </button>
+    <motion.tr
+      {...animations}
+      style={{
+        position: isPresent ? 'relative' : 'absolute',
+      }}
+      key={data.uuid}
+      onMouseEnter={onMouseEnter}
+      onMouseLeave={onMouseLeave}
+      css={tableRowCss}
+    >
+      {isPresent ? (
+        <>
+          <td css={tableCellCss} style={{ width: '4%' }}>
+            <input
+              type="checkbox"
+              css={inputCss}
+              checked={data['included']}
+              onChange={e => onDataInputChange(idx, 'included', !data['included'])}
+            />
+          </td>
+          {getObjectKeys(dataToShow).map(key => (
+            <td key={`data-${idx}-${key}`} css={tableCellCss} style={{ width: '32%' }}>
+              <input
+                css={inputCss}
+                name={key}
+                value={data[key] as string}
+                onChange={e => onDataInputChange(idx, key, e.target.value)}
+                autoComplete="off"
+              />
+            </td>
+          ))}
+          {deletable ? (
+            <Button
+              type="text"
+              _css={rowDeleteBtnCss}
+              onClick={e => {
+                e.preventDefault()
+                deleteData(idx)
+              }}
+            >
+              <DeleteOutlinedIcon />
+            </Button>
+          ) : null}
+        </>
       ) : null}
-    </tr>
+    </motion.tr>
   )
 }
