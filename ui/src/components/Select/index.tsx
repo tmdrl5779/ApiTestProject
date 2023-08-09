@@ -1,12 +1,11 @@
 import { color } from '@/data/variables.style'
 import { css } from '@emotion/react'
 import { ChangeEventHandler, memo } from 'react'
+import { ComponentCommonProps } from '../types'
 
-export interface SelectProps {
+export interface SelectProps extends ComponentCommonProps {
   children: React.ReactNode
   onChange?: ChangeEventHandler
-  style?: React.CSSProperties
-  className?: string
 }
 
 // TODO: 값 바뀔때마다 모션 드가면 좋을듯 opacity 정도

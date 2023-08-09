@@ -59,12 +59,13 @@ export const APIs: React.FC = () => {
               </option>
             ))}
           </Select>
-          <Input style={{ flex: '1 1 auto' }} value={url} onChange={onInputUrl} />
+          <Input style={{ flex: '1 1 auto', padding: '0 12px' }} value={url} onChange={onInputUrl} />
           <Button
             className="sendBtn"
             onClick={onClickSend}
             style={{ flex: '0 0 80px', marginLeft: '8px' }}
             disabled={isLoading}
+            loading={true}
           >
             Send
           </Button>

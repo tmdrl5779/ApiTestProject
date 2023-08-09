@@ -3,18 +3,26 @@ import { color } from '@/data/variables.style'
 import { css, SerializedStyles } from '@emotion/react'
 import { motion } from 'framer-motion'
 import { memo, MouseEventHandler, ReactNode, useCallback, useTransition } from 'react'
+import { ComponentCommonProps } from '../types'
 
-export interface ButtonProps {
+export interface ButtonProps extends ComponentCommonProps {
   onClick: MouseEventHandler
-  style?: React.CSSProperties
-  _css?: SerializedStyles
-  className?: string
   children?: ReactNode
   disabled?: boolean
+  loading?: true
   type?: 'primary' | 'text'
 }
 
-const Button: React.FC<ButtonProps> = ({ onClick, style, _css, className, children, disabled, type = 'primary' }) => {
+const Button: React.FC<ButtonProps> = ({
+  onClick,
+  style,
+  _css,
+  className,
+  children,
+  disabled,
+  loading = false,
+  type = 'primary',
+}) => {
   const [isPending, startTransition] = useTransition()
 
   const handleClick: MouseEventHandler = useCallback(
@@ -31,10 +39,17 @@ const Button: React.FC<ButtonProps> = ({ onClick, style, _css, className, childr
   const mergedCss = _css ? [buttonCss, buttonTypeCss[type], _css] : [buttonCss, buttonTypeCss[type]]
 
   return (
-    <button onClick={handleClick} disabled={_disabled} style={style} css={mergedCss}>
-      {_disabled ? <LoadingOutlinedIcon /> : null}
+    <motion.button
+      onClick={handleClick}
+      disabled={_disabled}
+      style={style}
+      css={mergedCss}
+      className={className}
+      whileTap={{ scale: 0.9 }}
+    >
+      {loading ? _disabled ? <LoadingOutlinedIcon /> : null : null}
       {children}
-    </button>
+    </motion.button>
   )
 }
 
@@ -57,6 +72,7 @@ const buttonCss = css`
   &:not(:disabled):active {
     cursor: pointer;
     font-weight: bold;
+    opacity: 0.7;
   }
 
   &:disabled {

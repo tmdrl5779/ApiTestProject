@@ -5,6 +5,7 @@ export const color = {
   primaryText: '#FFFFFF',
   secondaryText: '#B3B3B3',
   topGradient: '#404040',
+  pale: 'rgba(255, 255, 255, 0.2)',
 }
 
 export const height = {

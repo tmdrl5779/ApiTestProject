@@ -17,17 +17,14 @@ export const tableCellCss = css`
   box-sizing: border-box;
   margin: 0px;
   padding: 6px;
-  border: 1px solid rgba(255, 255, 255, 0.2);
+  border: 1px solid ${color.pale};
   text-align: left;
 `
 
 export const inputCss = css`
-  border: none;
-  outline: none;
   width: 100%;
   height: 100%;
   background: transparent;
-  color: ${color.primaryText};
 `
 
 export const rowDeleteBtnCss = css`

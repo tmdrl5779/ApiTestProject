@@ -1,129 +1,186 @@
-import { Children, ReactNode, useCallback, useMemo, useState } from 'react'
-import { useContext } from '@/utils/RobustContext'
-import { TabsContext } from './TabsContext'
-import { validateTabsItems } from './utils/validateTabsItems'
-import { get1stTabsItem } from './utils/get1stTabsItem'
-import { TabsItem } from './TabsItem'
-import { css } from '@emotion/react'
+import { color } from '@/data/variables.style'
+import { createContext, useContext } from '@/utils/RobustContext'
+import { css, SerializedStyles } from '@emotion/react'
+import { motion } from 'framer-motion'
+import React, { ReactNode, useCallback, useState } from 'react'
 
-interface TabsProps {
-  type?: 'card' | 'line'
-  position?: 'left' | 'right' | 'top' | 'bottom'
-  style?: React.CSSProperties
-  onTabClick?: (key: string) => void
-  children: React.ReactNode
+type TabsItem = {
+  title: string
+  icon?: React.ReactNode
+  code: string
 }
 
-interface TabsComposition {
-  Item: typeof TabsItem
+type TabsProps = {
+  items: TabsItem[]
+  type?: 'line' | 'card'
+  tabPosition?: 'top' | 'right' | 'bottom' | 'left'
+  onSelect?: (code: string) => void
 }
 
-// TODO
-// 1. context 최적화 -> 따로 공통 훅 useRobustContext, createRobustContext(generic활용) 등으로 꺼내 쓰면 좋을 듯 (O) - 테스트 코드 추가 필요
-// 2. 탭 넘칠 때 스크롤, 탭 add, 삭제(hover or active시 x버튼 표시)
-// 3. 탭 형태에 따라 css 다르게 주기
-// 4. 탭 position에 따라 css 다르게
-// 5. 탭 테스트 코드
-// 6. 탭 scaleX 시작지점에서 맨 왼쪽으로 옮기기
-// 7. 스토리북 적용
-const Tabs: React.FC<TabsProps> & TabsComposition = ({
-  type = 'line',
-  position = 'horizontal',
-  style,
-  onTabClick,
-  children,
-}) => {
-  const [selectedTab, setSelectedTab] = useState(get1stTabsItem(children))
-  const onTabSelect = useCallback(
-    (value: string) => {
-      onTabClick && onTabClick(value)
-      setSelectedTab(value)
+const TabsContext = createContext<{
+  selectedCode: string
+  handleSelect: (code: string) => void
+}>()
+
+export const Tabs: React.FC<TabsProps> = ({ items, onSelect, type = 'line', tabPosition = 'top' }) => {
+  const [selectedCode, setSelectedCode] = useState(items[0]?.code)
+  const handleSelect = useCallback(
+    (code: string) => {
+      onSelect?.(code)
+      setSelectedCode(code)
     },
-    [onTabClick]
+    [onSelect]
   )
-
-  validateTabsItems(children)
-
   return (
-    <TabsContext.Provider value={{ selectedTab, onTabSelect }}>
-      <nav role="tablist" css={[tabsNavCss, tabsNavLeftCss]}>
-        <div className="navWrap">
-          <div className="navList">{children}</div>
-        </div>
-      </nav>
+    <TabsContext.Provider value={{ selectedCode, handleSelect }}>
+      <ul css={TabsCss}>
+        {items.map(item => (
+          <Item {...item} key={item.code} />
+        ))}
+      </ul>
     </TabsContext.Provider>
   )
 }
 
-Tabs.Item = TabsItem
+const Item: React.FC<TabsItem> = ({ title, icon, code }) => {
+  const { selectedCode, handleSelect } = useContext(TabsContext)
+  const handleClick = useCallback(() => {
+    handleSelect(code)
+  }, [code, handleSelect])
 
-// antd꺼 가져옴
+  return (
+    <li className={'item' + (selectedCode === code ? ' selected' : '')} onClick={handleClick}>
+      {icon}
+      <span className="item-title">{title}</span>
+      {selectedCode === code ? <motion.div css={leftlineCss} layoutId="leftline" /> : null}
+    </li>
+  )
+}
 
-const tabsNavCss = css`
-  position: relative;
-  display: flex;
-  flex: none;
-  align-items: center;
+const TabsCss = css`
+  overflow-x: hidden;
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  font-size: 16px;
+  line-height: 0;
+  list-style: none;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, 'Noto Sans', sans-serif,
+    'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
+  margin-bottom: 0;
+  padding-inline-start: 0;
+  outline: none;
+  transition: background 0.3s, width 0.3s cubic-bezier(0.2, 0, 0, 1) 0s;
+  width: 100%;
+  box-shadow: none;
+  border-inline-end: 0px solid rgba(5, 5, 5, 0.06);
 
-  .navWrap {
-    box-sizing: border-box;
-    display: flex;
-    flex: auto;
-    align-self: stretch;
-    overflow: hidden;
+  &::before {
+    display: table;
+    content: '';
+  }
+
+  .item {
+    color: ${color.secondaryText},
+    margin: 0;
     white-space: nowrap;
-    transform: translate(0);
-  }
-
-  .navList {
-    transform: translate(0px, 0px);
-    position: relative;
-    display: flex;
-    transition: opacity 0.3s;
-  }
-
-  .navItem {
-    overflow: hidden;
-    white-space: nowrap;
-    text-overflow: ellipsis;
-  }
-
-  .navItemText {
-    position: relative;
-    display: inline-flex;
-    padding: 10px 15px;
-    align-items: center;
-    align-self: stretch;
-    font-size: 14px;
-    background: 0 0;
-    border: 0;
-    outline: none;
     cursor: pointer;
-    border-radius: 5px;
-    border-bottom-left-radius: 0;
-    border-bottom-right-radius: 0;
+    // overflow: hidden;
     text-overflow: ellipsis;
-    overflow: hidden;
+    margin-inline: 4px;
+    margin-block: 4px;
+    width: calc(100% - 8px);
+    height: 52px;
+    line-height: 52px;
+    list-style-position: inside;
+    list-style-type: disc;
+    display: flex;
+    align-items: center;
+    transition: color 0.3s, background 0.3s, padding 0.2s cubic-bezier(0.215, 0.61, 0.355, 1);
+    position: relative;
+    padding-left: 12px;
+  }
+
+  .selected, 
+  .item:not(.selected):active,
+  .item:not(.selected):hover {
+    color: ${color.primaryText};
+  }
+
+  .item-title {
+    margin-left: 12px;
+  }
+`
+
+const leftlineCss = css`
+  position: absolute;
+  bottom: 0;
+  left: 0px;
+  top: 0;
+  width: 2px;
+  background: ${color.primaryText};
+`
+
+const TabsCommonCss = css`
+  overflow-x: hidden;
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  font-size: 16px;
+  line-height: 0;
+  list-style: none;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, 'Noto Sans', sans-serif,
+    'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
+  margin-bottom: 0;
+  padding-inline-start: 0;
+  outline: none;
+  transition: background 0.3s, width 0.3s cubic-bezier(0.2, 0, 0, 1) 0s;
+  width: 100%;
+  box-shadow: none;
+  border-inline-end: 0px solid rgba(5, 5, 5, 0.06);
+
+  &::before {
+    display: table;
+    content: '';
+  }
+
+  .item {
+    color: ${color.secondaryText},
+    margin: 0;
     white-space: nowrap;
-    min-width: 40px;
-    justify-content: center;
+    cursor: pointer;
+    // overflow: hidden;
+    text-overflow: ellipsis;
+    margin-inline: 4px;
+    margin-block: 4px;
+    width: calc(100% - 8px);
+    height: 52px;
+    line-height: 52px;
+    list-style-position: inside;
+    list-style-type: disc;
+    display: flex;
+    align-items: center;
+    transition: color 0.3s, background 0.3s, padding 0.2s cubic-bezier(0.215, 0.61, 0.355, 1);
+    position: relative;
+    padding-left: 12px;
   }
 
-  .navItemUnderline {
+  .selected, 
+  .item:not(.selected):active,
+  .item:not(.selected):hover {
+    color: ${color.primaryText};
+  }
+
+  .item-title {
+    margin-left: 12px;
   }
 `
 
-const tabsNavLeftCss = css`
-  flex-direction: column;
-  min-width: 40px;
-  .navWrap {
-    flex-direction: column;
-  }
+const tabPositionCss: Record<Required<TabsProps>['tabPosition'], SerializedStyles> = {
+  top: css``,
+  right: css``,
+  bottom: css``,
+  left: css``,
+}
 
-  .navList {
-    flex: 1 0 auto;
-    flex-direction: column;
-  }
-`
-
-export { Tabs }
+const typeCss = {}
