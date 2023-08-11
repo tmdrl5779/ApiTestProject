@@ -16,5 +16,5 @@ const GNBCss = css`
   display: flex;
   align-items: center;
   justify-content: space-between;
-  // border-bottom: 1px solid #ebebeb;
+  border-bottom: 1px solid ${color.pale};
 `

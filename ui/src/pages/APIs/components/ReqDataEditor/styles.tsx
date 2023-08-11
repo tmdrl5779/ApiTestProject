@@ -2,6 +2,7 @@ import { color } from '@/data/variables.style'
 import { css } from '@emotion/react'
 
 export const tableCss = css`
+  margin-top: 8px;
   box-sizing: border-box;
   border-collapse: collapse;
   border-spacing: 0;

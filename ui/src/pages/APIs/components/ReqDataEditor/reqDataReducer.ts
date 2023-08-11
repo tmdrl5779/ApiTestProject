@@ -1,6 +1,6 @@
-import { DataNames, Datas, ReqData } from './../types'
+import { DataNames, Datas, ReqData } from '../../types'
 import { produce } from 'immer'
-import { getDefaultData, getDefaultDatas } from './constants'
+import { getDefaultData, getDefaultDatas } from '../../data/constants'
 
 export interface ReqDataAction {
   type: 'ADD' | 'DELETE' | 'INPUT_CHANGE' | 'CHANGE'

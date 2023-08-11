@@ -1,7 +1,7 @@
 import { Datas, HttpMethods, ReqData } from './types'
 import { createContext } from '@/utils/RobustContext'
 import { httpMethods } from './data/constants'
-import { ReqDataAction } from './data/reqDataReducer'
+import { ReqDataAction } from './components/ReqDataEditor/reqDataReducer'
 
 interface IAPIsContext {
   method: HttpMethods

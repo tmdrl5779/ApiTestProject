@@ -2,76 +2,31 @@ import { ChangeEvent, FormEvent, useCallback, useEffect, useReducer, useState } 
 import { APIsContext } from './APIsContext'
 import { getDefaultDatas, httpMethods, tabItems } from './data/constants'
 import { ReqDataEditor } from './components/ReqDataEditor'
-import { ReqDataTabs } from './components/ReqDataTabs'
 import { Datas, HttpMethods, ReqData, ReqPayload, TabItem } from './types'
-import { initialReqDatas, reqDataReducer } from './data/reqDataReducer'
+import { initialReqDatas, reqDataReducer } from './components/ReqDataEditor/reqDataReducer'
 import { useMutation } from 'react-query'
 import { FetchApiRequest } from 'api-types'
 import axios, { AxiosError } from 'axios'
 import { convertDatasToObj } from './utils/convertDatasToObj'
 import { fetchApi } from '@/remotes/fetchApi'
-import { Funnel, Select, Input, Button } from '@/components'
+import { Funnel, Select, Input, Button, Tabs, Blinker } from '@/components'
 import { makeFetchApiRequest } from '@/utils'
 import { css } from '@emotion/react'
+import { color } from '@/data/variables.style'
 
-// TODO: Funnel (O), Tab으로 컴포넌트 추상화 - 2
-// TODO: 스타일링, 모션 = 3
 // TODO: Body쪽 json, text 입력창도 만들기
 export const APIs: React.FC = () => {
-  const [selectedTab, setSelectedTab] = useState<TabItem>(tabItems[0])
-  const [method, setMethod] = useState<HttpMethods>(httpMethods[0])
-  const [url, setUrl] = useState<string>('')
-  const [datas, dispatchForDatas] = useReducer(reqDataReducer, initialReqDatas)
+  const [selectedTabCode, setSelectedTabCode] = useState(tabItems[0].code)
 
-  const { data, mutate, isLoading, isError, error, isSuccess } = useMutation((request: FetchApiRequest) => {
-    return fetchApi(request)
-  })
-
-  const onInputUrl = useCallback((e: ChangeEvent) => {
-    const target = e.target as HTMLInputElement
-    setUrl(target.value)
-  }, [])
-
-  const onClickSend = useCallback(() => {
-    const request = makeFetchApiRequest(
-      url,
-      method,
-      convertDatasToObj(datas.Params.filter(e => e.included)),
-      convertDatasToObj(datas.Headers.filter(e => e.included)),
-      convertDatasToObj(datas.Body.filter(e => e.included))
-    )
-    mutate(request)
-  }, [datas, method, mutate, url])
-
-  const onSelectMethod = useCallback((e: ChangeEvent) => {
-    const target = e.target as HTMLSelectElement
-    setMethod(target.value as HttpMethods)
+  const onSelectTab = useCallback((code: string) => {
+    setSelectedTabCode(code)
   }, [])
 
   return (
-    <APIsContext.Provider value={{ method, url, datas, dispatchForDatas }}>
-      <section css={pannelCss}>
-        <div className="resourceInput">
-          <Select style={{ flex: '0 0 120px' }} onChange={onSelectMethod}>
-            {httpMethods.map(method => (
-              <option key={method} value={method}>
-                {method}
-              </option>
-            ))}
-          </Select>
-          <Input style={{ flex: '1 1 auto', padding: '0 12px' }} value={url} onChange={onInputUrl} />
-          <Button
-            className="sendBtn"
-            onClick={onClickSend}
-            style={{ flex: '0 0 80px', marginLeft: '8px' }}
-            disabled={isLoading}
-            loading={true}
-          >
-            Send
-          </Button>
-        </div>
-        <ReqDataTabs selectedTab={selectedTab} setSelectedTab={setSelectedTab} />
-        <Funnel steps={tabItems.map(item => item.tabTitle)} step={selectedTab.tabTitle}>
+    <section css={pannelCss}>
+      <Tabs items={tabItems} onSelect={onSelectTab} background={color.background} type="card" tabPosition="top" />
+      {/* <Blinker _key={selectedTabCode}>
+        <Funnel steps={tabItems.map(item => item.code)} step={selectedTabCode}>
           <Funnel.Step name="Params">
             <ReqDataEditor name="Params" />
           </Funnel.Step>
@@ -82,23 +37,12 @@ export const APIs: React.FC = () => {
             <ReqDataEditor name="Body" />
           </Funnel.Step>
         </Funnel>
-      </section>
-      <section css={pannelCss}>
-        {isLoading ? (
-          '요청 중입니다...'
-        ) : (
-          <>
-            {isError && <p>{(error as Error)?.message}</p>}
-            {isSuccess && <p>{JSON.stringify(data, null, 4)}</p>}
-          </>
-        )}
-      </section>
-    </APIsContext.Provider>
+      </Blinker> */}
+    </section>
   )
 }
 
 // TODO: 재렌더링 너무 잦음 최적화
-// TODO: 마크업 게속~
 const pannelCss = css`
   height: 50%;
   overflow-y: auto;

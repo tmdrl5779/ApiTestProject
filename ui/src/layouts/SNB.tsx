@@ -42,6 +42,7 @@ const SNBCss = css`
   position: relative;
   background: ${color.navBar};
   color: ${color.secondaryText};
+  border-right: 1px solid ${color.pale};
   transition: all 0.2s;
 `
 

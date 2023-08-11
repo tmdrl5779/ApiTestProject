@@ -1,6 +1,7 @@
 import { ReqData } from './../types'
 import { TabItem } from '../types'
 import { genearteUUID } from '@/utils'
+import { TabsItem } from '@/components'
 
 export const httpMethods = ['GET', 'POST', 'PUT', 'PATCH', 'DELETE'] as const
 
@@ -15,8 +16,8 @@ export const getDefaultData = (): ReqData => ({
 })
 export const getDefaultDatas = (): ReqData[] => [getDefaultData()]
 
-export const tabItems: TabItem[] = [
-  { tabTitle: 'Params', mainTitle: 'Query Params' },
-  { tabTitle: 'Headers', mainTitle: 'Headers' },
-  { tabTitle: 'Body', mainTitle: null },
+export const tabItems: TabsItem[] = [
+  { title: 'Params', code: 'Params' },
+  { title: 'Headers', code: 'Headers' },
+  { title: 'Body', code: 'Body' },
 ]

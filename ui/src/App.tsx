@@ -2,11 +2,11 @@ import '../src/assets/global.css'
 import { GNB, SNB, Layout, Content } from './layouts'
 import { APIs, APIMerge, PerformTest } from './pages'
 import { ApiOutlinedIcon, BarChartOutlinedIcon, MergeCellsOutlinedIcon } from './data/icons'
-import { Navigator } from './components/Navigator'
 import { useCallback, useState } from 'react'
 import { Funnel } from './components/Funnel'
 import { AnimatePresence, motion } from 'framer-motion'
 import { css } from '@emotion/react'
+import { Blinker, Tabs } from './components'
 
 const navItems = [
   {
@@ -36,31 +36,22 @@ function App() {
       <GNB>API Test</GNB>
       <Layout style={{ flexDirection: 'row' }}>
         <SNB>
-          <Navigator items={navItems} onSelect={onSelect} />
+          <Tabs items={navItems} onSelect={onSelect} tabPosition="right" />
         </SNB>
         <Content>
-          <AnimatePresence mode="wait">
-            <motion.div
-              key={selectedItemCode}
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              transition={{ duration: 0.2 }}
-              css={contentWrapperCss}
-            >
-              <Funnel steps={navItems.map(item => item.code)} step={selectedItemCode}>
-                <Funnel.Step name="callApi">
-                  <APIs />
-                </Funnel.Step>
-                <Funnel.Step name="performanceTest">
-                  <PerformTest />
-                </Funnel.Step>
-                <Funnel.Step name="mergeApi">
-                  <APIMerge />
-                </Funnel.Step>
-              </Funnel>
-            </motion.div>
-          </AnimatePresence>
+          <Blinker _key={selectedItemCode} _css={contentWrapperCss}>
+            <Funnel steps={navItems.map(item => item.code)} step={selectedItemCode}>
+              <Funnel.Step name="callApi">
+                <APIs />
+              </Funnel.Step>
+              <Funnel.Step name="performanceTest">
+                <PerformTest />
+              </Funnel.Step>
+              <Funnel.Step name="mergeApi">
+                <APIMerge />
+              </Funnel.Step>
+            </Funnel>
+          </Blinker>
         </Content>
       </Layout>
     </div>

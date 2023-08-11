@@ -7,7 +7,7 @@ export const Content: React.FC<{ children: ReactNode }> = ({ children }) => {
 }
 
 const contentCss = css`
-  padding: 16px;
+  // padding: 16px;
   background-color: ${color.background};
   color: ${color.primaryText};
   min-height: 600px;

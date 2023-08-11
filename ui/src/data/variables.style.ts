@@ -5,7 +5,7 @@ export const color = {
   primaryText: '#FFFFFF',
   secondaryText: '#B3B3B3',
   topGradient: '#404040',
-  pale: 'rgba(255, 255, 255, 0.2)',
+  pale: 'rgba(255, 255, 255, 0.1)',
 }
 
 export const height = {
@@ -14,5 +14,5 @@ export const height = {
 
 export const width = {
   SNB: '12rem',
-  SNB_short: '60px',
+  SNB_short: '56px',
 }

@@ -1,6 +1,6 @@
 export * from './Button'
 export * from './Funnel'
 export * from './Input'
-export * from './Navigator'
 export * from './Select'
 export * from './Tabs'
+export * from './Blinker'
