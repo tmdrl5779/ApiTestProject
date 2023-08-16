@@ -1,3 +1,5 @@
+import { FetchApiRequest, FetchApiResponse, IAPI } from 'api-types'
+
 export const defaultFetchApiTime = {
   connectionTime: 0,
   readTime: 0,
@@ -5,3 +7,24 @@ export const defaultFetchApiTime = {
 }
 
 export const defaultFetchApiCount = 0
+
+export const getDefaultFetchApiRequest = (): FetchApiRequest => ({
+  time: defaultFetchApiTime,
+  count: defaultFetchApiCount,
+  url: '',
+  httpMethod: 'GET',
+  param: {},
+  header: {},
+  body: {},
+})
+
+export const getDefaultFetchApiResponse = (): FetchApiResponse => ({
+  responseTime: 0,
+  body: {},
+  status: '',
+})
+
+export const getDefaultAPI = (): IAPI => ({
+  request: getDefaultFetchApiRequest(),
+  response: getDefaultFetchApiResponse(),
+})

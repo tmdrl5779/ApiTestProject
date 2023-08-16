@@ -22,5 +22,3 @@ export type ReqPayload = {
 export type Datas = Record<DataNames, ReqData[]>
 
 export type HttpMethods = (typeof httpMethods)[number]
-
-export interface IAPI {}

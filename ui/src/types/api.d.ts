@@ -19,4 +19,9 @@ declare module 'api-types' {
     body: Dictionary
     status: string
   }
+
+  export interface IAPI {
+    request: FetchApiRequest
+    response: FetchApiResponse
+  }
 }
