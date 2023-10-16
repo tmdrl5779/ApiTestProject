@@ -1,22 +1,46 @@
-import { ChangeEvent, FormEvent, useCallback, useEffect, useReducer, useState } from 'react'
-import { APIsContext } from './APIsContext'
+import { ChangeEvent, FormEvent, useCallback, useEffect, useMemo, useReducer, useState } from 'react'
 import { getDefaultDatas, httpMethods, tabItems } from './data/constants'
-import { ReqDataEditor } from './components/ReqDataEditor'
-import { Datas, HttpMethods, ReqData, ReqPayload, TabItem } from './types'
-import { initialReqDatas, reqDataReducer } from './components/ReqDataEditor/reqDataReducer'
-import { useMutation } from 'react-query'
-import { FetchApiRequest } from 'api-types'
-import axios, { AxiosError } from 'axios'
-import { convertDatasToObj } from './utils/convertDatasToObj'
-import { fetchApi } from '@/remotes/fetchApi'
 import { Funnel, Select, Input, Button, Tabs, Blinker } from '@/components'
-import { makeFetchApiRequest } from '@/utils'
 import { css } from '@emotion/react'
 import { color } from '@/data/variables.style'
+import { useAPIList } from '@/hooks'
+import { genearteUUID } from '@/utils'
 
 // TODO: Body쪽 json, text 입력창도 만들기
 export const APIs: React.FC = () => {
-  const [selectedTabCode, setSelectedTabCode] = useState(tabItems[0].code)
+  const { APIList, createAPI, deleteAPI, updateAPI } = useAPIList()
+  const [selectedTabCode, setSelectedTabCode] = useState(APIList[0]?.uuid)
+
+  useEffect(() => {
+    console.log(selectedTabCode)
+  }, [selectedTabCode])
+
+  const APITabItems = useMemo(
+    () =>
+      APIList.map(API => ({
+        title: `${API.request.httpMethod} ${API.request.url === '' ? 'Untitled Request' : API.request.url}`,
+        code: API.uuid,
+      })),
+    [APIList]
+  )
+
+  const onDeleteTab = useCallback(
+    (idx: number) => {
+      if (APITabItems[idx].code === selectedTabCode) {
+        // 맨 첨 친구면 그 담 친구
+        // 아니면 그 뒤 친구
+        console.log('선택댄애 지움!')
+        if (idx === 0 && APITabItems[idx + 1]?.code !== undefined) {
+          setSelectedTabCode(APITabItems[idx + 1].code)
+        }
+        if (idx !== 0 && APITabItems[idx - 1]?.code !== undefined) {
+          setSelectedTabCode(APITabItems[idx - 1].code)
+        }
+      }
+      deleteAPI(idx)
+    },
+    [APITabItems, deleteAPI, selectedTabCode]
+  )
 
   const onSelectTab = useCallback((code: string) => {
     setSelectedTabCode(code)
@@ -24,20 +48,24 @@ export const APIs: React.FC = () => {
 
   return (
     <section css={pannelCss}>
-      <Tabs items={tabItems} onSelect={onSelectTab} background={color.background} type="card" tabPosition="top" />
-      {/* <Blinker _key={selectedTabCode}>
+      <Tabs
+        items={APITabItems}
+        selectedCode={selectedTabCode}
+        onSelect={onSelectTab}
+        onAdd={createAPI}
+        onDelete={onDeleteTab}
+        background={color.background}
+        type="card"
+        tabPosition="top"
+        editable
+      />
+      <Blinker _key={selectedTabCode}>
         <Funnel steps={tabItems.map(item => item.code)} step={selectedTabCode}>
-          <Funnel.Step name="Params">
-            <ReqDataEditor name="Params" />
-          </Funnel.Step>
-          <Funnel.Step name="Headers">
-            <ReqDataEditor name="Headers" />
-          </Funnel.Step>
-          <Funnel.Step name="Body">
-            <ReqDataEditor name="Body" />
-          </Funnel.Step>
+          <Funnel.Step name="Params">Params</Funnel.Step>
+          <Funnel.Step name="Headers">Headers</Funnel.Step>
+          <Funnel.Step name="Body">Body</Funnel.Step>
         </Funnel>
-      </Blinker> */}
+      </Blinker>
     </section>
   )
 }

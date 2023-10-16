@@ -7,6 +7,7 @@ import { Funnel } from './components/Funnel'
 import { AnimatePresence, motion } from 'framer-motion'
 import { css } from '@emotion/react'
 import { Blinker, Tabs } from './components'
+import { RecoilRoot } from 'recoil'
 
 const navItems = [
   {
@@ -32,29 +33,31 @@ function App() {
     setSelectedItemCode(code)
   }, [])
   return (
-    <div className="App">
-      <GNB>API Test</GNB>
-      <Layout style={{ flexDirection: 'row' }}>
-        <SNB>
-          <Tabs items={navItems} onSelect={onSelect} tabPosition="right" />
-        </SNB>
-        <Content>
-          <Blinker _key={selectedItemCode} _css={contentWrapperCss}>
-            <Funnel steps={navItems.map(item => item.code)} step={selectedItemCode}>
-              <Funnel.Step name="callApi">
-                <APIs />
-              </Funnel.Step>
-              <Funnel.Step name="performanceTest">
-                <PerformTest />
-              </Funnel.Step>
-              <Funnel.Step name="mergeApi">
-                <APIMerge />
-              </Funnel.Step>
-            </Funnel>
-          </Blinker>
-        </Content>
-      </Layout>
-    </div>
+    <RecoilRoot>
+      <div className="App">
+        <GNB>API Test</GNB>
+        <Layout style={{ flexDirection: 'row' }}>
+          <SNB>
+            <Tabs items={navItems} onSelect={onSelect} tabPosition="right" />
+          </SNB>
+          <Content>
+            <Blinker _key={selectedItemCode} _css={contentWrapperCss}>
+              <Funnel steps={navItems.map(item => item.code)} step={selectedItemCode}>
+                <Funnel.Step name="callApi">
+                  <APIs />
+                </Funnel.Step>
+                <Funnel.Step name="performanceTest">
+                  <PerformTest />
+                </Funnel.Step>
+                <Funnel.Step name="mergeApi">
+                  <APIMerge />
+                </Funnel.Step>
+              </Funnel>
+            </Blinker>
+          </Content>
+        </Layout>
+      </div>
+    </RecoilRoot>
   )
 }
 

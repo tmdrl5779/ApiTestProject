@@ -1,3 +1,4 @@
+import { genearteUUID } from './../utils/generateUUID'
 import { FetchApiRequest, FetchApiResponse, IAPI } from 'api-types'
 
 export const defaultFetchApiTime = {
@@ -25,6 +26,7 @@ export const getDefaultFetchApiResponse = (): FetchApiResponse => ({
 })
 
 export const getDefaultAPI = (): IAPI => ({
+  uuid: genearteUUID(),
   request: getDefaultFetchApiRequest(),
   response: getDefaultFetchApiResponse(),
 })

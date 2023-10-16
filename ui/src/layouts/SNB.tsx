@@ -43,7 +43,7 @@ const SNBCss = css`
   background: ${color.navBar};
   color: ${color.secondaryText};
   border-right: 1px solid ${color.pale};
-  transition: all 0.2s;
+  transition: all 0.25s;
 `
 
 const SNBChildrenCss = css`

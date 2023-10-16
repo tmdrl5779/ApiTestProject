@@ -21,6 +21,7 @@ declare module 'api-types' {
   }
 
   export interface IAPI {
+    uuid: string
     request: FetchApiRequest
     response: FetchApiResponse
   }
