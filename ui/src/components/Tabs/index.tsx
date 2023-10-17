@@ -1,10 +1,17 @@
 import { CloseOutlinedIcon, DeleteOutlinedIcon, PlusOutlinedIcon } from '@/data/icons'
+import { color } from '@/data/variables.style'
 import { genearteUUID } from '@/utils'
 import { AnimatePresence, AnimateSharedLayout, motion } from 'framer-motion'
 import React, { ReactNode, useCallback, useMemo, useState } from 'react'
 import { Button } from '..'
 import { tabsCss } from './styles'
 import { TabPosition, TabType } from './types'
+
+const editableTabsMotion = {
+  initial: { opacity: 0, x: -10 },
+  animate: { opacity: 1, x: 0 },
+  transition: { opacity: { duration: 0.25 }, x: { type: 'spring', stiffness: 300, damping: 30 } },
+}
 
 export type TabsItem = {
   title: string
@@ -77,10 +84,11 @@ export const Tabs: React.FC<TabsProps> = ({
             className={'item' + (finalSelectedCode === item.code ? ' selected' : '')}
             css={tabsItemCss}
             onClick={handleSelect(item.code)}
-            initial={{ opacity: 0, x: -10 }}
-            animate={{ opacity: 1, x: 0 }}
+            {...(editable ? editableTabsMotion : {})}
+            // initial={{ opacity: 0, x: -10 }}
+            // animate={{ opacity: 1, x: 0 }}
             // exit={{ opacity: 0, x: -10 }}
-            transition={{ opacity: { duration: 0.25 }, x: { type: 'spring', stiffness: 300, damping: 30 } }}
+            // transition={{ opacity: { duration: 0.25 }, x: { type: 'spring', stiffness: 300, damping: 30 } }}
           >
             {item.icon}
             <span style={{ marginLeft: item.icon ? '12px' : '0' }}>{item.title}</span>
@@ -95,13 +103,13 @@ export const Tabs: React.FC<TabsProps> = ({
           </motion.li>
         ))}
 
-        <li css={tabsItemCss} style={{ flex: '1 1 auto', cursor: 'inherit' }}>
+        <motion.li layout key={'add-tab-button'} css={tabsItemCss} style={{ flex: '1 1 auto', cursor: 'inherit' }}>
           {editable ? (
-            <Button type="text" onClick={handleAdd}>
-              <PlusOutlinedIcon />
+            <Button type="text" onClick={handleAdd} style={{ fontSize: '24px' }}>
+              +
             </Button>
           ) : null}
-        </li>
+        </motion.li>
       </AnimatePresence>
     </motion.ul>
   )

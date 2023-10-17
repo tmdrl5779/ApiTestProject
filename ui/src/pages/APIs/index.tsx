@@ -1,10 +1,11 @@
 import { ChangeEvent, FormEvent, useCallback, useEffect, useMemo, useReducer, useState } from 'react'
-import { getDefaultDatas, httpMethods, tabItems } from './data/constants'
+import { getDefaultDatas, httpMethods } from './data/constants'
 import { Funnel, Select, Input, Button, Tabs, Blinker } from '@/components'
 import { css } from '@emotion/react'
 import { color } from '@/data/variables.style'
 import { useAPIList } from '@/hooks'
 import { genearteUUID } from '@/utils'
+import { APIDetail } from './components/APIDetail'
 
 // TODO: Body쪽 json, text 입력창도 만들기
 export const APIs: React.FC = () => {
@@ -47,7 +48,7 @@ export const APIs: React.FC = () => {
   }, [])
 
   return (
-    <section css={pannelCss}>
+    <>
       <Tabs
         items={APITabItems}
         selectedCode={selectedTabCode}
@@ -59,23 +60,18 @@ export const APIs: React.FC = () => {
         tabPosition="top"
         editable
       />
-      <Blinker _key={selectedTabCode}>
-        <Funnel steps={tabItems.map(item => item.code)} step={selectedTabCode}>
-          <Funnel.Step name="Params">Params</Funnel.Step>
+      <Blinker _key={selectedTabCode} style={{ height: 'calc(100% - 40px)' }}>
+        <Funnel steps={APITabItems.map(item => item.code)} step={selectedTabCode}>
+          {APIList.map(API => (
+            <Funnel.Step key={API.uuid} name={API.uuid}>
+              {<APIDetail api={API} />}
+            </Funnel.Step>
+          ))}
+          {/* <Funnel.Step name="Params">Params</Funnel.Step>
           <Funnel.Step name="Headers">Headers</Funnel.Step>
-          <Funnel.Step name="Body">Body</Funnel.Step>
+          <Funnel.Step name="Body">Body</Funnel.Step> */}
         </Funnel>
       </Blinker>
-    </section>
+    </>
   )
 }
-
-// TODO: 재렌더링 너무 잦음 최적화
-const pannelCss = css`
-  height: 50%;
-  overflow-y: auto;
-  .resourceInput {
-    display: flex;
-    height: 40px;
-  }
-`

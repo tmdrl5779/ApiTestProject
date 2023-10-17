@@ -15,9 +15,3 @@ export const getDefaultData = (): ReqData => ({
   uuid: genearteUUID(),
 })
 export const getDefaultDatas = (): ReqData[] => [getDefaultData()]
-
-export const tabItems: TabsItem[] = [
-  { title: 'Params', code: 'Params' },
-  { title: 'Headers', code: 'Headers' },
-  { title: 'Body', code: 'Body' },
-]

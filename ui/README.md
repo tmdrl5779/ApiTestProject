@@ -1,13 +1,16 @@
 ## 구상
+
 ### 레이아웃
+
 라우터대신 퍼널 사용해서 간단하게 (토스 slash23 참고)
 ![image-20230614234956754](README.assets/image-20230614234956754.png)
 
 ![image-20230614235105261](README.assets/image-20230614235105261.png)
 
-
 ### API Call 규격
+
 Request
+
 ```
 {
   "time": {
@@ -15,7 +18,7 @@ Request
     "readTime": 0,
     "writeTime": 0
   },
-  "count": 0, // 호출 횟수, 기본 1 
+  "count": 0, // 호출 횟수, 기본 1
   "url": "string",
   "httpMethod": "string", // get, post, put, delete, patch 중 하나
   "param": {
@@ -35,6 +38,7 @@ Request
 ```
 
 Response
+
 ```
 [
   {
@@ -45,10 +49,6 @@ Response
   ... //Request의 count횟수 만큼 list에 담아서 전달
 ]
 ```
-
-
-
-
 
 ### 컴포넌트 기반 개발
 
@@ -65,16 +65,16 @@ Response
     - 검색되는 select와 input 합친 거 (ex: postman의 method 선택상자)
 
 ### 전역 상태관리
+
 - recoil만 사용?
 
 ### 에러처리
-- ErrorBoundary, Suspense 활용하기
 
+- ErrorBoundary, Suspense 활용하기
 
 ### 할 일
 
-1. Header 로그아웃 버튼(버튼 컴포넌트로) 추가
-2. APIs 스타일링
-3. Tabs 만들기
-4. 레이아웃 너무 작을시 화면이 넘작으면 안보여요 넣기
-5. 레이아웃작을시 헤더 짤리는거 보완
+1. APIs API 탭 내부 메소드에 색깔 넣기
+2. API req정보 편집기 다시 만들기
+3. API res정보 조회기 다시 만들기
+4. API 정보에 title도 넣고 편집가능하게 하기
