@@ -4,6 +4,7 @@ import { css } from '@emotion/react'
 import { IAPI } from 'api-types'
 import { FC } from 'react'
 import { httpMethods } from '../data/constants'
+import { APIPayloadEditor } from './APIPayloadEditor'
 
 export const reqTabItems: TabsItem[] = [
   { title: 'Params', code: 'Params' },
@@ -27,11 +28,9 @@ export const APIDetail: FC<APIDetailProps> = ({ api }) => {
     <div css={apiMainCss}>
       <section css={reqSectionCss}>
         <div css={reqSectionHeaderCss}>
-          <Select className="method-select">
+          <Select className="method-select" value={api.request.httpMethod}>
             {httpMethods.map(method => (
-              <option value={method} selected={method === api.request.httpMethod ? true : false}>
-                {method}
-              </option>
+              <option value={method}>{method}</option>
             ))}
           </Select>
           <Input className="url-input" value={api.request.url} onChange={e => e} />
@@ -47,6 +46,7 @@ export const APIDetail: FC<APIDetailProps> = ({ api }) => {
           type="line"
           tabPosition="top"
         />
+        <APIPayloadEditor />
       </section>
       <section css={resSectionCss}>
         <Tabs
@@ -68,9 +68,11 @@ const apiMainCss = css`
 `
 
 const reqSectionCss = css`
+  position: relative;
   height: 60%;
 `
 const resSectionCss = css`
+  position: relative;
   height: 40%;
 `
 
