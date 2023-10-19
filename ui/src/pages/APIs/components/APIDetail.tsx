@@ -2,7 +2,7 @@ import { Button, Input, Select, Tabs, TabsItem } from '@/components'
 import { color } from '@/data/variables.style'
 import { css } from '@emotion/react'
 import { IAPI } from 'api-types'
-import { FC } from 'react'
+import { FC, useState } from 'react'
 import { httpMethods } from '../data/constants'
 import { APIPayloadEditor } from './APIPayloadEditor'
 
@@ -23,7 +23,20 @@ interface APIDetailProps {
   api: IAPI
 }
 
+// TODO: 재렌더링 줄이기 - memo활용
 export const APIDetail: FC<APIDetailProps> = ({ api }) => {
+  // TODO: 데이터 변경 로직 추가
+  // TODO: React Query 사용한 방식으로 변경
+  // 일단은 css용임
+  const [isLoading, setIsLoading] = useState(false)
+
+  const mockLoading = () => {
+    setIsLoading(true)
+    setTimeout(() => {
+      setIsLoading(false)
+    }, 1000)
+  }
+
   return (
     <div css={apiMainCss}>
       <section css={reqSectionCss}>
@@ -33,11 +46,17 @@ export const APIDetail: FC<APIDetailProps> = ({ api }) => {
               <option value={method}>{method}</option>
             ))}
           </Select>
-          <Input className="url-input" value={api.request.url} onChange={e => e} />
-          <Button onClick={e => e} className="send-button">
-            Send
+          <Input
+            className="url-input"
+            value={api.request.url}
+            placeholder="Request URL을 입력해주세요."
+            onChange={e => e}
+          />
+          <Button onClick={mockLoading} className="send-button" disabled={isLoading}>
+            {isLoading ? 'Sending...' : 'Send'}
           </Button>
         </div>
+        {/* TODO: Method명에 색깔 넣기 */}
         <Tabs
           items={reqTabItems}
           // selectedCode={selectedTabCode}
@@ -48,7 +67,7 @@ export const APIDetail: FC<APIDetailProps> = ({ api }) => {
         />
         <APIPayloadEditor />
       </section>
-      <section css={resSectionCss}>
+      <section css={resSectionCss} style={isLoading ? { opacity: 0.3 } : {}}>
         <Tabs
           items={resTabItems}
           // selectedCode={selectedTabCode}
@@ -57,6 +76,8 @@ export const APIDetail: FC<APIDetailProps> = ({ api }) => {
           type="line"
           tabPosition="top"
         />
+        {/* TODO: Loader 컴포넌트로 대체 (막대, 캐릭터 2가지) */}
+        {isLoading ? '로딩~' : '안로딩~'}
       </section>
     </div>
   )
@@ -64,7 +85,7 @@ export const APIDetail: FC<APIDetailProps> = ({ api }) => {
 
 const apiMainCss = css`
   height: calc(100% - 40px);
-  padding: 4px;
+  padding: 8px;
 `
 
 const reqSectionCss = css`

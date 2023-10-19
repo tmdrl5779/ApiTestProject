@@ -45,7 +45,7 @@ const Button: React.FC<ButtonProps> = ({
       style={style}
       css={mergedCss}
       className={className}
-      whileTap={{ scale: 0.9, opacity: 0.7 }}
+      whileTap={_disabled ? {} : { scale: 0.9, opacity: 0.7 }}
     >
       {loading ? _disabled ? <LoadingOutlinedIcon /> : null : null}
       {children}
@@ -67,17 +67,16 @@ const buttonCss = css`
   display: flex;
   align-items: center;
   justify-content: center;
-
   &:not(:disabled):hover,
   &:not(:disabled):active {
     cursor: pointer;
     font-weight: bold;
-    // opacity: 0.7;
   }
 
-  &:disabled {
-    opacity: 0.7;
-    cursor: default;
+  &:disabled,
+  &[disabled] {
+    background: ${color.accent}B3;
+    cursor: not-allowed;
   }
 `
 
