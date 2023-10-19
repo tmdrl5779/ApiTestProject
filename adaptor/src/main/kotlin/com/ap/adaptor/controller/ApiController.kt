@@ -26,13 +26,6 @@ class ApiController(
         return adaptorService.responsesForCallApi(requestData)
     }
 
-//    @Operation(summary = "API 성능 테스트", description = "API 성능 테스트")
-//    @PostMapping("/api/perform")
-//    suspend fun performApi(@RequestBody requestDataList: RequestDataList): ResponseDataList{
-//        log.info("Api Performance : $requestDataList")
-//        return performService.measurePerform(requestDataList)
-//    }
-
     @Operation(summary = "COMBINE", description = "API 조합 요청")
     @PostMapping("/api/combine")
     suspend fun callCombineApi(@RequestBody combination: Combination){

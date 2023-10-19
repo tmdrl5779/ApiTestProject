@@ -63,7 +63,7 @@ class WebClientTest {
             response = `suspend webclient Test`()
             status = HttpStatus.OK.toString()
         }catch (e: WebClientResponseException){
-            status = e.statusText
+            status = e.statusCode.toString()
         }
         stopWatch.stop()
 
