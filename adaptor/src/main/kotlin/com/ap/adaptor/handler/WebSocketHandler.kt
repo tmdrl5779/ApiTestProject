@@ -11,6 +11,7 @@ import org.springframework.web.reactive.socket.WebSocketHandler
 import org.springframework.web.reactive.socket.WebSocketSession
 import reactor.core.publisher.Mono
 import kotlin.IllegalArgumentException
+import kotlin.system.measureTimeMillis
 
 
 @Component
@@ -32,18 +33,9 @@ class WebSocketHandler(
                     if(performData != null){
                         repeat(performData.repeatCount) {
                             callApi(performData, session)
-
-//                            callApi 함수로 옮김
-//                            List(performData.userCount) {
-//                                val deferredValue = async { adaptorService.responses(performData.requestData) }
-//                                val response = deferredValue.await()
-//                                session.send(Mono.just(session.textMessage(response.toString()))).subscribe()
-//                            }
-
                             delay(performData.interval)
                         }
                     }
-
 
                     session.send(Mono.just(session.textMessage("connection close success")))
                         .then(session.close())
@@ -69,17 +61,30 @@ class WebSocketHandler(
 
     private suspend fun callApi(performData: PerformData, session: WebSocketSession) {
         coroutineScope {
-            List(performData.userCount) {
-                val async = async { adaptorService.responsesForPerForm(performData.requestDataList) }
-                val response = async.await()
-                session.send(Mono.just(session.textMessage(response.toString()))).subscribe()
+            val userCallApiTime = measureTimeMillis{
+                val deferredValue = List(performData.userCount) {
+                    async { adaptorService.responsesForPerForm(performData.requestDataList) }
+//                    val async = async { adaptorService.responsesForPerForm(performData.requestDataList) }
+//                    val response = async.await()
+//                    session.send(Mono.just(session.textMessage(response.toString()))).subscribe()
+                }
+                val totalResponseWithTime = deferredValue.awaitAll()
+                totalResponseWithTime.forEach{session.send(Mono.just(session.textMessage(it.toString()))).subscribe()}
             }
+
+            log.info("User ${performData.userCount} finish API Call Total Time : $userCallApiTime")
+
+//            List(performData.userCount) {
+//                val async = async { adaptorService.responsesForPerForm(performData.requestDataList) }
+//                val response = async.await()
+//                session.send(Mono.just(session.textMessage(response.toString()))).subscribe()
+//            }
         }
     }
 
     private suspend fun parseRequestData(payload: String): PerformData? = withContext(Dispatchers.IO){
         try{
-            if(payload.isBlank()){
+            if(payload.isNotBlank()){
                 val objectMapper = jacksonObjectMapper()
                 val map = objectMapper.readValue(payload, MutableMap::class.java)
 
@@ -90,7 +95,7 @@ class WebSocketHandler(
                 throw IllegalArgumentException("Input string cannot be blank.")
             }
         }catch (e: Exception){
-            null
+            throw IllegalArgumentException(e)
         }
     }
 

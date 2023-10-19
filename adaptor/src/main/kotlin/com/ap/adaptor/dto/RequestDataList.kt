@@ -4,5 +4,7 @@ import com.ap.adaptor.dto.enumData.PerformType
 
 data class RequestDataList(
     var requestList: MutableList<RequestData> = mutableListOf(),
-    var performType: PerformType ?= null
+//    var performType: PerformType ?= null
+    var performType: PerformType = PerformType.SEQ,
+
 )
