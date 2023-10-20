@@ -1,4 +1,4 @@
-import { Button, Input, Select, Tabs, TabsItem } from '@/components'
+import { Button, Input, Loader, Select, Tabs, TabsItem } from '@/components'
 import { color } from '@/data/variables.style'
 import { css } from '@emotion/react'
 import { IAPI } from 'api-types'
@@ -34,7 +34,7 @@ export const APIDetail: FC<APIDetailProps> = ({ api }) => {
     setIsLoading(true)
     setTimeout(() => {
       setIsLoading(false)
-    }, 1000)
+    }, 3000)
   }
 
   return (
@@ -67,24 +67,24 @@ export const APIDetail: FC<APIDetailProps> = ({ api }) => {
         />
         <APIPayloadEditor />
       </section>
-      <section css={resSectionCss} style={isLoading ? { opacity: 0.3 } : {}}>
-        <Tabs
-          items={resTabItems}
-          // selectedCode={selectedTabCode}
-          // onSelect={onSelectTab}
-          background={color.background}
-          type="line"
-          tabPosition="top"
-        />
-        {/* TODO: Loader 컴포넌트로 대체 (막대, 캐릭터 2가지) */}
-        {isLoading ? '로딩~' : '안로딩~'}
+      <section css={resSectionCss}>
+        <Loader isLoading={isLoading}>
+          <Tabs
+            items={resTabItems}
+            // selectedCode={selectedTabCode}
+            // onSelect={onSelectTab}
+            background={color.background}
+            type="line"
+            tabPosition="top"
+          />
+        </Loader>
       </section>
     </div>
   )
 }
 
 const apiMainCss = css`
-  height: calc(100% - 40px);
+  height: calc(100%);
   padding: 8px;
 `
 
@@ -95,6 +95,7 @@ const reqSectionCss = css`
 const resSectionCss = css`
   position: relative;
   height: 40%;
+  border-top: 1px solid ${color.pale};
 `
 
 const reqSectionHeaderCss = css`

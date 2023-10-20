@@ -75,6 +75,6 @@ Response
 ### 할 일
 
 1. APIs API 탭 내부 메소드에 색깔 넣기
-2. API req정보 편집기 다시 만들기
-3. API res정보 조회기 다시 만들기
+2. API req정보 편집기 데이터처리 로직 추가
+3. API res정보 조회기 데이터처리 로직 추가
 4. API 정보에 title도 넣고 편집가능하게 하기
