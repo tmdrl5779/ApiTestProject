@@ -1,17 +1,33 @@
-import { Input } from '@/components'
+import { Input, Tabs, TabsItem } from '@/components'
 import { color } from '@/data/variables.style'
 import { css } from '@emotion/react'
 import { motion } from 'framer-motion'
+import { FC } from 'react'
+
+export const reqTabItems: TabsItem[] = [
+  { title: 'Params', code: 'Params' },
+  { title: 'Headers', code: 'Headers' },
+  { title: 'Body', code: 'Body' },
+]
 
 const tableHeaders = ['included', 'key', 'value', 'description'] as const
 
-export const APIPayloadEditor = () => {
+// TODO: table 따로 component로 빼서 사용
+export const APIPayloadEditor: FC = () => {
   return (
     <>
+      <Tabs
+        items={reqTabItems}
+        // selectedCode={selectedTabCode}
+        // onSelect={onSelectTab}
+        background={color.background}
+        type="line"
+        tabPosition="top"
+      />
       <Header />
       <motion.ul css={tableCss} layout key="API-payload-editor">
-        {new Array(12).fill(1).map(() => (
-          <Row />
+        {new Array(12).fill(1).map((_, idx) => (
+          <Row key={idx} />
         ))}
       </motion.ul>
     </>

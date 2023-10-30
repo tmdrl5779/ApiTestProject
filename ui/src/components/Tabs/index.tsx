@@ -4,6 +4,7 @@ import { genearteUUID } from '@/utils'
 import { AnimatePresence, AnimateSharedLayout, motion } from 'framer-motion'
 import React, { ReactNode, useCallback, useMemo, useState } from 'react'
 import { Button } from '..'
+import { ComponentCommonProps } from '../types'
 import { tabsCss } from './styles'
 import { TabPosition, TabType } from './types'
 
@@ -19,7 +20,7 @@ export type TabsItem = {
   code: string
 }
 
-export type TabsProps = {
+export interface TabsProps extends ComponentCommonProps {
   items: TabsItem[]
   type?: TabType
   tabPosition?: TabPosition
@@ -29,6 +30,7 @@ export type TabsProps = {
   onAdd?: (...args: any[]) => void
   onDelete?: (idx: number) => void
   editable?: boolean
+  lineVisible?: boolean
 }
 
 export const Tabs: React.FC<TabsProps> = ({
@@ -41,6 +43,9 @@ export const Tabs: React.FC<TabsProps> = ({
   background,
   selectedCode,
   editable = false,
+  lineVisible = true,
+  style,
+  _css,
 }) => {
   const [_selectedCode, setSelectedCode] = useState(items[0]?.code)
   const [uuid, _] = useState(genearteUUID())
@@ -75,7 +80,7 @@ export const Tabs: React.FC<TabsProps> = ({
   )
 
   return (
-    <motion.ul css={tabsWrapperCss}>
+    <motion.ul css={[tabsWrapperCss, _css]} style={style}>
       <AnimatePresence>
         {items.map((item, idx) => (
           <motion.li
@@ -97,19 +102,21 @@ export const Tabs: React.FC<TabsProps> = ({
                 <CloseOutlinedIcon />
               </Button>
             ) : null}
-            {finalSelectedCode === item.code ? (
+            {lineVisible && finalSelectedCode === item.code ? (
               <motion.div css={tabsActiveLineCss} className="active-line" layoutId={`active-line-${uuid}`} />
             ) : null}
           </motion.li>
         ))}
 
-        <motion.li layout key={'add-tab-button'} css={tabsItemCss} style={{ flex: '1 1 auto', cursor: 'inherit' }}>
-          {editable ? (
-            <Button type="text" onClick={handleAdd} style={{ fontSize: '24px' }}>
-              +
-            </Button>
-          ) : null}
-        </motion.li>
+        {editable ? (
+          <motion.li layout key={'add-tab-button'} css={tabsItemCss} style={{ flex: '1 1 auto', cursor: 'inherit' }}>
+            {editable ? (
+              <Button type="text" onClick={handleAdd} style={{ fontSize: '24px' }}>
+                +
+              </Button>
+            ) : null}
+          </motion.li>
+        ) : null}
       </AnimatePresence>
     </motion.ul>
   )

@@ -5,19 +5,7 @@ import { IAPI } from 'api-types'
 import { FC, useState } from 'react'
 import { httpMethods } from '../data/constants'
 import { APIPayloadEditor } from './APIPayloadEditor'
-
-export const reqTabItems: TabsItem[] = [
-  { title: 'Params', code: 'Params' },
-  { title: 'Headers', code: 'Headers' },
-  { title: 'Body', code: 'Body' },
-]
-
-export const resTabItems: TabsItem[] = [
-  { title: 'Body', code: 'Body' },
-  { title: 'Cookies', code: 'Cookies' },
-  { title: 'Headers', code: 'Headers' },
-  { title: 'Test Results', code: 'Test Results' },
-]
+import { APIResponseViewer } from './APIResponseViewer'
 
 interface APIDetailProps {
   api: IAPI
@@ -43,7 +31,9 @@ export const APIDetail: FC<APIDetailProps> = ({ api }) => {
         <div css={reqSectionHeaderCss}>
           <Select className="method-select" value={api.request.httpMethod}>
             {httpMethods.map(method => (
-              <option value={method}>{method}</option>
+              <option value={method} key={'method'}>
+                {method}
+              </option>
             ))}
           </Select>
           <Input
@@ -57,26 +47,11 @@ export const APIDetail: FC<APIDetailProps> = ({ api }) => {
           </Button>
         </div>
         {/* TODO: Method명에 색깔 넣기 */}
-        <Tabs
-          items={reqTabItems}
-          // selectedCode={selectedTabCode}
-          // onSelect={onSelectTab}
-          background={color.background}
-          type="line"
-          tabPosition="top"
-        />
         <APIPayloadEditor />
       </section>
       <section css={resSectionCss}>
         <Loader isLoading={isLoading}>
-          <Tabs
-            items={resTabItems}
-            // selectedCode={selectedTabCode}
-            // onSelect={onSelectTab}
-            background={color.background}
-            type="line"
-            tabPosition="top"
-          />
+          <APIResponseViewer />
         </Loader>
       </section>
     </div>
@@ -87,14 +62,14 @@ const apiMainCss = css`
   height: calc(100%);
   padding: 8px;
 `
-
+// TODO: Res, Req 높이 줄이고 늘이게 하기
 const reqSectionCss = css`
   position: relative;
-  height: 60%;
+  height: 50%;
 `
 const resSectionCss = css`
   position: relative;
-  height: 40%;
+  height: 50%;
   border-top: 1px solid ${color.pale};
 `
 
