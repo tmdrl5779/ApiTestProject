@@ -1,5 +1,5 @@
 import { Input, Tabs, TabsItem } from '@/components'
-import { color } from '@/data/variables.style'
+import { color, overlayScrollBarCss } from '@/data/variables.style'
 import { css } from '@emotion/react'
 import { motion } from 'framer-motion'
 import { FC } from 'react'
@@ -74,14 +74,7 @@ const tableCss = css`
   padding: 0;
 
   // 스크롤바 overlay 세팅
-  overflow-y: auto;
-  &::-webkit-scrollbar {
-    width: 8px;
-  }
-  &::-webkit-scrollbar-thumb {
-    background-color: ${color.topGradient};
-    border-radius: 100px;
-  }
+  ${overlayScrollBarCss};
 `
 
 const headerCss = css`

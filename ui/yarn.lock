@@ -5954,6 +5954,7 @@ __metadata:
     prettier: ^2.8.3
     react: ^18.2.0
     react-dom: ^18.2.0
+    react-json-pretty: ^2.2.0
     react-query: ^3.39.3
     react-refresh: ^0.14.0
     react-test-renderer: ^18.2.0
@@ -9909,7 +9910,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"prop-types@npm:^15.8.1":
+"prop-types@npm:^15.6.2, prop-types@npm:^15.8.1":
   version: 15.8.1
   resolution: "prop-types@npm:15.8.1"
   dependencies:
@@ -10045,6 +10046,18 @@ __metadata:
   version: 17.0.2
   resolution: "react-is@npm:17.0.2"
   checksum: 9d6d111d8990dc98bc5402c1266a808b0459b5d54830bbea24c12d908b536df7883f268a7868cfaedde3dd9d4e0d574db456f84d2e6df9c4526f99bb4b5344d8
+  languageName: node
+  linkType: hard
+
+"react-json-pretty@npm:^2.2.0":
+  version: 2.2.0
+  resolution: "react-json-pretty@npm:2.2.0"
+  dependencies:
+    prop-types: ^15.6.2
+  peerDependencies:
+    react: ">=15.0"
+    react-dom: ">=15.0"
+  checksum: 9a3a316d46c7333f650cb37b0e71b121405c863ff5007d1bd0f4af0254d89560c49b153ffeedf7c2ffd5ad7d0adcccb7180b7ce23486d2df51bb1f98e543214c
   languageName: node
   linkType: hard
 

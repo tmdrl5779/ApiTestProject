@@ -1,3 +1,5 @@
+import { css } from '@emotion/react'
+
 export const color = {
   accent: '#007acc',
   background: '#121212',
@@ -16,3 +18,14 @@ export const width = {
   SNB: '12rem',
   SNB_short: '56px',
 }
+
+export const overlayScrollBarCss = css`
+  overflow-y: auto;
+  &::-webkit-scrollbar {
+    width: 8px;
+  }
+  &::-webkit-scrollbar-thumb {
+    background-color: ${color.topGradient};
+    border-radius: 100px;
+  }
+`

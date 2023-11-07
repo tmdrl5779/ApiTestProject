@@ -12,12 +12,12 @@ export interface SelectProps extends ComponentCommonProps {
 
 // TODO: 값 바뀔때마다 모션 드가면 좋을듯 opacity 정도
 // memo areEqualProps에 style
-const Select: React.FC<SelectProps> = ({ children, onChange, style, className, value, defaultValue }) => {
+const Select: React.FC<SelectProps> = ({ children, onChange, style, className, value, defaultValue, _css }) => {
   return (
     <select
       className={className}
       onChange={onChange}
-      css={selectCss}
+      css={[selectCss, _css]}
       style={style}
       value={value}
       defaultValue={defaultValue}
