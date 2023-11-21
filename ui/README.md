@@ -75,6 +75,8 @@ Response
 ### 할 일
 
 1. APIs API 탭 내부 메소드에 색깔 넣기
-2. API req정보 편집기 데이터처리 로직 추가
+2. API req정보 편집기 데이터처리 로직 추가 (O) - 리팩토링 필요 memo로 재렌더링 방지, prop drilling 해결
 3. API res정보 조회기 데이터처리 로직 추가
 4. API 정보에 title도 넣고 편집가능하게 하기
+5. 탭 스크롤 기능 추가
+6. dev:msw 모드와 일반 dev 모드 추가
