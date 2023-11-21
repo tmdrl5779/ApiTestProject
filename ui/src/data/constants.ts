@@ -1,5 +1,6 @@
 import { genearteUUID } from './../utils/generateUUID'
 import { FetchApiRequest, FetchApiResponse, IAPI } from 'api-types'
+import { PayloadItem } from 'common-types'
 
 export const defaultFetchApiTime = {
   connectionTime: 0,
@@ -14,9 +15,9 @@ export const getDefaultFetchApiRequest = (): FetchApiRequest => ({
   count: defaultFetchApiCount,
   url: '',
   httpMethod: 'GET',
-  param: {},
-  header: {},
-  body: {},
+  param: [getDefaultPayloadItem()],
+  header: [getDefaultPayloadItem()],
+  body: [getDefaultPayloadItem()],
 })
 
 export const getDefaultFetchApiResponse = (): FetchApiResponse => ({
@@ -29,4 +30,11 @@ export const getDefaultAPI = (): IAPI => ({
   uuid: genearteUUID(),
   request: getDefaultFetchApiRequest(),
   response: getDefaultFetchApiResponse(),
+})
+
+export const getDefaultPayloadItem = (): PayloadItem => ({
+  included: true,
+  key: '',
+  value: '',
+  description: '',
 })

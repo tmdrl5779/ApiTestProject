@@ -1,6 +1,13 @@
 declare module 'common-types' {
-  export interface Dictionary {
-    [key: string]: string
+  export interface Dictionary<T> {
+    [key: string]: T
+  }
+
+  export interface PayloadItem {
+    included: boolean
+    key: string
+    value: string
+    description: string
   }
 
   export type EmptyObj = Record<string, never>

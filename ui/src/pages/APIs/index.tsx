@@ -12,10 +12,6 @@ export const APIs: React.FC = () => {
   const { APIList, createAPI, deleteAPI, updateAPI } = useAPIList()
   const [selectedTabCode, setSelectedTabCode] = useState(APIList[0]?.uuid)
 
-  useEffect(() => {
-    console.log(selectedTabCode)
-  }, [selectedTabCode])
-
   const APITabItems = useMemo(
     () =>
       APIList.map(API => ({
@@ -30,7 +26,6 @@ export const APIs: React.FC = () => {
       if (APITabItems[idx].code === selectedTabCode) {
         // 맨 첨 친구면 그 담 친구
         // 아니면 그 뒤 친구
-        console.log('선택댄애 지움!')
         if (idx === 0 && APITabItems[idx + 1]?.code !== undefined) {
           setSelectedTabCode(APITabItems[idx + 1].code)
         }
@@ -62,14 +57,11 @@ export const APIs: React.FC = () => {
       />
       <Blinker _key={selectedTabCode} style={{ height: 'calc(100% - 40px)' }}>
         <Funnel steps={APITabItems.map(item => item.code)} step={selectedTabCode}>
-          {APIList.map(API => (
+          {APIList.map((API, idx) => (
             <Funnel.Step key={API.uuid} name={API.uuid}>
-              {<APIDetail api={API} />}
+              {<APIDetail api={API} updateAPI={updateAPI(idx)} />}
             </Funnel.Step>
           ))}
-          {/* <Funnel.Step name="Params">Params</Funnel.Step>
-          <Funnel.Step name="Headers">Headers</Funnel.Step>
-          <Funnel.Step name="Body">Body</Funnel.Step> */}
         </Funnel>
       </Blinker>
     </>

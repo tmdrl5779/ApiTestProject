@@ -1,7 +1,7 @@
 import { Dictionary } from 'common-types'
 import { ReqData } from '../types'
 
-export const convertDatasToObj = (datas: ReqData[]): Dictionary => {
+export const convertDatasToObj = (datas: ReqData[]): Dictionary<string> => {
   return datas.reduce((acc: any, cur) => {
     const added = Object.create(null)
     added[cur.key] = cur.value

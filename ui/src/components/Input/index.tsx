@@ -26,6 +26,7 @@ const Input: React.FC<InputProps> = ({
   autoComplete,
   type = 'text',
   value,
+  checked,
 }) => {
   const [uuid, _] = useState(genearteUUID())
   const mergedCss = mergeCss([inputCss, _css, type === 'checkbox' ? checkboxCss : undefined])
@@ -44,6 +45,7 @@ const Input: React.FC<InputProps> = ({
         style={style}
         value={value}
         onChange={onChange}
+        checked={checked}
         placeholder={placeholder}
         name={name}
         type={type}

@@ -3,12 +3,13 @@ import { APIListState } from '@/data/store'
 import { useCallback } from 'react'
 import { useRecoilState } from 'recoil'
 import { IAPI } from 'api-types'
+import { produce } from 'immer'
 
-interface UseAPIReturns {
+export interface UseAPIReturns {
   APIList: IAPI[]
   createAPI: () => void
   deleteAPI: (idx: number) => void
-  updateAPI: (idx: number, API: IAPI) => void
+  updateAPI: (idx: number) => (value: IAPI) => void
 }
 
 export const useAPIList = (): UseAPIReturns => {
@@ -25,9 +26,12 @@ export const useAPIList = (): UseAPIReturns => {
     [setAPIList]
   )
 
-  const updateAPI = useCallback((idx: number, API: IAPI) => {
-    setAPIList(prev => [...prev.slice(0, idx), API, ...prev.slice(idx + 1)])
-  }, [])
+  const updateAPI = useCallback(
+    (idx: number) => (value: IAPI) => {
+      setAPIList(prev => [...prev.slice(0, idx), value, ...prev.slice(idx + 1)])
+    },
+    []
+  )
 
   return {
     APIList,

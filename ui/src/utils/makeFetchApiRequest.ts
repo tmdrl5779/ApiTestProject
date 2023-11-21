@@ -1,12 +1,12 @@
-import { Dictionary } from 'common-types'
+import { Dictionary, PayloadItem } from 'common-types'
 import { FetchApiRequest } from 'api-types'
 import { defaultFetchApiCount, defaultFetchApiTime } from '@/data/constants'
 export const makeFetchApiRequest = (
   url: string,
   httpMethod: string,
-  param: Dictionary,
-  header: Dictionary,
-  body: Dictionary
+  param: PayloadItem[],
+  header: PayloadItem[],
+  body: PayloadItem[]
 ): FetchApiRequest => {
   return {
     time: defaultFetchApiTime,

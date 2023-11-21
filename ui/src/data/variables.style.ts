@@ -20,7 +20,7 @@ export const width = {
 }
 
 export const overlayScrollBarCss = css`
-  overflow-y: auto;
+  overflow-y: scroll;
   &::-webkit-scrollbar {
     width: 8px;
   }
