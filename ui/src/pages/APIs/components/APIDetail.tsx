@@ -1,5 +1,5 @@
 import { Button, Input, Loader, Select, Tabs, TabsItem } from '@/components'
-import { color } from '@/data/variables.style'
+import { color, methodColor } from '@/data/variables.style'
 import { UseAPIReturns } from '@/hooks'
 import { css } from '@emotion/react'
 import { IAPI } from 'api-types'
@@ -16,7 +16,6 @@ interface APIDetailProps {
 
 // TODO: 재렌더링 줄이기 - memo활용
 export const APIDetail: FC<APIDetailProps> = ({ api, updateAPI }) => {
-  // TODO: 데이터 변경 로직 추가
   // TODO: React Query 사용한 방식으로 변경
   // 일단은 css용임
   const [isLoading, setIsLoading] = useState(false)
@@ -76,7 +75,6 @@ export const APIDetail: FC<APIDetailProps> = ({ api, updateAPI }) => {
             {isLoading ? 'Sending...' : 'Send'}
           </Button>
         </div>
-        {/* TODO: Method명에 색깔 넣기 */}
         <APIPayloadEditor updateAPIImmutable={updateAPIImmutable} api={api} />
       </section>
       <section css={resSectionCss}>

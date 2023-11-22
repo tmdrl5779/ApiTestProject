@@ -2,7 +2,7 @@ import { CloseOutlinedIcon, DeleteOutlinedIcon, PlusOutlinedIcon } from '@/data/
 import { color } from '@/data/variables.style'
 import { genearteUUID } from '@/utils'
 import { AnimatePresence, AnimateSharedLayout, motion } from 'framer-motion'
-import React, { ReactNode, useCallback, useMemo, useState } from 'react'
+import React, { ReactElement, ReactNode, useCallback, useMemo, useState } from 'react'
 import { Button } from '..'
 import { ComponentCommonProps } from '../types'
 import { tabsCss } from './styles'
@@ -31,6 +31,7 @@ export interface TabsProps extends ComponentCommonProps {
   onDelete?: (idx: number) => void
   editable?: boolean
   lineVisible?: boolean
+  renderTabTitle?: (title: string) => ReactElement
 }
 
 export const Tabs: React.FC<TabsProps> = ({
@@ -42,6 +43,7 @@ export const Tabs: React.FC<TabsProps> = ({
   tabPosition = 'top',
   background,
   selectedCode,
+  renderTabTitle,
   editable = false,
   lineVisible = true,
   style,
@@ -96,7 +98,11 @@ export const Tabs: React.FC<TabsProps> = ({
             // transition={{ opacity: { duration: 0.25 }, x: { type: 'spring', stiffness: 300, damping: 30 } }}
           >
             {item.icon}
-            <span style={{ marginLeft: item.icon ? '12px' : '0' }}>{item.title}</span>
+            {renderTabTitle ? (
+              renderTabTitle(item.title)
+            ) : (
+              <span style={{ marginLeft: item.icon ? '12px' : '0' }}>{item.title}</span>
+            )}
             {editable ? (
               <Button type="text" onClick={handleDelete(idx)}>
                 <CloseOutlinedIcon />

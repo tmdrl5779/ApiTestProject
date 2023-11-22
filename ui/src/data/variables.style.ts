@@ -1,4 +1,5 @@
 import { css } from '@emotion/react'
+import { Dictionary } from 'common-types'
 
 export const color = {
   accent: '#007acc',
@@ -29,3 +30,10 @@ export const overlayScrollBarCss = css`
     border-radius: 100px;
   }
 `
+export const methodColor: Dictionary<string> = {
+  GET: '#90ee90',
+  POST: 'yellow',
+  PUT: 'blue',
+  PATCH: 'skyblue',
+  DELETE: 'orange',
+}
