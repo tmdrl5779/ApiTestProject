@@ -1,6 +1,6 @@
 import { Input, Tabs, TabsItem } from '@/components'
 import { getDefaultPayloadItem } from '@/data/constants'
-import { color, overlayScrollBarCss } from '@/data/variables.style'
+import { color, overlayScrollBarYCss } from '@/data/variables.style'
 import { css } from '@emotion/react'
 import { IAPI } from 'api-types'
 import { PayloadItem } from 'common-types'
@@ -51,7 +51,6 @@ export const APIPayloadEditor: FC<APIPayloadEditorProps> = ({ updateAPIImmutable
 
   const payloadType = useMemo(() => selectedReqTab.key as PayloadType, [selectedReqTab])
 
-  console.log(api['request'])
   return (
     <>
       <Tabs
@@ -128,7 +127,7 @@ const tableCss = css`
   padding: 0;
 
   // 스크롤바 overlay 세팅
-  ${overlayScrollBarCss};
+  ${overlayScrollBarYCss};
 `
 
 const headerCss = css`

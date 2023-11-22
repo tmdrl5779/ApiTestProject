@@ -1,4 +1,4 @@
-import { color } from '@/data/variables.style'
+import { color, overlayScrollBarXCss } from '@/data/variables.style'
 import { css, SerializedStyles } from '@emotion/react'
 import { TabPosition, TabType } from './types'
 
@@ -8,6 +8,7 @@ export const tabsCss: Record<
 > = {
   self: (tabPosition, background, type) => css`
     overflow: hidden;
+    ${overlayScrollBarXCss}
     box-sizing: border-box;
     margin: 0;
     padding: 0;

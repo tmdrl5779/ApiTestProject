@@ -21,15 +21,28 @@ export const width = {
 }
 
 export const overlayScrollBarCss = css`
-  overflow-y: scroll;
-  &::-webkit-scrollbar {
-    width: 8px;
-  }
   &::-webkit-scrollbar-thumb {
     background-color: ${color.topGradient};
     border-radius: 100px;
   }
 `
+
+export const overlayScrollBarYCss = css`
+  overflow-y: scroll;
+  &::-webkit-scrollbar {
+    width: 8px;
+  }
+  ${overlayScrollBarCss}
+`
+
+export const overlayScrollBarXCss = css`
+  overflow-x: scroll;
+  &::-webkit-scrollbar {
+    height: 4px;
+  }
+  ${overlayScrollBarCss}
+`
+
 export const methodColor: Dictionary<string> = {
   GET: '#90ee90',
   POST: 'yellow',

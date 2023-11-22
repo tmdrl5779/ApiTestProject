@@ -1,5 +1,5 @@
 import { Select, Tabs, TabsItem } from '@/components'
-import { color, overlayScrollBarCss } from '@/data/variables.style'
+import { color, overlayScrollBarYCss } from '@/data/variables.style'
 import { css } from '@emotion/react'
 import { FC, useCallback, useState } from 'react'
 import JSONPretty from 'react-json-pretty'
@@ -79,5 +79,5 @@ const bodyHeaderCss = css`
 
 const bodyContentCss = css`
   height: calc(100% - 40px - 16px);
-  ${overlayScrollBarCss};
+  ${overlayScrollBarYCss};
 `

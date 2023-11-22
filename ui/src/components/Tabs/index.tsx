@@ -1,8 +1,15 @@
-import { CloseOutlinedIcon, DeleteOutlinedIcon, PlusOutlinedIcon } from '@/data/icons'
+import {
+  CloseOutlinedIcon,
+  DeleteOutlinedIcon,
+  LeftOutlinedIcon,
+  PlusOutlinedIcon,
+  RightOutlinedIcon,
+} from '@/data/icons'
 import { color } from '@/data/variables.style'
+import { useIsOverflow } from '@/hooks'
 import { genearteUUID } from '@/utils'
 import { AnimatePresence, AnimateSharedLayout, motion } from 'framer-motion'
-import React, { ReactElement, ReactNode, useCallback, useMemo, useState } from 'react'
+import React, { ReactElement, ReactNode, useCallback, useLayoutEffect, useMemo, useRef, useState } from 'react'
 import { Button } from '..'
 import { ComponentCommonProps } from '../types'
 import { tabsCss } from './styles'
@@ -52,6 +59,9 @@ export const Tabs: React.FC<TabsProps> = ({
   const [_selectedCode, setSelectedCode] = useState(items[0]?.code)
   const [uuid, _] = useState(genearteUUID())
 
+  const ulRef = useRef<HTMLUListElement>(null)
+  const isUlOverflow = useIsOverflow(ulRef, false)
+
   const finalSelectedCode = selectedCode ? selectedCode : _selectedCode
 
   const handleSelect = useCallback(
@@ -74,6 +84,8 @@ export const Tabs: React.FC<TabsProps> = ({
     [onDelete]
   )
 
+  const scroll = useCallback((direction: 'left' | 'right') => {}, [])
+
   const tabsWrapperCss = useMemo(() => tabsCss.self(tabPosition, background, type), [background, tabPosition, type])
   const tabsItemCss = useMemo(() => tabsCss.item(tabPosition, background, type), [background, tabPosition, type])
   const tabsActiveLineCss = useMemo(
@@ -82,8 +94,28 @@ export const Tabs: React.FC<TabsProps> = ({
   )
 
   return (
-    <motion.ul css={[tabsWrapperCss, _css]} style={style}>
+    <motion.ul css={[tabsWrapperCss, _css]} style={style} ref={ulRef}>
       <AnimatePresence>
+        {isUlOverflow ? (
+          <motion.li
+            layout
+            key={'scroll-left-button'}
+            css={tabsItemCss}
+            style={{
+              cursor: 'inherit',
+              background: `${color.background}`,
+              position: 'sticky',
+              left: 0,
+              zIndex: 4,
+            }}
+          >
+            {editable ? (
+              <Button type="text" onClick={handleAdd}>
+                <LeftOutlinedIcon />
+              </Button>
+            ) : null}
+          </motion.li>
+        ) : null}
         {items.map((item, idx) => (
           <motion.li
             layout
@@ -113,9 +145,37 @@ export const Tabs: React.FC<TabsProps> = ({
             ) : null}
           </motion.li>
         ))}
-
+        {isUlOverflow ? (
+          <motion.li
+            layout
+            key={'scroll-right-button'}
+            css={tabsItemCss}
+            style={{
+              cursor: 'inherit',
+              background: `${color.background}`,
+              position: 'sticky',
+              right: '50px',
+            }}
+          >
+            {editable ? (
+              <Button type="text" onClick={handleAdd}>
+                <RightOutlinedIcon />
+              </Button>
+            ) : null}
+          </motion.li>
+        ) : null}
         {editable ? (
-          <motion.li layout key={'add-tab-button'} css={tabsItemCss} style={{ flex: '1 1 auto', cursor: 'inherit' }}>
+          <motion.li
+            layout
+            key={'add-tab-button'}
+            css={tabsItemCss}
+            style={{
+              cursor: 'inherit',
+              background: `${color.background}`,
+              position: 'sticky',
+              right: 0,
+            }}
+          >
             {editable ? (
               <Button type="text" onClick={handleAdd} style={{ fontSize: '24px' }}>
                 +

@@ -8,6 +8,8 @@ import {
   DeleteOutlined,
   PlusOutlined,
   CloseOutlined,
+  LeftOutlined,
+  RightOutlined,
 } from '@ant-design/icons'
 import { EmptyObj } from 'common-types'
 
@@ -36,3 +38,7 @@ export const DeleteOutlinedIcon: React.FC<EmptyObj> = () => <DeleteOutlined rev=
 export const PlusOutlinedIcon: React.FC<EmptyObj> = () => <PlusOutlined rev={'?'} />
 
 export const CloseOutlinedIcon: React.FC<EmptyObj> = () => <CloseOutlined rev={'?'} />
+
+export const LeftOutlinedIcon: React.FC<EmptyObj> = () => <LeftOutlined rev={'?'} />
+
+export const RightOutlinedIcon: React.FC<EmptyObj> = () => <RightOutlined rev={'?'} />
