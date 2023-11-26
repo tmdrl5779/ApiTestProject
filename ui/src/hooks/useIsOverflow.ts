@@ -3,6 +3,8 @@ import { RefObject, useLayoutEffect, useState } from 'react'
 export const useIsOverflow = <T extends HTMLElement>(
   ref: RefObject<T>,
   isVerticalOverflow?: boolean,
+  dep?: any,
+  weight?: number,
   callback?: (...args: any) => void
 ): boolean => {
   const [isOverflow, setIsOverflow] = useState(false)
@@ -11,10 +13,12 @@ export const useIsOverflow = <T extends HTMLElement>(
     const { current } = ref
 
     if (current) {
-      console.log('좀 대라')
       const { clientWidth, scrollWidth, clientHeight, scrollHeight } = current
       const trigger = () => {
-        const hasOverflow = isVerticalOverflow ? scrollHeight > clientHeight : scrollWidth > clientWidth
+        const hasOverflow = isVerticalOverflow
+          ? (isOverflow ? scrollHeight - (weight ? weight : 0) : scrollHeight) > clientHeight
+          : (isOverflow ? scrollWidth - (weight ? weight : 0) : scrollWidth) > clientWidth
+
         setIsOverflow(hasOverflow)
         callback?.(hasOverflow)
       }
@@ -23,7 +27,7 @@ export const useIsOverflow = <T extends HTMLElement>(
       }
       trigger()
     }
-  }, [callback, ref, isVerticalOverflow])
+  }, [callback, ref, isVerticalOverflow, dep, isOverflow, weight])
 
   return isOverflow
 }
