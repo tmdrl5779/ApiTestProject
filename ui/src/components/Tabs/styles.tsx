@@ -21,7 +21,7 @@ export const tabsCss: Record<
     padding-inline-start: 0;
     outline: none;
     transition: background 0.3s, width 0.3s cubic-bezier(0.2, 0, 0, 1) 0s;
-    box-shadow: none;
+    // box-shadow: none;
     border-inline-end: 0px solid rgba(5, 5, 5, 0.06);
     background: ${background !== undefined ? background : color.navBar};
     width: ${['left', 'right'].includes(tabPosition) ? '12rem' : '100%'};

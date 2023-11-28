@@ -5961,6 +5961,7 @@ __metadata:
     recoil: ^0.7.7
     sass: ^1.61.0
     sass-loader: ^13.2.2
+    seamless-scroll-polyfill: ^2.3.4
     style-loader: ^3.3.1
     terser-webpack-plugin: ^5.3.7
     ts-jest: ^29.0.5
@@ -10628,6 +10629,13 @@ __metadata:
     ajv-formats: ^2.1.1
     ajv-keywords: ^5.0.0
   checksum: c843e92fdd1a5c145dbb6ffdae33e501867f9703afac67bdf35a685e49f85b1dcc10ea250033175a64bd9d31f0555bc6785b8359da0c90bcea30cf6dfbb55a8f
+  languageName: node
+  linkType: hard
+
+"seamless-scroll-polyfill@npm:^2.3.4":
+  version: 2.3.4
+  resolution: "seamless-scroll-polyfill@npm:2.3.4"
+  checksum: 98ab968f1d527f95275733b2349f95f4e23ca5dc5c29b5f6e55f22aa8525e8266cf7428cedff14f342c599c9fe87558568d5e3f97b3cf83a7344b83939d02869
   languageName: node
   linkType: hard
 

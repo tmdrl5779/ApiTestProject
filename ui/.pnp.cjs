@@ -88,6 +88,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["recoil", "virtual:232eb8affebc2f984b45d8a377b1ef04eee2ff685843fee439d0ba8539dbafd9c0966ff861496beff5c4b8b90c5efd5385f78ab9dbf07b3d6e454433e97e476e#npm:0.7.7"],\
             ["sass", "npm:1.61.0"],\
             ["sass-loader", "virtual:232eb8affebc2f984b45d8a377b1ef04eee2ff685843fee439d0ba8539dbafd9c0966ff861496beff5c4b8b90c5efd5385f78ab9dbf07b3d6e454433e97e476e#npm:13.2.2"],\
+            ["seamless-scroll-polyfill", "npm:2.3.4"],\
             ["style-loader", "virtual:232eb8affebc2f984b45d8a377b1ef04eee2ff685843fee439d0ba8539dbafd9c0966ff861496beff5c4b8b90c5efd5385f78ab9dbf07b3d6e454433e97e476e#npm:3.3.1"],\
             ["terser-webpack-plugin", "virtual:232eb8affebc2f984b45d8a377b1ef04eee2ff685843fee439d0ba8539dbafd9c0966ff861496beff5c4b8b90c5efd5385f78ab9dbf07b3d6e454433e97e476e#npm:5.3.7"],\
             ["ts-jest", "virtual:232eb8affebc2f984b45d8a377b1ef04eee2ff685843fee439d0ba8539dbafd9c0966ff861496beff5c4b8b90c5efd5385f78ab9dbf07b3d6e454433e97e476e#npm:29.0.5"],\
@@ -8442,6 +8443,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["recoil", "virtual:232eb8affebc2f984b45d8a377b1ef04eee2ff685843fee439d0ba8539dbafd9c0966ff861496beff5c4b8b90c5efd5385f78ab9dbf07b3d6e454433e97e476e#npm:0.7.7"],\
             ["sass", "npm:1.61.0"],\
             ["sass-loader", "virtual:232eb8affebc2f984b45d8a377b1ef04eee2ff685843fee439d0ba8539dbafd9c0966ff861496beff5c4b8b90c5efd5385f78ab9dbf07b3d6e454433e97e476e#npm:13.2.2"],\
+            ["seamless-scroll-polyfill", "npm:2.3.4"],\
             ["style-loader", "virtual:232eb8affebc2f984b45d8a377b1ef04eee2ff685843fee439d0ba8539dbafd9c0966ff861496beff5c4b8b90c5efd5385f78ab9dbf07b3d6e454433e97e476e#npm:3.3.1"],\
             ["terser-webpack-plugin", "virtual:232eb8affebc2f984b45d8a377b1ef04eee2ff685843fee439d0ba8539dbafd9c0966ff861496beff5c4b8b90c5efd5385f78ab9dbf07b3d6e454433e97e476e#npm:5.3.7"],\
             ["ts-jest", "virtual:232eb8affebc2f984b45d8a377b1ef04eee2ff685843fee439d0ba8539dbafd9c0966ff861496beff5c4b8b90c5efd5385f78ab9dbf07b3d6e454433e97e476e#npm:29.0.5"],\
@@ -14196,6 +14198,15 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["ajv", "npm:8.12.0"],\
             ["ajv-formats", "virtual:4b7d8bb1684f7f69bf042a03dae4d118ab00edf0e34f409e5270fb3cce9e5fcf8ce9581b8f5bc8597c1e50c52a23eba5d4eadeede8c58ab0be3187e2389e11d5#npm:2.1.1"],\
             ["ajv-keywords", "virtual:4b7d8bb1684f7f69bf042a03dae4d118ab00edf0e34f409e5270fb3cce9e5fcf8ce9581b8f5bc8597c1e50c52a23eba5d4eadeede8c58ab0be3187e2389e11d5#npm:5.1.0"]\
+          ],\
+          "linkType": "HARD"\
+        }]\
+      ]],\
+      ["seamless-scroll-polyfill", [\
+        ["npm:2.3.4", {\
+          "packageLocation": "./.yarn/cache/seamless-scroll-polyfill-npm-2.3.4-7293f9afe0-98ab968f1d.zip/node_modules/seamless-scroll-polyfill/",\
+          "packageDependencies": [\
+            ["seamless-scroll-polyfill", "npm:2.3.4"]\
           ],\
           "linkType": "HARD"\
         }]\

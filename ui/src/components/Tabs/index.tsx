@@ -8,12 +8,21 @@ import {
 import { color } from '@/data/variables.style'
 import { useIsOverflow } from '@/hooks'
 import { genearteUUID } from '@/utils'
-import { AnimatePresence, AnimateSharedLayout, motion, useScroll, useSpring, useTransform } from 'framer-motion'
+import {
+  AnimatePresence,
+  AnimateSharedLayout,
+  motion,
+  useMotionValue,
+  useScroll,
+  useSpring,
+  useTransform,
+} from 'framer-motion'
 import React, { ReactElement, ReactNode, useCallback, useLayoutEffect, useMemo, useRef, useState } from 'react'
 import { Button } from '..'
 import { ComponentCommonProps } from '../types'
 import { tabsCss } from './styles'
 import { TabPosition, TabType } from './types'
+import { scrollBy } from 'seamless-scroll-polyfill'
 
 const editableTabsMotion = {
   initial: { opacity: 0, x: -10 },
@@ -60,7 +69,7 @@ export const Tabs: React.FC<TabsProps> = ({
   const [uuid, _] = useState(genearteUUID())
 
   const ulRef = useRef<HTMLUListElement>(null)
-  const isUlOverflow = useIsOverflow(ulRef, false, items, 80)
+  const isUlOverflow = useIsOverflow(ulRef, false, items.length, 80)
 
   const finalSelectedCode = selectedCode ? selectedCode : _selectedCode
 
@@ -87,7 +96,7 @@ export const Tabs: React.FC<TabsProps> = ({
   const scroll = useCallback((direction: 'left' | 'right') => {
     const { current } = ulRef
     if (current) {
-      ulRef?.current?.scrollBy({ left: direction === 'left' ? -200 : 200 })
+      scrollBy(current, { left: direction === 'left' ? -200 : 200, behavior: 'smooth' })
     }
   }, [])
 
@@ -107,11 +116,12 @@ export const Tabs: React.FC<TabsProps> = ({
 
   return (
     <div>
-      <motion.ul css={[tabsWrapperCss, _css]} style={style} ref={ulRef}>
+      <motion.ul css={[tabsWrapperCss, _css]} style={style} ref={ulRef} layout layoutScroll>
         <AnimatePresence>
           {isUlOverflow ? (
             <motion.li
               layout
+              layoutScroll
               key={'scroll-left-button'}
               css={tabsItemCss}
               style={{
@@ -132,15 +142,12 @@ export const Tabs: React.FC<TabsProps> = ({
           {items.map((item, idx) => (
             <motion.li
               layout
+              layoutScroll
               key={item.code}
               className={'item' + (finalSelectedCode === item.code ? ' selected' : '')}
               css={tabsItemCss}
               onClick={handleSelect(item.code)}
               {...(editable ? editableTabsMotion : {})}
-              // initial={{ opacity: 0, x: -10 }}
-              // animate={{ opacity: 1, x: 0 }}
-              // exit={{ opacity: 0, x: -10 }}
-              // transition={{ opacity: { duration: 0.25 }, x: { type: 'spring', stiffness: 300, damping: 30 } }}
             >
               {item.icon}
               {renderTabTitle ? (
