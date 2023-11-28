@@ -1,11 +1,14 @@
 import { Button, Input, Loader, Select, Tabs, TabsItem } from '@/components'
 import { color, methodColor } from '@/data/variables.style'
 import { UseAPIReturns } from '@/hooks'
+import { fetchApi } from '@/remotes/fetchApi'
 import { css } from '@emotion/react'
-import { IAPI } from 'api-types'
+import { FetchApiResponse, IAPI } from 'api-types'
 import { Draft, produce } from 'immer'
-import { ChangeEventHandler, FC, useCallback, useState } from 'react'
+import { ChangeEventHandler, FC, useCallback, useEffect, useState } from 'react'
+import { useMutation } from 'react-query'
 import { httpMethods } from '../data/constants'
+import { convertReqToBodyForFetch } from '../utils/convertReqToBodyForFetch'
 import { APIPayloadEditor } from './APIPayloadEditor'
 import { APIResponseViewer } from './APIResponseViewer'
 
@@ -16,17 +19,26 @@ interface APIDetailProps {
 
 // TODO: 재렌더링 줄이기 - memo활용
 export const APIDetail: FC<APIDetailProps> = ({ api, updateAPI }) => {
-  // TODO: React Query 사용한 방식으로 변경
-  // 일단은 css용임
-  const [isLoading, setIsLoading] = useState(false)
+  const [response, setResponse] = useState<FetchApiResponse | undefined>(undefined)
 
-  const mockLoading = () => {
-    setIsLoading(true)
-    setTimeout(() => {
-      setIsLoading(false)
-    }, 3000)
-    console.log(api)
-  }
+  const apiMutation = useMutation({
+    mutationFn: (api: IAPI) => {
+      return fetchApi(convertReqToBodyForFetch(api.request))
+    },
+    onSuccess: (data, variables, context) => {
+      setResponse(data)
+    },
+  })
+
+  useEffect(() => {
+    console.log(response)
+  }, [response])
+
+  const { isLoading } = apiMutation
+
+  const onClickSendButton = useCallback(() => {
+    apiMutation.mutate(api)
+  }, [api, apiMutation])
 
   const updateAPIImmutable = useCallback(
     (recipe: (draft: Draft<IAPI>) => void) => {
@@ -71,7 +83,7 @@ export const APIDetail: FC<APIDetailProps> = ({ api, updateAPI }) => {
             placeholder="Request URL을 입력해주세요."
             onChange={onChangeUrl}
           />
-          <Button onClick={mockLoading} className="send-button" disabled={isLoading}>
+          <Button onClick={onClickSendButton} className="send-button" disabled={isLoading}>
             {isLoading ? 'Sending...' : 'Send'}
           </Button>
         </div>
@@ -79,7 +91,7 @@ export const APIDetail: FC<APIDetailProps> = ({ api, updateAPI }) => {
       </section>
       <section css={resSectionCss}>
         <Loader isLoading={isLoading}>
-          <APIResponseViewer />
+          <APIResponseViewer response={response} />
         </Loader>
       </section>
     </div>

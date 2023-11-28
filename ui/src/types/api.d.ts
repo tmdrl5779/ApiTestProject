@@ -14,6 +14,12 @@ declare module 'api-types' {
     body: PayloadItem[]
   }
 
+  export type BodyForFetchAPI = Omit<FetchApiRequest, 'param' | 'header' | 'body'> & {
+    param: Dictionary<string>
+    header: Dictionary<string>
+    body: Dictionary<string>
+  }
+
   export interface FetchApiResponse {
     responseTime: number
     body: Dictionary<string>

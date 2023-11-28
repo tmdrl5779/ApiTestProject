@@ -4,6 +4,7 @@ import { css } from '@emotion/react'
 import { FC, useCallback, useState } from 'react'
 import JSONPretty from 'react-json-pretty'
 import 'react-json-pretty/themes/1337.css'
+import { APIResponseViewerProps } from '../types'
 
 export const resBodyTypes: TabsItem[] = ['Pretty', 'Raw'].map(type => ({
   title: type,
@@ -12,14 +13,13 @@ export const resBodyTypes: TabsItem[] = ['Pretty', 'Raw'].map(type => ({
 
 export const PrettierExtensions = ['JSON', 'XML', 'HTML', 'Text', 'Auto']
 
-const jsonExample = { 한글: '가나다라마바사', 숫자모음: [0, 1, 2, 3, 4, 5], 그룹: { 그룹1: '3명', 그룹2: '5명' } }
-
 // TODO: Tabs + Blinker + Funnel + useState로 tab선택로직 관리까지 묶어서 하나로 쓰자
-export const Body: FC = () => {
+export const Body: FC<APIResponseViewerProps> = ({ response }) => {
   const [resBodyTypeCode, setResBodyTypeCode] = useState(resBodyTypes[0].code)
   const onClickBodyType = useCallback((code: string) => {
     setResBodyTypeCode(code)
   }, [])
+  console.log('response: ', response)
   return (
     <>
       <div css={bodyHeaderCss}>
@@ -39,12 +39,9 @@ export const Body: FC = () => {
         </Select>
       </div>
       <div css={bodyContentCss}>
-        {/* <pre>
-          <code>{JSON.stringify(jsonExample, null, 2)}</code>
-        </pre> */}
         <JSONPretty
           id="json-pretty"
-          data={jsonExample}
+          data={response}
           mainStyle={`margin: 0; background: ${color.background}`}
         ></JSONPretty>
       </div>

@@ -36,6 +36,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["@emotion/babel-plugin", "npm:11.11.0"],\
             ["@emotion/react", "virtual:232eb8affebc2f984b45d8a377b1ef04eee2ff685843fee439d0ba8539dbafd9c0966ff861496beff5c4b8b90c5efd5385f78ab9dbf07b3d6e454433e97e476e#npm:11.11.1"],\
             ["@pmmmwh/react-refresh-webpack-plugin", "virtual:232eb8affebc2f984b45d8a377b1ef04eee2ff685843fee439d0ba8539dbafd9c0966ff861496beff5c4b8b90c5efd5385f78ab9dbf07b3d6e454433e97e476e#npm:0.5.10"],\
+            ["@tanstack/react-query", "virtual:232eb8affebc2f984b45d8a377b1ef04eee2ff685843fee439d0ba8539dbafd9c0966ff861496beff5c4b8b90c5efd5385f78ab9dbf07b3d6e454433e97e476e#npm:5.8.9"],\
             ["@testing-library/dom", "npm:8.20.0"],\
             ["@testing-library/jest-dom", "npm:5.16.5"],\
             ["@testing-library/react", "virtual:232eb8affebc2f984b45d8a377b1ef04eee2ff685843fee439d0ba8539dbafd9c0966ff861496beff5c4b8b90c5efd5385f78ab9dbf07b3d6e454433e97e476e#npm:13.4.0"],\
@@ -3654,6 +3655,46 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "packageDependencies": [\
             ["@sinonjs/fake-timers", "npm:10.0.2"],\
             ["@sinonjs/commons", "npm:2.0.0"]\
+          ],\
+          "linkType": "HARD"\
+        }]\
+      ]],\
+      ["@tanstack/query-core", [\
+        ["npm:5.8.7", {\
+          "packageLocation": "./.yarn/cache/@tanstack-query-core-npm-5.8.7-37de4725f4-ed6c0966ab.zip/node_modules/@tanstack/query-core/",\
+          "packageDependencies": [\
+            ["@tanstack/query-core", "npm:5.8.7"]\
+          ],\
+          "linkType": "HARD"\
+        }]\
+      ]],\
+      ["@tanstack/react-query", [\
+        ["npm:5.8.9", {\
+          "packageLocation": "./.yarn/cache/@tanstack-react-query-npm-5.8.9-0d6983d0a4-0c585af354.zip/node_modules/@tanstack/react-query/",\
+          "packageDependencies": [\
+            ["@tanstack/react-query", "npm:5.8.9"]\
+          ],\
+          "linkType": "SOFT"\
+        }],\
+        ["virtual:232eb8affebc2f984b45d8a377b1ef04eee2ff685843fee439d0ba8539dbafd9c0966ff861496beff5c4b8b90c5efd5385f78ab9dbf07b3d6e454433e97e476e#npm:5.8.9", {\
+          "packageLocation": "./.yarn/__virtual__/@tanstack-react-query-virtual-c6193b0596/0/cache/@tanstack-react-query-npm-5.8.9-0d6983d0a4-0c585af354.zip/node_modules/@tanstack/react-query/",\
+          "packageDependencies": [\
+            ["@tanstack/react-query", "virtual:232eb8affebc2f984b45d8a377b1ef04eee2ff685843fee439d0ba8539dbafd9c0966ff861496beff5c4b8b90c5efd5385f78ab9dbf07b3d6e454433e97e476e#npm:5.8.9"],\
+            ["@tanstack/query-core", "npm:5.8.7"],\
+            ["@types/react", "npm:18.0.27"],\
+            ["@types/react-dom", "npm:18.0.10"],\
+            ["@types/react-native", null],\
+            ["react", "npm:18.2.0"],\
+            ["react-dom", "virtual:232eb8affebc2f984b45d8a377b1ef04eee2ff685843fee439d0ba8539dbafd9c0966ff861496beff5c4b8b90c5efd5385f78ab9dbf07b3d6e454433e97e476e#npm:18.2.0"],\
+            ["react-native", null]\
+          ],\
+          "packagePeers": [\
+            "@types/react-dom",\
+            "@types/react-native",\
+            "@types/react",\
+            "react-dom",\
+            "react-native",\
+            "react"\
           ],\
           "linkType": "HARD"\
         }]\
@@ -8391,6 +8432,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["@emotion/babel-plugin", "npm:11.11.0"],\
             ["@emotion/react", "virtual:232eb8affebc2f984b45d8a377b1ef04eee2ff685843fee439d0ba8539dbafd9c0966ff861496beff5c4b8b90c5efd5385f78ab9dbf07b3d6e454433e97e476e#npm:11.11.1"],\
             ["@pmmmwh/react-refresh-webpack-plugin", "virtual:232eb8affebc2f984b45d8a377b1ef04eee2ff685843fee439d0ba8539dbafd9c0966ff861496beff5c4b8b90c5efd5385f78ab9dbf07b3d6e454433e97e476e#npm:0.5.10"],\
+            ["@tanstack/react-query", "virtual:232eb8affebc2f984b45d8a377b1ef04eee2ff685843fee439d0ba8539dbafd9c0966ff861496beff5c4b8b90c5efd5385f78ab9dbf07b3d6e454433e97e476e#npm:5.8.9"],\
             ["@testing-library/dom", "npm:8.20.0"],\
             ["@testing-library/jest-dom", "npm:5.16.5"],\
             ["@testing-library/react", "virtual:232eb8affebc2f984b45d8a377b1ef04eee2ff685843fee439d0ba8539dbafd9c0966ff861496beff5c4b8b90c5efd5385f78ab9dbf07b3d6e454433e97e476e#npm:13.4.0"],\

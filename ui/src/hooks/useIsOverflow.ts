@@ -10,7 +10,6 @@ export const useIsOverflow = <T extends HTMLElement>(
   const [isOverflow, setIsOverflow] = useState(false)
 
   useLayoutEffect(() => {
-    console.log(dep)
     const { current } = ref
 
     if (current) {

@@ -2221,6 +2221,31 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@tanstack/query-core@npm:5.8.7":
+  version: 5.8.7
+  resolution: "@tanstack/query-core@npm:5.8.7"
+  checksum: ed6c0966ab7593d6dd36e6663ca5d7f73049fb0df0f3f1a3a78539f06e7ab583a5b4104c454025e90fa4bd447d87b74518d03166e88ac4cfa6fca850a01cbf4f
+  languageName: node
+  linkType: hard
+
+"@tanstack/react-query@npm:^5.8.9":
+  version: 5.8.9
+  resolution: "@tanstack/react-query@npm:5.8.9"
+  dependencies:
+    "@tanstack/query-core": 5.8.7
+  peerDependencies:
+    react: ^18.0.0
+    react-dom: ^18.0.0
+    react-native: "*"
+  peerDependenciesMeta:
+    react-dom:
+      optional: true
+    react-native:
+      optional: true
+  checksum: 0c585af3547dbe1f0654c4118930d32f9d9d45183397713115f88a6a323530ba7922df168a7fa7fa80679941974f446495c602353d5044ed73c89460b2cba94b
+  languageName: node
+  linkType: hard
+
 "@testing-library/dom@npm:^8.11.1, @testing-library/dom@npm:^8.19.0, @testing-library/dom@npm:^8.5.0":
   version: 8.20.0
   resolution: "@testing-library/dom@npm:8.20.0"
@@ -5909,6 +5934,7 @@ __metadata:
     "@emotion/babel-plugin": ^11.11.0
     "@emotion/react": ^11.11.1
     "@pmmmwh/react-refresh-webpack-plugin": ^0.5.10
+    "@tanstack/react-query": ^5.8.9
     "@testing-library/dom": ^8.19.0
     "@testing-library/jest-dom": ^5.16.5
     "@testing-library/react": ^13.4.0

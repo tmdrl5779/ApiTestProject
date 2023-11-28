@@ -74,12 +74,7 @@ Response
 
 ### 할 일
 
-1. API req정보 편집기 데이터처리 로직 추가 (O) - 리팩토링 필요 memo로 재렌더링 방지, prop drilling 해결
-2. API res정보 조회기 데이터처리 로직 추가
-3. 탭 스크롤 기능 추가(O) + 양끝 그라데이션 + 스크롤 부드럽게 해야함
-   양 옆에 버튼 먼저 추가 overflow 여부 판별해서 overflow일때만 보여준다.(O)
-   클릭시에 일정 간격 스크롤 하도록(O)
-
-- 양끝 그라데이션도 넣기 - 스크롤 할 공간이 있을 경우에만
-
-4. dev:msw 모드와 일반 dev 모드 추가
+1. API req정보 편집기 데이터처리 리팩토링 - memo로 재렌더링 방지, prop drilling 해결
+2. API res정보 조회기 데이터처리 로직 추가 - context 활용
+3. dev:msw 모드와 일반 dev 모드 추가
+4. Suspense + Error Boundary 넣어서 선언적으로 컴포넌트 만들기
