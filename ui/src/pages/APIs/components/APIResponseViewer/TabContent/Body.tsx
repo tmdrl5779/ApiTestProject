@@ -1,7 +1,8 @@
 import { Select, Tabs, TabsItem } from '@/components'
 import { color, overlayScrollBarYCss } from '@/data/variables.style'
 import { css } from '@emotion/react'
-import { FC, useCallback, useState } from 'react'
+import { StringObject } from 'common-types'
+import { FC, useCallback, useMemo, useState } from 'react'
 import JSONPretty from 'react-json-pretty'
 import 'react-json-pretty/themes/1337.css'
 import { APIResponseViewerProps } from '../types'
@@ -13,13 +14,19 @@ export const resBodyTypes: TabsItem[] = ['Pretty', 'Raw'].map(type => ({
 
 export const PrettierExtensions = ['JSON', 'XML', 'HTML', 'Text', 'Auto']
 
+interface BodyProps {
+  body: StringObject
+}
+
 // TODO: Tabs + Blinker + Funnel + useState로 tab선택로직 관리까지 묶어서 하나로 쓰자
-export const Body: FC<APIResponseViewerProps> = ({ response }) => {
+export const Body: FC<BodyProps> = ({ body }) => {
   const [resBodyTypeCode, setResBodyTypeCode] = useState(resBodyTypes[0].code)
   const onClickBodyType = useCallback((code: string) => {
     setResBodyTypeCode(code)
   }, [])
-  console.log('response: ', response)
+
+  const stringifiedBody = useMemo(() => JSON.stringify(body), [body])
+
   return (
     <>
       <div css={bodyHeaderCss}>
@@ -30,20 +37,27 @@ export const Body: FC<APIResponseViewerProps> = ({ response }) => {
           onSelect={onClickBodyType}
           _css={tabsOverrideCss}
         />
-        <Select _css={selectOverrideCss}>
-          {PrettierExtensions.map(ext => (
-            <option value={ext} key={ext}>
-              {ext}
-            </option>
-          ))}
-        </Select>
+        {resBodyTypeCode === 'Pretty' ? (
+          <Select _css={selectOverrideCss}>
+            {PrettierExtensions.map(ext => (
+              <option value={ext} key={ext}>
+                {ext}
+              </option>
+            ))}
+          </Select>
+        ) : null}
       </div>
+      {/* TODO: Funnel 널까말까 */}
       <div css={bodyContentCss}>
-        <JSONPretty
-          id="json-pretty"
-          data={response}
-          mainStyle={`margin: 0; background: ${color.background}`}
-        ></JSONPretty>
+        {resBodyTypeCode === 'Pretty' ? (
+          <JSONPretty
+            id="json-pretty"
+            data={body}
+            mainStyle={`margin: 0; background: ${color.background}`}
+          ></JSONPretty>
+        ) : (
+          <p>{stringifiedBody}</p>
+        )}
       </div>
     </>
   )

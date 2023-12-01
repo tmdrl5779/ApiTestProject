@@ -1,5 +1,7 @@
 declare module 'api-types' {
-  import { Dictionary, PayloadItem } from 'common-types'
+  import { Dictionary, PayloadItem, StringObject } from 'common-types'
+  import { AxiosHeaders } from 'axios'
+
   export interface FetchApiRequest {
     time: {
       connectionTime: number
@@ -18,6 +20,11 @@ declare module 'api-types' {
     param: Dictionary<string>
     header: Dictionary<string>
     body: Dictionary<string>
+  }
+
+  export interface ResponseData {
+    headers: StringObject
+    data: object
   }
 
   export interface FetchApiResponse {

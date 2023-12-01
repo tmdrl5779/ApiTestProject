@@ -2,13 +2,18 @@ import { Button, Input, Loader, Select, Tabs, TabsItem } from '@/components'
 import { color, methodColor } from '@/data/variables.style'
 import { UseAPIReturns } from '@/hooks'
 import { fetchApi } from '@/remotes/fetchApi'
+import { parseCookie } from '@/utils'
 import { css } from '@emotion/react'
-import { FetchApiResponse, IAPI } from 'api-types'
+import { FetchApiRequest, FetchApiResponse, IAPI, ResponseData } from 'api-types'
+import { AxiosError } from 'axios'
+import { StringObject } from 'common-types'
 import { Draft, produce } from 'immer'
 import { ChangeEventHandler, FC, useCallback, useEffect, useState } from 'react'
 import { useMutation } from 'react-query'
-import { httpMethods } from '../data/constants'
+import { dataColumns, httpMethods } from '../data/constants'
+import { DataForResponseViewer } from '../types'
 import { convertReqToBodyForFetch } from '../utils/convertReqToBodyForFetch'
+import { parseResponse } from '../utils/parseResponse'
 import { APIPayloadEditor } from './APIPayloadEditor'
 import { APIResponseViewer } from './APIResponseViewer'
 
@@ -19,26 +24,33 @@ interface APIDetailProps {
 
 // TODO: 재렌더링 줄이기 - memo활용
 export const APIDetail: FC<APIDetailProps> = ({ api, updateAPI }) => {
-  const [response, setResponse] = useState<FetchApiResponse | undefined>(undefined)
+  const [dataForResponseViewer, setDataForResponseViewer] = useState<DataForResponseViewer | null>(null)
 
-  const apiMutation = useMutation({
-    mutationFn: (api: IAPI) => {
-      return fetchApi(convertReqToBodyForFetch(api.request))
+  const apiMutation = useMutation<FetchApiResponse, AxiosError, FetchApiRequest, FetchApiResponse>({
+    mutationFn: (request: IAPI['request']) => {
+      return fetchApi(convertReqToBodyForFetch(request))
     },
-    onSuccess: (data, variables, context) => {
-      setResponse(data)
+    onSuccess: data => {
+      // 여기서 parse 한다. - body, headers, cookies,
+      parseResponse(data as any).then(({ body, headers }) => {
+        setDataForResponseViewer({
+          body: body as StringObject,
+          headers: headers as StringObject,
+          cookies: parseCookie(),
+        })
+      })
     },
   })
 
   useEffect(() => {
-    console.log(response)
-  }, [response])
+    console.log(dataForResponseViewer)
+  }, [dataForResponseViewer])
 
-  const { isLoading } = apiMutation
+  const { isLoading, data } = apiMutation
 
   const onClickSendButton = useCallback(() => {
-    apiMutation.mutate(api)
-  }, [api, apiMutation])
+    apiMutation.mutate(api.request)
+  }, [api.request, apiMutation])
 
   const updateAPIImmutable = useCallback(
     (recipe: (draft: Draft<IAPI>) => void) => {
@@ -91,7 +103,7 @@ export const APIDetail: FC<APIDetailProps> = ({ api, updateAPI }) => {
       </section>
       <section css={resSectionCss}>
         <Loader isLoading={isLoading}>
-          <APIResponseViewer response={response} />
+          <APIResponseViewer data={dataForResponseViewer} />
         </Loader>
       </section>
     </div>

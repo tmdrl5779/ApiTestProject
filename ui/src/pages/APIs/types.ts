@@ -1,3 +1,4 @@
+import { StringObject } from 'common-types'
 import { httpMethods } from './data/constants'
 
 export interface TabItem {
@@ -22,3 +23,9 @@ export type ReqPayload = {
 export type Datas = Record<DataNames, ReqData[]>
 
 export type HttpMethods = (typeof httpMethods)[number]
+
+export interface DataForResponseViewer {
+  body: StringObject
+  headers: StringObject
+  cookies: StringObject
+}

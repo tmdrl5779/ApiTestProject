@@ -3,6 +3,10 @@ declare module 'common-types' {
     [key: string]: T
   }
 
+  export interface StringObject {
+    [key: string]: string | StringObject | string[]
+  }
+
   export interface PayloadItem {
     included: boolean
     key: string

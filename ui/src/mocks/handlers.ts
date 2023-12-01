@@ -6,16 +6,16 @@ export const handlers = [
     return res(
       ctx.delay(3000),
       ctx.status(200),
-      ctx.json([
-        {
-          responseTime: 0,
-          body: {
-            message: 'hi',
-            result: 'success',
-          },
-          status: 'string',
+      ctx.cookie('test', '123'),
+      ctx.cookie('test2', '456'),
+      ctx.json({
+        responseTime: 0,
+        body: {
+          message: 'hi',
+          result: 'success',
         },
-      ])
+        status: '200',
+      })
     )
   }),
 ]

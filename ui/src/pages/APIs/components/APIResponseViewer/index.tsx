@@ -16,12 +16,15 @@ export const resTabItems: TabsItem[] = [
   { title: 'Test Results', code: 'Test Results' },
 ]
 
-export const APIResponseViewer: FC<APIResponseViewerProps> = ({ response }) => {
+export const APIResponseViewer: FC<APIResponseViewerProps> = ({ data }) => {
   // TODO: props 다 주지말고 context 쓰자
   const [selectedTabCode, setSelectedTabCode] = useState(resTabItems[0].code)
   const onSelectTab = useCallback((code: string) => {
     setSelectedTabCode(code)
   }, [])
+  if (data === null) {
+    return <p>데이터가 업다</p>
+  }
   return (
     <>
       <Tabs
@@ -35,7 +38,7 @@ export const APIResponseViewer: FC<APIResponseViewerProps> = ({ response }) => {
       <Blinker _key={selectedTabCode} _css={blinkerCss}>
         <Funnel steps={resTabItems.map(item => item.code)} step={selectedTabCode}>
           <Funnel.Step name="Body">
-            <Body response={response} />
+            <Body body={data.body} />
           </Funnel.Step>
           <Funnel.Step name="Cookies">
             <Cookies />
