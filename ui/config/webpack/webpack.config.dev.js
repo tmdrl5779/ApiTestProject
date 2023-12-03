@@ -4,6 +4,7 @@ const common = require('./webpack.config.common.js')
 
 const ReactRefreshWebpackPlugin = require('@pmmmwh/react-refresh-webpack-plugin')
 const Dotenv = require('dotenv-webpack')
+const useMsw = process.env['USE_MSW'] === 'true' ? true : false
 
 module.exports = merge(common, {
   mode: 'development',
@@ -52,7 +53,7 @@ module.exports = merge(common, {
 
   plugins: [
     new Dotenv({
-      path: path.resolve(__dirname, '../env/.dev.env'),
+      path: path.resolve(__dirname, useMsw ? '../env/.dev.msw.env' : '../env/.dev.env'),
     }),
     new ReactRefreshWebpackPlugin(),
   ],
