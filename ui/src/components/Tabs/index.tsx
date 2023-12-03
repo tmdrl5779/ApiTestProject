@@ -115,98 +115,96 @@ export const Tabs: React.FC<TabsProps> = ({
   )
 
   return (
-    <div>
-      <motion.ul css={[tabsWrapperCss, _css]} style={style} ref={ulRef} layout layoutScroll>
-        <AnimatePresence>
-          {isUlOverflow ? (
-            <motion.li
-              layout
-              layoutScroll
-              key={'scroll-left-button'}
-              css={tabsItemCss}
-              style={{
-                cursor: 'inherit',
-                background: `${color.background}`,
-                position: 'sticky',
-                left: 0,
-                zIndex: 4,
-              }}
-            >
-              {editable ? (
-                <Button type="text" onClick={handleScroll('left')}>
-                  <LeftOutlinedIcon />
-                </Button>
-              ) : null}
-            </motion.li>
-          ) : null}
-          {items.map((item, idx) => (
-            <motion.li
-              layout
-              layoutScroll
-              key={item.code}
-              className={'item' + (finalSelectedCode === item.code ? ' selected' : '')}
-              css={tabsItemCss}
-              onClick={handleSelect(item.code)}
-              {...(editable ? editableTabsMotion : {})}
-            >
-              {item.icon}
-              {renderTabTitle ? (
-                renderTabTitle(item.title)
-              ) : (
-                <span style={{ marginLeft: item.icon ? '12px' : '0' }}>{item.title}</span>
-              )}
-              {editable ? (
-                <Button type="text" onClick={handleDelete(idx)}>
-                  <CloseOutlinedIcon />
-                </Button>
-              ) : null}
-              {lineVisible && finalSelectedCode === item.code ? (
-                <motion.div css={tabsActiveLineCss} className="active-line" layoutId={`active-line-${uuid}`} />
-              ) : null}
-            </motion.li>
-          ))}
+    <motion.ul css={[tabsWrapperCss, _css]} style={style} ref={ulRef} layout layoutScroll>
+      <AnimatePresence>
+        {isUlOverflow ? (
+          <motion.li
+            layout
+            layoutScroll
+            key={'scroll-left-button'}
+            css={tabsItemCss}
+            style={{
+              cursor: 'inherit',
+              background: `${color.background}`,
+              position: 'sticky',
+              left: 0,
+              zIndex: 4,
+            }}
+          >
+            {editable ? (
+              <Button type="text" onClick={handleScroll('left')}>
+                <LeftOutlinedIcon />
+              </Button>
+            ) : null}
+          </motion.li>
+        ) : null}
+        {items.map((item, idx) => (
+          <motion.li
+            layout
+            layoutScroll
+            key={item.code}
+            className={'item' + (finalSelectedCode === item.code ? ' selected' : '')}
+            css={tabsItemCss}
+            onClick={handleSelect(item.code)}
+            {...(editable ? editableTabsMotion : {})}
+          >
+            {item.icon}
+            {renderTabTitle ? (
+              renderTabTitle(item.title)
+            ) : (
+              <span style={{ marginLeft: item.icon ? '12px' : '0' }}>{item.title}</span>
+            )}
+            {editable ? (
+              <Button type="text" onClick={handleDelete(idx)}>
+                <CloseOutlinedIcon />
+              </Button>
+            ) : null}
+            {lineVisible && finalSelectedCode === item.code ? (
+              <motion.div css={tabsActiveLineCss} className="active-line" layoutId={`active-line-${uuid}`} />
+            ) : null}
+          </motion.li>
+        ))}
 
-          {editable ? (
-            <motion.li
-              layout
-              key={'add-tab-button'}
-              css={tabsItemCss}
-              style={{
-                cursor: 'inherit',
-                background: `${color.background}`,
-                position: 'sticky',
-                right: '50px',
-              }}
-            >
-              {editable ? (
-                <Button type="text" onClick={handleAdd} style={{ fontSize: '20px' }}>
-                  +
-                </Button>
-              ) : null}
-            </motion.li>
-          ) : null}
-          {isUlOverflow ? (
-            <motion.li
-              layout
-              key={'scroll-right-button'}
-              css={tabsItemCss}
-              style={{
-                cursor: 'inherit',
-                background: `${color.background}`,
-                position: 'sticky',
-                top: 0,
-                right: 0,
-              }}
-            >
-              {editable ? (
-                <Button type="text" onClick={handleScroll('right')}>
-                  <RightOutlinedIcon />
-                </Button>
-              ) : null}
-            </motion.li>
-          ) : null}
-        </AnimatePresence>
-      </motion.ul>
-    </div>
+        {editable ? (
+          <motion.li
+            layout
+            key={'add-tab-button'}
+            css={tabsItemCss}
+            style={{
+              cursor: 'inherit',
+              background: `${color.background}`,
+              position: 'sticky',
+              right: '50px',
+            }}
+          >
+            {editable ? (
+              <Button type="text" onClick={handleAdd} style={{ fontSize: '20px' }}>
+                +
+              </Button>
+            ) : null}
+          </motion.li>
+        ) : null}
+        {isUlOverflow ? (
+          <motion.li
+            layout
+            key={'scroll-right-button'}
+            css={tabsItemCss}
+            style={{
+              cursor: 'inherit',
+              background: `${color.background}`,
+              position: 'sticky',
+              top: 0,
+              right: 0,
+            }}
+          >
+            {editable ? (
+              <Button type="text" onClick={handleScroll('right')}>
+                <RightOutlinedIcon />
+              </Button>
+            ) : null}
+          </motion.li>
+        ) : null}
+      </AnimatePresence>
+    </motion.ul>
   )
 }

@@ -75,6 +75,6 @@ Response
 ### 할 일
 
 1. API req정보 편집기 데이터처리 리팩토링 - memo로 재렌더링 방지, prop drilling 해결
-2. API res정보 조회기 데이터처리 로직 추가 - context 활용
+2. API res정보 조회기 데이터처리 로직 추가 (O)
 3. dev:msw 모드와 일반 dev 모드 추가
 4. Suspense + Error Boundary 넣어서 선언적으로 컴포넌트 만들기

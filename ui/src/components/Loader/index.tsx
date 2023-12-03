@@ -27,6 +27,7 @@ export const Loader: FC<LoaderProps> = ({ children, isLoading }) => {
 const loaderWrapperCss = css`
   width: 100%;
   height: 100%;
+  position: relative;
 `
 
 const blurCss = css`

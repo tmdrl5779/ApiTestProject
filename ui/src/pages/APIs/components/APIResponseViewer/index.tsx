@@ -3,18 +3,22 @@ import { color } from '@/data/variables.style'
 import { css } from '@emotion/react'
 import { FetchApiResponse } from 'api-types'
 import { FC, useCallback, useState } from 'react'
+import { DataForResponseViewer } from '../../types'
 import { Body } from './TabContent/Body'
 import { Cookies } from './TabContent/Cookies'
 import { Headers } from './TabContent/Headers'
 import { TestResults } from './TabContent/TestResults'
-import { APIResponseViewerProps } from './types'
 
 export const resTabItems: TabsItem[] = [
   { title: 'Body', code: 'Body' },
   { title: 'Cookies', code: 'Cookies' },
   { title: 'Headers', code: 'Headers' },
-  { title: 'Test Results', code: 'Test Results' },
+  // { title: 'Test Results', code: 'Test Results' },
 ]
+
+interface APIResponseViewerProps {
+  data: DataForResponseViewer | null
+}
 
 export const APIResponseViewer: FC<APIResponseViewerProps> = ({ data }) => {
   // TODO: props 다 주지말고 context 쓰자
@@ -23,7 +27,7 @@ export const APIResponseViewer: FC<APIResponseViewerProps> = ({ data }) => {
     setSelectedTabCode(code)
   }, [])
   if (data === null) {
-    return <p>데이터가 업다</p>
+    return <span>데이터가 업다</span>
   }
   return (
     <>
@@ -32,6 +36,7 @@ export const APIResponseViewer: FC<APIResponseViewerProps> = ({ data }) => {
         selectedCode={selectedTabCode}
         onSelect={onSelectTab}
         background={color.background}
+        style={{ position: 'sticky', top: 0 }}
         type="line"
         tabPosition="top"
       />
@@ -41,14 +46,14 @@ export const APIResponseViewer: FC<APIResponseViewerProps> = ({ data }) => {
             <Body body={data.body} />
           </Funnel.Step>
           <Funnel.Step name="Cookies">
-            <Cookies />
+            <Cookies cookies={data.cookies} />
           </Funnel.Step>
           <Funnel.Step name="Headers">
-            <Headers />
+            <Headers headers={data.headers} />
           </Funnel.Step>
-          <Funnel.Step name="Test Results">
+          {/* <Funnel.Step name="Test Results">
             <TestResults />
-          </Funnel.Step>
+          </Funnel.Step> */}
         </Funnel>
       </Blinker>
     </>

@@ -38,7 +38,7 @@ function App() {
         <GNB>API Test</GNB>
         <Layout style={{ flexDirection: 'row' }}>
           <SNB>
-            <Tabs items={navItems} onSelect={onSelect} tabPosition="right" />
+            <Tabs items={navItems} onSelect={onSelect} tabPosition="right" style={{ overflowX: 'hidden' }} />
           </SNB>
           <Content>
             <Blinker _key={selectedItemCode} _css={contentWrapperCss}>

@@ -1,12 +1,12 @@
 import { Button, Input, Loader, Select, Tabs, TabsItem } from '@/components'
-import { color, methodColor } from '@/data/variables.style'
+import { color, methodColor, overlayScrollBarYCss } from '@/data/variables.style'
 import { UseAPIReturns } from '@/hooks'
 import { fetchApi } from '@/remotes/fetchApi'
 import { parseCookie } from '@/utils'
 import { css } from '@emotion/react'
 import { FetchApiRequest, FetchApiResponse, IAPI, ResponseData } from 'api-types'
 import { AxiosError } from 'axios'
-import { StringObject } from 'common-types'
+import { Dictionary, StringObject } from 'common-types'
 import { Draft, produce } from 'immer'
 import { ChangeEventHandler, FC, useCallback, useEffect, useState } from 'react'
 import { useMutation } from 'react-query'
@@ -31,11 +31,10 @@ export const APIDetail: FC<APIDetailProps> = ({ api, updateAPI }) => {
       return fetchApi(convertReqToBodyForFetch(request))
     },
     onSuccess: data => {
-      // 여기서 parse 한다. - body, headers, cookies,
       parseResponse(data as any).then(({ body, headers }) => {
         setDataForResponseViewer({
           body: body as StringObject,
-          headers: headers as StringObject,
+          headers: headers as Dictionary<string>,
           cookies: parseCookie(),
         })
       })
@@ -117,11 +116,11 @@ const apiMainCss = css`
 // TODO: Res, Req 높이 줄이고 늘이게 하기
 const reqSectionCss = css`
   position: relative;
+  overflow: hidden;
   height: 50%;
 `
 const resSectionCss = css`
-  position: relative;
-  height: 50%;
+  ${reqSectionCss}
   border-top: 1px solid ${color.pale};
 `
 

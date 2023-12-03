@@ -1,29 +1,39 @@
 import { Select, Tabs, TabsItem } from '@/components'
 import { color, overlayScrollBarYCss } from '@/data/variables.style'
+import { DataForResponseViewer } from '@/pages/APIs/types'
 import { css } from '@emotion/react'
 import { StringObject } from 'common-types'
-import { FC, useCallback, useMemo, useState } from 'react'
+import { ChangeEvent, ChangeEventHandler, FC, useCallback, useMemo, useState } from 'react'
 import JSONPretty from 'react-json-pretty'
 import 'react-json-pretty/themes/1337.css'
-import { APIResponseViewerProps } from '../types'
 
 export const resBodyTypes: TabsItem[] = ['Pretty', 'Raw'].map(type => ({
   title: type,
   code: type,
 }))
 
-export const PrettierExtensions = ['JSON', 'XML', 'HTML', 'Text', 'Auto']
+// html, XML은 추후 필요시 개발~
+export const PrettierExtensions = ['JSON']
 
 interface BodyProps {
-  body: StringObject
+  body: DataForResponseViewer['body']
 }
 
 // TODO: Tabs + Blinker + Funnel + useState로 tab선택로직 관리까지 묶어서 하나로 쓰자
 export const Body: FC<BodyProps> = ({ body }) => {
   const [resBodyTypeCode, setResBodyTypeCode] = useState(resBodyTypes[0].code)
-  const onClickBodyType = useCallback((code: string) => {
+
+  // POST: 블로그에 넣자 type 배열 -> union 변환하는 법
+  const [prettierType, setPrettierType] = useState<(typeof PrettierExtensions)[number]>(PrettierExtensions[0])
+
+  const onSelectBodyType = useCallback((code: string) => {
     setResBodyTypeCode(code)
   }, [])
+
+  const onSelectPrettierType: ChangeEventHandler<HTMLSelectElement> = useCallback(e => {
+    setPrettierType(e.target.value)
+  }, [])
+  console.log('body: ', body)
 
   const stringifiedBody = useMemo(() => JSON.stringify(body), [body])
 
@@ -34,11 +44,11 @@ export const Body: FC<BodyProps> = ({ body }) => {
           lineVisible={false}
           items={resBodyTypes}
           selectedCode={resBodyTypeCode}
-          onSelect={onClickBodyType}
+          onSelect={onSelectBodyType}
           _css={tabsOverrideCss}
         />
         {resBodyTypeCode === 'Pretty' ? (
-          <Select _css={selectOverrideCss}>
+          <Select _css={selectOverrideCss} value={prettierType} onChange={onSelectPrettierType}>
             {PrettierExtensions.map(ext => (
               <option value={ext} key={ext}>
                 {ext}
@@ -50,11 +60,15 @@ export const Body: FC<BodyProps> = ({ body }) => {
       {/* TODO: Funnel 널까말까 */}
       <div css={bodyContentCss}>
         {resBodyTypeCode === 'Pretty' ? (
-          <JSONPretty
-            id="json-pretty"
-            data={body}
-            mainStyle={`margin: 0; background: ${color.background}`}
-          ></JSONPretty>
+          <>
+            {prettierType === 'JSON' ? (
+              <JSONPretty
+                id="json-pretty"
+                data={body}
+                mainStyle={`margin: 0; background: ${color.background}`}
+              ></JSONPretty>
+            ) : null}
+          </>
         ) : (
           <p>{stringifiedBody}</p>
         )}

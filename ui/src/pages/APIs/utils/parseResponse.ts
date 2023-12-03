@@ -1,5 +1,4 @@
 import { ResponseData } from 'api-types'
-import { StringObject } from 'common-types'
 
 export function parseResponse(data: ResponseData): Promise<{
   headers: object
