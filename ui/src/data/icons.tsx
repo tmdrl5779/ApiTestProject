@@ -10,6 +10,7 @@ import {
   CloseOutlined,
   LeftOutlined,
   RightOutlined,
+  FrownOutlined,
 } from '@ant-design/icons'
 import { EmptyObj } from 'common-types'
 

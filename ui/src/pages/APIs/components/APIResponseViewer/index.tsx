@@ -1,4 +1,4 @@
-import { Blinker, Funnel, Tabs, TabsItem } from '@/components'
+import { Blinker, Funnel, Tabs, TabsItem, Error, ErrorBoundary } from '@/components'
 import { color } from '@/data/variables.style'
 import { css } from '@emotion/react'
 import { FetchApiResponse } from 'api-types'
@@ -26,8 +26,9 @@ export const APIResponseViewer: FC<APIResponseViewerProps> = ({ data }) => {
   const onSelectTab = useCallback((code: string) => {
     setSelectedTabCode(code)
   }, [])
+  // TODO: HOC 혹은 ErrorBoundary 활용하여 에러처리 부분 따로 빼주기
   if (data === null) {
-    return <span>데이터가 업다</span>
+    return <Error message={'응답을 받기 위해 Send 버튼을 누르세요.'} />
   }
   return (
     <>
