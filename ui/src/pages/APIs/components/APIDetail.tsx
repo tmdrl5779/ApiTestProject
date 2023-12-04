@@ -31,6 +31,7 @@ export const APIDetail: FC<APIDetailProps> = ({ api, updateAPI }) => {
       return fetchApi(convertReqToBodyForFetch(request))
     },
     onSuccess: data => {
+      // TODO: 상태만 변경하는게 아니라 recoil 상태를 바꿔야대
       parseResponse(data as any).then(({ body, headers }) => {
         setDataForResponseViewer({
           body: body as StringObject,
@@ -51,6 +52,7 @@ export const APIDetail: FC<APIDetailProps> = ({ api, updateAPI }) => {
     apiMutation.mutate(api.request)
   }, [api.request, apiMutation])
 
+  // TODO: api deps에서 빼야함, api 전달 대신 key value 전달 형태로 변경 필요
   const updateAPIImmutable = useCallback(
     (recipe: (draft: Draft<IAPI>) => void) => {
       updateAPI(produce(api, recipe))

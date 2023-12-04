@@ -10,8 +10,8 @@ export const handlers = [
     return res(
       ctx.delay(3000),
       ctx.status(200),
-      ctx.cookie('test', '123'),
-      ctx.cookie('test2', '456'),
+      // ctx.cookie('test', '123'),
+      // ctx.cookie('test2', '456'),
       // ctx.json({
       //   responseTime: 0,
       //   body: {

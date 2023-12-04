@@ -1,4 +1,4 @@
-import { Table } from '@/components'
+import { Error, Table } from '@/components'
 import { overlayScrollBarYCss } from '@/data/variables.style'
 import { useObjectEntries } from '@/hooks'
 import { DataForResponseViewer } from '@/pages/APIs/types'
@@ -13,7 +13,7 @@ interface HeadersProps {
 export const Headers: FC<HeadersProps> = ({ headers }) => {
   const headersArr = useObjectEntries(headers)
   if (headers === null) {
-    return <span>헤더가 없어..</span>
+    return <Error message={'Header가 없습니다...'} />
   }
   return (
     <div css={tableWrapperScrollableCss}>

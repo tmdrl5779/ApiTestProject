@@ -6,7 +6,7 @@ import { IAPI } from 'api-types'
 import { PayloadItem } from 'common-types'
 import { motion } from 'framer-motion'
 import { Draft } from 'immer'
-import { ChangeEventHandler, FC, useCallback, useMemo, useState } from 'react'
+import { ChangeEventHandler, FC, memo, useCallback, useMemo, useState } from 'react'
 
 type PayloadType = 'param' | 'header' | 'body'
 
@@ -71,7 +71,7 @@ export const APIPayloadEditor: FC<APIPayloadEditorProps> = ({ updateAPIImmutable
   )
 }
 
-const Header = () => {
+const Header = memo(() => {
   return (
     <motion.li css={[rowCss, headerCss]}>
       {tableHeaders.map(header => (
@@ -81,41 +81,58 @@ const Header = () => {
       ))}
     </motion.li>
   )
-}
+})
 
-const Row = ({
-  onChangeCell,
-  data,
-}: {
-  onChangeCell: (key: (typeof tableHeaders)[number], value: string) => void
-  data: PayloadItem
-}) => {
-  const _onChangeCell: (key: (typeof tableHeaders)[number]) => ChangeEventHandler = useCallback(
-    key => e => {
-      const target = e.target as HTMLInputElement
-      onChangeCell(key, target.value)
-    },
-    [onChangeCell]
-  )
+const Row = memo(
+  ({
+    onChangeCell,
+    data,
+  }: {
+    onChangeCell: (key: (typeof tableHeaders)[number], value: string) => void
+    data: PayloadItem
+  }) => {
+    const _onChangeCell: (key: (typeof tableHeaders)[number]) => ChangeEventHandler = useCallback(
+      key => e => {
+        const target = e.target as HTMLInputElement
+        onChangeCell(key, target.value)
+      },
+      [onChangeCell]
+    )
+    return (
+      <motion.li css={rowCss}>
+        {tableHeaders.map(header => (
+          <Cell key={header} header={header} data={data[header]} _onChangeCell={_onChangeCell} />
+        ))}
+      </motion.li>
+    )
+  }
+)
 
-  return (
-    <motion.li css={rowCss}>
-      {tableHeaders.map(header => (
-        <motion.div className={`cell ${header}`} key={header}>
-          {
-            <Input
-              onChange={_onChangeCell(header)}
-              checked={header === 'included' ? data[header] : undefined}
-              value={header === 'included' ? undefined : data[header]}
-              style={{ width: '100%', height: '100%', background: 'transparent' }}
-              type={header === 'included' ? 'checkbox' : 'text'}
-            />
-          }
-        </motion.div>
-      ))}
-    </motion.li>
-  )
-}
+const Cell = memo(
+  ({
+    header,
+    _onChangeCell,
+    data,
+  }: {
+    header: (typeof tableHeaders)[number]
+    _onChangeCell: (key: (typeof tableHeaders)[number]) => ChangeEventHandler
+    data: string | boolean
+  }) => {
+    return (
+      <motion.div className={`cell ${header}`} key={header}>
+        {
+          <Input
+            onChange={_onChangeCell(header)}
+            checked={header === 'included' ? (data as boolean) : undefined}
+            value={header === 'included' ? undefined : (data as string)}
+            style={{ width: '100%', height: '100%', background: 'transparent' }}
+            type={header === 'included' ? 'checkbox' : 'text'}
+          />
+        }
+      </motion.div>
+    )
+  }
+)
 
 //TODO: 하드코딩으로 높이 계산 ㄴㄴ flex auto grid 이런걸로 바꾸기
 const tableCss = css`

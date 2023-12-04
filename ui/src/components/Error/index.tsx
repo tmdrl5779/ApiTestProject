@@ -1,3 +1,4 @@
+import { color } from '@/data/variables.style'
 import { FrownOutlined } from '@ant-design/icons'
 import { css } from '@emotion/react'
 import { motion } from 'framer-motion'
@@ -23,6 +24,7 @@ const errorCss = css`
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  color: ${color.secondaryText};
   .message {
     margin-top: 16px;
   }

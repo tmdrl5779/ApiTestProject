@@ -56,13 +56,6 @@ Response
   - 스토리북, jest, rtl 활용 테스트
   - emotion, framer, scss로 애니메이션과 스타일링
   - atomic, compound 패턴 활용
-  - rem 기준으로 크기 지정 (px ㄴㄴ)
-  - 개발할 컴포넌트 목록
-    - Tabs (antd의 tabs 참고)
-    - Table
-    - Button
-      - 기본형, dropdown과 함께 2가지 형태
-    - 검색되는 select와 input 합친 거 (ex: postman의 method 선택상자)
 
 ### 전역 상태관리
 
@@ -75,6 +68,10 @@ Response
 ### 할 일
 
 1. API 페이지 - memo로 재렌더링 방지, prop drilling 해결
-2. Suspense + Error Boundary 넣어서 선언적으로 컴포넌트 만들기
-3. 스토리북 도입
-4. 성능 테스트 페이지 들어가기
+   - updateAPIImmutable 구조가 잘못됨 api 변경될때마다 재선언 
+2. req url 창에 query params 보여지도록 변경
+3. response viewer response recoil 상태 변경
+4. response viewer에 status랑 Time Size Save Response 복사 검색 버튼 추가
+5. Suspense + Error Boundary 넣어서 선언적으로 컴포넌트 만들기
+6. 스토리북 도입
+7. 성능 테스트 페이지 들어가기

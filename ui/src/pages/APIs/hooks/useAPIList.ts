@@ -1,4 +1,4 @@
-import { getDefaultAPI } from './../data/constants'
+import { getDefaultAPI } from '../../../data/constants'
 import { APIListState } from '@/data/store'
 import { useCallback } from 'react'
 import { useRecoilState } from 'recoil'
