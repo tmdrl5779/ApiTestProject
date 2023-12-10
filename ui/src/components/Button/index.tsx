@@ -2,7 +2,7 @@ import { LoadingOutlinedIcon } from '@/data/icons'
 import { color } from '@/data/variables.style'
 import { css, SerializedStyles } from '@emotion/react'
 import { motion } from 'framer-motion'
-import { memo, MouseEventHandler, ReactNode, useCallback, useTransition } from 'react'
+import { memo, MouseEventHandler, ReactNode, useCallback, useEffect, useTransition } from 'react'
 import { ComponentCommonProps } from '../types'
 
 export interface ButtonProps extends ComponentCommonProps {
@@ -13,49 +13,38 @@ export interface ButtonProps extends ComponentCommonProps {
   type?: 'primary' | 'text'
 }
 
-const Button: React.FC<ButtonProps> = ({
-  onClick,
-  style,
-  _css,
-  className,
-  children,
-  disabled,
-  loading = false,
-  type = 'primary',
-}) => {
-  const [isPending, startTransition] = useTransition()
+export const Button: React.FC<ButtonProps> = memo(
+  ({ onClick, style, _css, className, children, disabled, loading = false, type = 'primary' }) => {
+    const [isPending, startTransition] = useTransition()
 
-  const handleClick: MouseEventHandler = useCallback(
-    e => {
-      startTransition(() => {
-        onClick(e)
-      })
-    },
-    [onClick]
-  )
+    const handleClick: MouseEventHandler = useCallback(
+      e => {
+        startTransition(() => {
+          onClick(e)
+        })
+      },
+      [onClick]
+    )
 
-  const _disabled = isPending || disabled
+    const _disabled = isPending || disabled
 
-  const mergedCss = _css ? [buttonCss, buttonTypeCss[type], _css] : [buttonCss, buttonTypeCss[type]]
+    const mergedCss = _css ? [buttonCss, buttonTypeCss[type], _css] : [buttonCss, buttonTypeCss[type]]
 
-  return (
-    <motion.button
-      onClick={handleClick}
-      disabled={_disabled}
-      style={style}
-      css={mergedCss}
-      className={className}
-      whileTap={_disabled ? {} : { scale: 0.9, opacity: 0.7 }}
-    >
-      {loading ? _disabled ? <LoadingOutlinedIcon /> : null : null}
-      {children}
-    </motion.button>
-  )
-}
-
-const memoizedButton = memo(Button)
-
-export { memoizedButton as Button }
+    return (
+      <motion.button
+        onClick={handleClick}
+        disabled={_disabled}
+        style={style}
+        css={mergedCss}
+        className={className}
+        whileTap={_disabled ? {} : { scale: 0.9, opacity: 0.7 }}
+      >
+        {loading ? _disabled ? <LoadingOutlinedIcon /> : null : null}
+        {children}
+      </motion.button>
+    )
+  }
+)
 
 const buttonCss = css`
   border: none;

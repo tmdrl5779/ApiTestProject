@@ -30,6 +30,7 @@ const Input: React.FC<InputProps> = ({
 }) => {
   const [uuid, _] = useState(genearteUUID())
   const mergedCss = mergeCss([inputCss, _css, type === 'checkbox' ? checkboxCss : undefined])
+
   const animation =
     type === 'checkbox'
       ? {
@@ -38,6 +39,7 @@ const Input: React.FC<InputProps> = ({
           },
         }
       : {}
+
   return (
     <>
       <motion.input
@@ -59,10 +61,6 @@ const Input: React.FC<InputProps> = ({
   )
 }
 
-const memoizedInput = memo(Input)
-
-export { memoizedInput as Input }
-
 const inputCss = css`
   background: ${color.topGradient};
   color: ${color.primaryText};
@@ -78,3 +76,7 @@ const checkboxCss = css`
   height: 16px;
   border-radius: 4px;
 `
+
+const memoizedInput = memo(Input)
+
+export { memoizedInput as Input }

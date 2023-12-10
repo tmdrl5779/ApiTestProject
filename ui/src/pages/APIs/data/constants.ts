@@ -3,7 +3,7 @@ import { TabItem } from '../types'
 import { genearteUUID } from '@/utils'
 import { TabsItem } from '@/components'
 
-export const httpMethods = ['GET', 'POST', 'PUT', 'PATCH', 'DELETE'] as const
+export const httpMethods = ['GET', 'POST', 'PUT', 'PATCH', 'DELETE']
 
 export const dataColumns = ['', 'KEY', 'VALUE', 'DESCRIPTION'] as const
 

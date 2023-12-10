@@ -71,7 +71,7 @@ export const APIs: React.FC = () => {
         <Funnel steps={APITabItems.map(item => item.code)} step={selectedTabCode}>
           {APIList.map((API, idx) => (
             <Funnel.Step key={API.uuid} name={API.uuid}>
-              {<APIDetail api={API} updateAPI={updateAPI(idx)} />}
+              {<APIDetail api={API} idx={idx} updateAPI={updateAPI} />}
             </Funnel.Step>
           ))}
         </Funnel>

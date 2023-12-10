@@ -33,7 +33,6 @@ export const Body: FC<BodyProps> = ({ body }) => {
   const onSelectPrettierType: ChangeEventHandler<HTMLSelectElement> = useCallback(e => {
     setPrettierType(e.target.value)
   }, [])
-  console.log('body: ', body)
 
   const stringifiedBody = useMemo(() => JSON.stringify(body), [body])
 
@@ -48,13 +47,12 @@ export const Body: FC<BodyProps> = ({ body }) => {
           _css={tabsOverrideCss}
         />
         {resBodyTypeCode === 'Pretty' ? (
-          <Select _css={selectOverrideCss} value={prettierType} onChange={onSelectPrettierType}>
-            {PrettierExtensions.map(ext => (
-              <option value={ext} key={ext}>
-                {ext}
-              </option>
-            ))}
-          </Select>
+          <Select
+            _css={selectOverrideCss}
+            items={PrettierExtensions}
+            value={prettierType}
+            onChange={onSelectPrettierType}
+          />
         ) : null}
       </div>
       {/* TODO: Funnel 널까말까 */}

@@ -1,18 +1,17 @@
 import { color } from '@/data/variables.style'
 import { css } from '@emotion/react'
-import { ChangeEventHandler, memo } from 'react'
+import { ChangeEventHandler, memo, NamedExoticComponent, useEffect } from 'react'
 import { ComponentCommonProps } from '../types'
 
 export interface SelectProps extends ComponentCommonProps {
-  children: React.ReactNode
+  items: string[]
   onChange?: ChangeEventHandler
   value?: string
   defaultValue?: string
 }
 
 // TODO: 값 바뀔때마다 모션 드가면 좋을듯 opacity 정도
-// memo areEqualProps에 style
-const Select: React.FC<SelectProps> = ({ children, onChange, style, className, value, defaultValue, _css }) => {
+const Select: React.FC<SelectProps> = ({ items, onChange, style, className, value, defaultValue, _css }) => {
   return (
     <select
       className={className}
@@ -22,14 +21,23 @@ const Select: React.FC<SelectProps> = ({ children, onChange, style, className, v
       value={value}
       defaultValue={defaultValue}
     >
-      {children}
+      {items.map(item => (
+        <Option value={item} key={item}>
+          {item}
+        </Option>
+      ))}
     </select>
   )
 }
 
-const memoizedSelect = memo(Select)
+export interface OptionProps {
+  children: React.ReactNode
+  value: string
+}
 
-export { memoizedSelect as Select }
+const Option: React.FC<OptionProps> = memo(({ children, value }) => {
+  return <option value={value}>{children}</option>
+})
 
 const selectCss = css`
   background: ${color.topGradient};
@@ -39,3 +47,7 @@ const selectCss = css`
   font-size: 14px;
   padding: 0 4px;
 `
+
+const memoizedSelect = memo(Select)
+
+export { memoizedSelect as Select }

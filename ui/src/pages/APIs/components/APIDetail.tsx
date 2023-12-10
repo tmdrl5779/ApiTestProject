@@ -1,6 +1,6 @@
 import { Button, Input, Loader, Select, Tabs, TabsItem } from '@/components'
 import { color, methodColor, overlayScrollBarYCss } from '@/data/variables.style'
-import { UseAPIReturns } from '@/hooks'
+import { UseAPIReturns, useToggle } from '@/hooks'
 import { fetchApi } from '@/remotes/fetchApi'
 import { parseCookie } from '@/utils'
 import { css } from '@emotion/react'
@@ -18,12 +18,15 @@ import { APIPayloadEditor } from './APIPayloadEditor'
 import { APIResponseViewer } from './APIResponseViewer'
 
 interface APIDetailProps {
+  idx: number
   api: IAPI
-  updateAPI: ReturnType<UseAPIReturns['updateAPI']>
+  updateAPI: UseAPIReturns['updateAPI']
 }
 
 // TODO: 재렌더링 줄이기 - memo활용
-export const APIDetail: FC<APIDetailProps> = ({ api, updateAPI }) => {
+export const APIDetail: FC<APIDetailProps> = ({ idx, api, updateAPI }) => {
+  const [sendBtnPressed, toggleSendButton] = useToggle(false)
+
   const [dataForResponseViewer, setDataForResponseViewer] = useState<DataForResponseViewer | null>(null)
 
   const apiMutation = useMutation<FetchApiResponse, AxiosError, FetchApiRequest, FetchApiResponse>({
@@ -42,40 +45,31 @@ export const APIDetail: FC<APIDetailProps> = ({ api, updateAPI }) => {
     },
   })
 
-  useEffect(() => {
-    console.log(dataForResponseViewer)
-  }, [dataForResponseViewer])
-
   const { isLoading, data } = apiMutation
 
-  const onClickSendButton = useCallback(() => {
-    apiMutation.mutate(api.request)
-  }, [api.request, apiMutation])
+  useEffect(() => {
+    if (sendBtnPressed) {
+      apiMutation.mutate(api.request)
+      toggleSendButton()
+    }
+  }, [api.request, apiMutation, sendBtnPressed, toggleSendButton])
 
-  // TODO: api deps에서 빼야함, api 전달 대신 key value 전달 형태로 변경 필요
-  const updateAPIImmutable = useCallback(
-    (recipe: (draft: Draft<IAPI>) => void) => {
-      updateAPI(produce(api, recipe))
-    },
-    [api, updateAPI]
-  )
+  const onClickSendButton = useCallback(() => {
+    toggleSendButton()
+  }, [toggleSendButton])
 
   const onChangeMethod: ChangeEventHandler = useCallback(
     e => {
-      updateAPIImmutable(draft => {
-        draft['request']['httpMethod'] = (e.target as HTMLSelectElement).value
-      })
+      updateAPI(idx)('meta', 'httpMethod', (e.target as HTMLSelectElement).value)
     },
-    [updateAPIImmutable]
+    [idx, updateAPI]
   )
 
   const onChangeUrl: ChangeEventHandler = useCallback(
     e => {
-      updateAPIImmutable(draft => {
-        draft['request']['url'] = (e.target as HTMLInputElement).value
-      })
+      updateAPI(idx)('meta', 'url', (e.target as HTMLSelectElement).value)
     },
-    [updateAPIImmutable]
+    [idx, updateAPI]
   )
 
   return (
@@ -83,13 +77,12 @@ export const APIDetail: FC<APIDetailProps> = ({ api, updateAPI }) => {
       {/* TODO: ErrorBoundary + Suspense 활용 */}
       <section css={reqSectionCss}>
         <div css={reqSectionHeaderCss}>
-          <Select className="method-select" value={api.request.httpMethod} onChange={onChangeMethod}>
-            {httpMethods.map(method => (
-              <option value={method} key={method}>
-                {method}
-              </option>
-            ))}
-          </Select>
+          <Select
+            className="method-select"
+            items={httpMethods}
+            value={api.request.httpMethod}
+            onChange={onChangeMethod}
+          />
           <Input
             className="url-input"
             value={api.request.url}
@@ -100,7 +93,7 @@ export const APIDetail: FC<APIDetailProps> = ({ api, updateAPI }) => {
             {isLoading ? 'Sending...' : 'Send'}
           </Button>
         </div>
-        <APIPayloadEditor updateAPIImmutable={updateAPIImmutable} api={api} />
+        {/* <APIPayloadEditor updateAPIImmutable={updateAPIImmutable} api={api} /> */}
       </section>
       <section css={resSectionCss}>
         <Loader isLoading={isLoading}>
