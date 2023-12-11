@@ -8,7 +8,7 @@ import { FetchApiRequest, FetchApiResponse, IAPI, ResponseData } from 'api-types
 import { AxiosError } from 'axios'
 import { Dictionary, StringObject } from 'common-types'
 import { Draft, produce } from 'immer'
-import { ChangeEventHandler, FC, useCallback, useEffect, useState } from 'react'
+import { ChangeEventHandler, FC, useCallback, useEffect, useMemo, useState } from 'react'
 import { useMutation } from 'react-query'
 import { dataColumns, httpMethods } from '../data/constants'
 import { DataForResponseViewer } from '../types'
@@ -60,17 +60,27 @@ export const APIDetail: FC<APIDetailProps> = ({ idx, api, updateAPI }) => {
 
   const onChangeMethod: ChangeEventHandler = useCallback(
     e => {
-      updateAPI(idx)('meta', 'httpMethod', (e.target as HTMLSelectElement).value)
+      updateAPI(idx)({
+        key: 'httpMethod',
+        value: (e.target as HTMLSelectElement).value,
+        _tag: 'UpdateMetaAction',
+      })
     },
     [idx, updateAPI]
   )
 
   const onChangeUrl: ChangeEventHandler = useCallback(
     e => {
-      updateAPI(idx)('meta', 'url', (e.target as HTMLSelectElement).value)
+      updateAPI(idx)({
+        key: 'url',
+        value: (e.target as HTMLSelectElement).value,
+        _tag: 'UpdateMetaAction',
+      })
     },
     [idx, updateAPI]
   )
+
+  const updateSingleAPI = useMemo(() => updateAPI(idx), [idx, updateAPI])
 
   return (
     <div css={apiMainCss}>
@@ -93,7 +103,7 @@ export const APIDetail: FC<APIDetailProps> = ({ idx, api, updateAPI }) => {
             {isLoading ? 'Sending...' : 'Send'}
           </Button>
         </div>
-        {/* <APIPayloadEditor updateAPIImmutable={updateAPIImmutable} api={api} /> */}
+        <APIPayloadEditor updateAPI={updateSingleAPI} api={api} />
       </section>
       <section css={resSectionCss}>
         <Loader isLoading={isLoading}>

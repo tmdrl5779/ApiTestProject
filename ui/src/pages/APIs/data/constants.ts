@@ -1,4 +1,4 @@
-import { ReqData } from './../types'
+import { PayloadKeys, ReqData } from './../types'
 import { TabItem } from '../types'
 import { genearteUUID } from '@/utils'
 import { TabsItem } from '@/components'
@@ -6,6 +6,8 @@ import { TabsItem } from '@/components'
 export const httpMethods = ['GET', 'POST', 'PUT', 'PATCH', 'DELETE']
 
 export const dataColumns = ['', 'KEY', 'VALUE', 'DESCRIPTION'] as const
+
+export const tableHeaders: PayloadKeys[] = ['included', 'key', 'value', 'description']
 
 export const getDefaultData = (): ReqData => ({
   key: '',

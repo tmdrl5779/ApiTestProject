@@ -1,14 +1,15 @@
 import { Input, Tabs, TabsItem } from '@/components'
 import { getDefaultPayloadItem } from '@/data/constants'
 import { color, overlayScrollBarYCss } from '@/data/variables.style'
+import { UseAPIReturns } from '@/hooks'
 import { css } from '@emotion/react'
 import { IAPI } from 'api-types'
 import { PayloadItem } from 'common-types'
 import { motion } from 'framer-motion'
 import { Draft } from 'immer'
-import { ChangeEventHandler, FC, memo, useCallback, useMemo, useState } from 'react'
-
-type PayloadType = 'param' | 'header' | 'body'
+import { ChangeEventHandler, FC, memo, useCallback, useEffect, useMemo, useState } from 'react'
+import { tableHeaders } from '../data/constants'
+import { PayloadType, PayloadKeys } from '../types'
 
 export const reqTabItems: Array<TabsItem & { key: PayloadType }> = [
   { title: 'Params', code: 'Params', key: 'param' },
@@ -16,15 +17,13 @@ export const reqTabItems: Array<TabsItem & { key: PayloadType }> = [
   { title: 'Body', code: 'Body', key: 'body' },
 ]
 
-const tableHeaders = ['included', 'key', 'value', 'description'] as const
-
 interface APIPayloadEditorProps {
-  updateAPIImmutable: (recipe: (draft: Draft<IAPI>) => void) => void
+  updateAPI: ReturnType<UseAPIReturns['updateAPI']>
   api: IAPI
 }
 
 // TODO: table 따로 component로 빼서 사용
-export const APIPayloadEditor: FC<APIPayloadEditorProps> = ({ updateAPIImmutable, api }) => {
+export const APIPayloadEditor: FC<APIPayloadEditorProps> = ({ updateAPI, api }) => {
   const [selectedReqTab, setSelectedReqTab] = useState(reqTabItems[0])
 
   const onSelectTab = useCallback((code: string) => {
@@ -32,24 +31,26 @@ export const APIPayloadEditor: FC<APIPayloadEditorProps> = ({ updateAPIImmutable
   }, [])
 
   const onChangeCell = useCallback(
-    (type: (typeof reqTabItems)[number]['key'], idx: number) => (key: (typeof tableHeaders)[number], value: string) => {
-      if (key === 'included') {
-        updateAPIImmutable(draft => {
-          draft['request'][type][idx]['included'] = !draft['request'][type][idx]['included']
-        })
-      } else {
-        updateAPIImmutable(draft => {
-          draft['request'][type][idx][key] = value
-          if (draft['request'][type][idx + 1] === undefined) {
-            draft['request'][type].push(getDefaultPayloadItem())
-          }
-        })
-      }
+    (type: PayloadType, idx: number) => (key: PayloadKeys, value: string) => {
+      updateAPI({
+        type,
+        idx,
+        key,
+        value,
+        _tag: 'UpdatePayloadAction',
+      })
     },
-    [updateAPIImmutable]
+    [updateAPI]
   )
 
   const payloadType = useMemo(() => selectedReqTab.key as PayloadType, [selectedReqTab])
+
+  const payloadArrLen = api['request'][payloadType].length
+
+  const onChangeCells = useMemo(
+    () => new Array(payloadArrLen).fill('_').map((_, idx) => onChangeCell(payloadType, idx)),
+    [payloadArrLen, onChangeCell, payloadType]
+  )
 
   return (
     <>
@@ -64,7 +65,7 @@ export const APIPayloadEditor: FC<APIPayloadEditorProps> = ({ updateAPIImmutable
       <Header />
       <motion.ul css={tableCss} layout key="API-payload-editor">
         {api['request'][payloadType].map((_, idx) => (
-          <Row key={idx} onChangeCell={onChangeCell(payloadType, idx)} data={api['request'][payloadType][idx]} />
+          <Row key={idx} onChangeCell={onChangeCells[idx]} data={api['request'][payloadType][idx]} />
         ))}
       </motion.ul>
     </>
@@ -84,14 +85,8 @@ const Header = memo(() => {
 })
 
 const Row = memo(
-  ({
-    onChangeCell,
-    data,
-  }: {
-    onChangeCell: (key: (typeof tableHeaders)[number], value: string) => void
-    data: PayloadItem
-  }) => {
-    const _onChangeCell: (key: (typeof tableHeaders)[number]) => ChangeEventHandler = useCallback(
+  ({ onChangeCell, data }: { onChangeCell: (key: PayloadKeys, value: string) => void; data: PayloadItem }) => {
+    const _onChangeCell: (key: PayloadKeys) => ChangeEventHandler = useCallback(
       key => e => {
         const target = e.target as HTMLInputElement
         onChangeCell(key, target.value)
@@ -108,21 +103,24 @@ const Row = memo(
   }
 )
 
+// TODO: prop drillling 뵈기 싫다..
 const Cell = memo(
   ({
     header,
     _onChangeCell,
     data,
   }: {
-    header: (typeof tableHeaders)[number]
-    _onChangeCell: (key: (typeof tableHeaders)[number]) => ChangeEventHandler
+    header: PayloadKeys
+    _onChangeCell: (key: PayloadKeys) => ChangeEventHandler
     data: string | boolean
   }) => {
+    const onChangeCell = useMemo(() => _onChangeCell(header), [_onChangeCell, header])
+
     return (
       <motion.div className={`cell ${header}`} key={header}>
         {
           <Input
-            onChange={_onChangeCell(header)}
+            onChange={onChangeCell}
             checked={header === 'included' ? (data as boolean) : undefined}
             value={header === 'included' ? undefined : (data as string)}
             style={{ width: '100%', height: '100%', background: 'transparent' }}

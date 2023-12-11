@@ -67,11 +67,14 @@ Response
 
 ### 할 일
 
-1. API 페이지 - memo로 재렌더링 방지, prop drilling 해결
-   - updateAPIImmutable 구조가 잘못됨 api 변경될때마다 재선언 
-2. req url 창에 query params 보여지도록 변경
-3. response viewer response recoil 상태 변경
-4. response viewer에 status랑 Time Size Save Response 복사 검색 버튼 추가
-5. Suspense + Error Boundary 넣어서 선언적으로 컴포넌트 만들기
-6. 스토리북 도입
-7. 성능 테스트 페이지 들어가기
+- API 페이지 - memo로 재렌더링 방지(O), prop drilling 해결 - 점검 필요 + payloadEditor 스크롤바 사라졋음
+- req url 창에 query params 보여지도록 변경
+- response viewer response recoil 상태 변경
+- response viewer에 status랑 Time Size Save Response 복사 검색 버튼 추가
+- Suspense + Error Boundary 넣어서 선언적으로 컴포넌트 만들기
+- 스토리북 도입
+- 성능 테스트 페이지 들어가기
+- Tabs 리렌더링 최적화
+- ChangeEventHandler wrapping 해서 간단하게 넣기
+- Funnel 리팩토링 (불필요하게 상태로직, children 넣는 것 들어가 있는듯)
+- APIList update Reducer type 분리하기
