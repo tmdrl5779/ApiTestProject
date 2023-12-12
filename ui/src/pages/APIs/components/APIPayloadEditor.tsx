@@ -1,4 +1,4 @@
-import { Input, Tabs, TabsItem } from '@/components'
+import { Input, Tabs, TabsItem, WrappedChangeEventHandler } from '@/components'
 import { getDefaultPayloadItem } from '@/data/constants'
 import { color, overlayScrollBarYCss } from '@/data/variables.style'
 import { UseAPIReturns } from '@/hooks'
@@ -86,10 +86,9 @@ const Header = memo(() => {
 
 const Row = memo(
   ({ onChangeCell, data }: { onChangeCell: (key: PayloadKeys, value: string) => void; data: PayloadItem }) => {
-    const _onChangeCell: (key: PayloadKeys) => ChangeEventHandler = useCallback(
-      key => e => {
-        const target = e.target as HTMLInputElement
-        onChangeCell(key, target.value)
+    const _onChangeCell: (key: PayloadKeys) => WrappedChangeEventHandler = useCallback(
+      key => value => {
+        onChangeCell(key, value)
       },
       [onChangeCell]
     )
@@ -111,7 +110,7 @@ const Cell = memo(
     data,
   }: {
     header: PayloadKeys
-    _onChangeCell: (key: PayloadKeys) => ChangeEventHandler
+    _onChangeCell: (key: PayloadKeys) => WrappedChangeEventHandler
     data: string | boolean
   }) => {
     const onChangeCell = useMemo(() => _onChangeCell(header), [_onChangeCell, header])
@@ -134,7 +133,7 @@ const Cell = memo(
 
 //TODO: 하드코딩으로 높이 계산 ㄴㄴ flex auto grid 이런걸로 바꾸기
 const tableCss = css`
-  width: calc(100% + 8px);
+  width: calc(100%);
   height: calc(100% - 40px - 52px - 8px - 40px);
   min-height: calc(100% - 40px - 52px - 8px - 40px);
   max-height: calc(100% - 40px - 52px - 8px - 40px);
@@ -148,16 +147,17 @@ const tableCss = css`
 const headerCss = css`
   font-weight: bold;
   margin-top: 8px;
+  width: calc(100% - 6px);
 `
 
 const rowCss = css`
   display: flex;
   list-style: none;
   justify-items: stretch;
-  & :first-child {
+  & :first-of-type {
     border-left: none;
   }
-  & :last-child {
+  & :last-of-type {
     border-right: none;
   }
 

@@ -1,13 +1,13 @@
 import { Error, Table } from '@/components'
 import { overlayScrollBarYCss } from '@/data/variables.style'
 import { useObjectEntries } from '@/hooks'
-import { DataForResponseViewer } from '@/pages/APIs/types'
 import { css } from '@emotion/react'
+import { FetchApiResponse } from 'api-types'
 import { FC } from 'react'
 import { tableWrapperScrollableCss } from './tableWrapperScrollableCss'
 
 interface HeadersProps {
-  headers: DataForResponseViewer['headers'] | null
+  headers: FetchApiResponse['headers'] | null
 }
 
 export const Headers: FC<HeadersProps> = ({ headers }) => {

@@ -1,11 +1,18 @@
-import { isUpdateTimeAction, isUpdateMetaAction, isUpdatePayloadAction } from './../types'
+import {
+  isUpdateTimeAction,
+  isUpdateMetaAction,
+  isUpdatePayloadAction,
+  PayloadKeys,
+  PayloadType,
+  UpdateApiAction,
+  isUpdateResponseAction,
+} from '../types'
 import { getDefaultAPI, getDefaultPayloadItem } from '../../../data/constants'
 import { APIListState } from '@/data/store'
 import { useCallback } from 'react'
 import { useRecoilState } from 'recoil'
 import { IAPI } from 'api-types'
 import { produce, Draft } from 'immer'
-import { PayloadKeys, PayloadType, UpdateApiAction } from '../types'
 
 export interface UseAPIReturns {
   APIList: IAPI[]
@@ -65,6 +72,10 @@ export const useAPIList = (): UseAPIReturns => {
             }
           })
         }
+      } else if (isUpdateResponseAction(action)) {
+        _setAPIList(draft => {
+          draft[idx]['response'] = action.response
+        })
       }
     },
     [_setAPIList]

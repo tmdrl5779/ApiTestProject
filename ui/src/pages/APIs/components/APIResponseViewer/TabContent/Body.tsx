@@ -1,7 +1,7 @@
-import { Select, Tabs, TabsItem } from '@/components'
+import { Select, Tabs, TabsItem, WrappedChangeEventHandler } from '@/components'
 import { color, overlayScrollBarYCss } from '@/data/variables.style'
-import { DataForResponseViewer } from '@/pages/APIs/types'
 import { css } from '@emotion/react'
+import { FetchApiResponse } from 'api-types'
 import { StringObject } from 'common-types'
 import { ChangeEvent, ChangeEventHandler, FC, useCallback, useMemo, useState } from 'react'
 import JSONPretty from 'react-json-pretty'
@@ -16,7 +16,7 @@ export const resBodyTypes: TabsItem[] = ['Pretty', 'Raw'].map(type => ({
 export const PrettierExtensions = ['JSON']
 
 interface BodyProps {
-  body: DataForResponseViewer['body']
+  body: FetchApiResponse['body']
 }
 
 // TODO: Tabs + Blinker + Funnel + useState로 tab선택로직 관리까지 묶어서 하나로 쓰자
@@ -30,8 +30,8 @@ export const Body: FC<BodyProps> = ({ body }) => {
     setResBodyTypeCode(code)
   }, [])
 
-  const onSelectPrettierType: ChangeEventHandler<HTMLSelectElement> = useCallback(e => {
-    setPrettierType(e.target.value)
+  const onSelectPrettierType: WrappedChangeEventHandler = useCallback(value => {
+    setPrettierType(value)
   }, [])
 
   const stringifiedBody = useMemo(() => JSON.stringify(body), [body])

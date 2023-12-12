@@ -22,14 +22,16 @@ export const getDefaultFetchApiRequest = (): FetchApiRequest => ({
 
 export const getDefaultFetchApiResponse = (): FetchApiResponse => ({
   responseTime: 0,
+  status: '200',
   body: {},
-  status: '',
+  headers: {},
+  cookies: {},
 })
 
 export const getDefaultAPI = (): IAPI => ({
   uuid: genearteUUID(),
   request: getDefaultFetchApiRequest(),
-  response: getDefaultFetchApiResponse(),
+  response: null,
 })
 
 export const getDefaultPayloadItem = (): PayloadItem => ({

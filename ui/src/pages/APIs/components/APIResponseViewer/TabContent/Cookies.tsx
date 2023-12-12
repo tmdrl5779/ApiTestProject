@@ -1,11 +1,11 @@
 import { Error, Table } from '@/components'
 import { useObjectEntries } from '@/hooks'
-import { DataForResponseViewer } from '@/pages/APIs/types'
+import { FetchApiResponse } from 'api-types'
 import { FC, useMemo } from 'react'
 import { tableWrapperScrollableCss } from './tableWrapperScrollableCss'
 
 interface CookiesProps {
-  cookies: DataForResponseViewer['cookies'] | null
+  cookies: FetchApiResponse['cookies'] | null
 }
 
 export const Cookies: FC<CookiesProps> = ({ cookies }) => {

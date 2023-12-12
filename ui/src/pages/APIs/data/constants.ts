@@ -1,5 +1,5 @@
-import { PayloadKeys, ReqData } from './../types'
-import { TabItem } from '../types'
+import { PayloadKeys, ReqData, TabItem } from '../types'
+
 import { genearteUUID } from '@/utils'
 import { TabsItem } from '@/components'
 

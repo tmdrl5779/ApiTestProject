@@ -37,11 +37,11 @@ export const tabsCss: Record<
     }
 
     ${type === 'card' && tabPosition === 'top'
-      ? `& li:first-child {
+      ? `& li:first-of-type {
       border-left: none;
     }
 
-    & li:last-child {
+    & li:last-of-type {
       border-right: none;
     }`
       : ''}
@@ -92,3 +92,32 @@ export const tabsCss: Record<
     height: ${['left', 'right'].includes(tabPosition) ? '100%' : '2px'};
   `,
 }
+
+export const scrollButtonCss = css`
+  cursor: inherit;
+  background: ${color.background};
+  position: sticky;
+  z-index: 4;
+`
+
+export const scrollLeftButtonCss = css`
+  ${scrollButtonCss}
+  left: 0;
+`
+
+export const scrollRightButtonCss = css`
+  ${scrollButtonCss}
+  top: 0;
+  right: 0;
+`
+
+export const addButtonCss = css`
+  font-size: 20px;
+`
+
+export const addButtonWrapperCss = css`
+  cursor: inherit;
+  background: ${color.background};
+  position: sticky;
+  right: 50px;
+`

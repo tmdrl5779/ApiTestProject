@@ -2,12 +2,12 @@ import { color } from '@/data/variables.style'
 import { genearteUUID } from '@/utils'
 import { mergeCss } from '@/utils/mergeCss'
 import { css, SerializedStyles } from '@emotion/react'
-import { motion } from 'framer-motion'
-import { ChangeEventHandler, HTMLInputTypeAttribute, memo, useEffect, useMemo, useState } from 'react'
-import { ComponentCommonProps } from '../types'
+import { motion, MotionProps } from 'framer-motion'
+import { ChangeEventHandler, HTMLInputTypeAttribute, memo, useCallback, useEffect, useMemo, useState } from 'react'
+import { ComponentCommonProps, WrappedChangeEventHandler } from '../types'
 
 export interface InputProps extends ComponentCommonProps {
-  onChange: ChangeEventHandler
+  onChange: WrappedChangeEventHandler
   placeholder?: string
   name?: string
   autoComplete?: string
@@ -29,7 +29,7 @@ const Input: React.FC<InputProps> = ({
   checked,
 }) => {
   const [uuid, _] = useState(genearteUUID())
-  const mergedCss = mergeCss([inputCss, _css, type === 'checkbox' ? checkboxCss : undefined])
+  const mergedCss = mergeCss([inputCss, _css, type === 'checkbox' ? checkboxCss : undefined].flatMap(e => e))
 
   const animation =
     type === 'checkbox'
@@ -40,13 +40,20 @@ const Input: React.FC<InputProps> = ({
         }
       : {}
 
+  const _onChange: ChangeEventHandler = useCallback(
+    e => {
+      onChange((e.target as HTMLInputElement).value)
+    },
+    [onChange]
+  )
+
   return (
     <>
       <motion.input
         className={className}
         style={style}
         value={value}
-        onChange={onChange}
+        onChange={_onChange}
         checked={checked}
         placeholder={placeholder}
         name={name}

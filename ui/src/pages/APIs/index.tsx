@@ -32,6 +32,7 @@ export const APIs: React.FC = () => {
     )
   }, [])
 
+  // TODO: 이게 여깄으면 안되고 Tab쪽으로 가야할 듯
   const onDeleteTab = useCallback(
     (idx: number) => {
       if (APITabItems[idx].code === selectedTabCode) {

@@ -30,7 +30,7 @@ export const overlayScrollBarCss = css`
 export const overlayScrollBarYCss = css`
   overflow-y: scroll;
   &::-webkit-scrollbar {
-    width: 8px;
+    width: 6px;
   }
   ${overlayScrollBarCss}
 `
@@ -49,4 +49,10 @@ export const methodColor: Dictionary<string> = {
   PUT: 'blue',
   PATCH: 'skyblue',
   DELETE: 'orange',
+}
+
+export const statusColor: Dictionary<string> = {
+  GOOD: '#90ee90',
+  WARNING: 'yellow',
+  BAD: 'orange',
 }

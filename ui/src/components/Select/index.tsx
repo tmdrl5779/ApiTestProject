@@ -1,21 +1,28 @@
 import { color } from '@/data/variables.style'
 import { css } from '@emotion/react'
-import { ChangeEventHandler, memo, NamedExoticComponent, useEffect } from 'react'
-import { ComponentCommonProps } from '../types'
+import { ChangeEventHandler, memo, NamedExoticComponent, useCallback, useEffect } from 'react'
+import { ComponentCommonProps, WrappedChangeEventHandler } from '../types'
 
 export interface SelectProps extends ComponentCommonProps {
   items: string[]
-  onChange?: ChangeEventHandler
+  onChange?: WrappedChangeEventHandler
   value?: string
   defaultValue?: string
 }
 
 // TODO: 값 바뀔때마다 모션 드가면 좋을듯 opacity 정도
 const Select: React.FC<SelectProps> = ({ items, onChange, style, className, value, defaultValue, _css }) => {
+  const _onChange: ChangeEventHandler = useCallback(
+    e => {
+      onChange?.((e.target as HTMLSelectElement)?.value)
+    },
+    [onChange]
+  )
+
   return (
     <select
       className={className}
-      onChange={onChange}
+      onChange={_onChange}
       css={[selectCss, _css]}
       style={style}
       value={value}

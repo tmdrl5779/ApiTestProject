@@ -1,17 +1,16 @@
-import { Button, Input, Loader, Select, Tabs, TabsItem } from '@/components'
+import { Button, Input, Loader, Select, Tabs, TabsItem, WrappedChangeEventHandler } from '@/components'
 import { color, methodColor, overlayScrollBarYCss } from '@/data/variables.style'
 import { UseAPIReturns, useToggle } from '@/hooks'
 import { fetchApi } from '@/remotes/fetchApi'
 import { parseCookie } from '@/utils'
 import { css } from '@emotion/react'
-import { FetchApiRequest, FetchApiResponse, IAPI, ResponseData } from 'api-types'
-import { AxiosError } from 'axios'
+import { FetchApiRequest, FetchApiResponse, IAPI } from 'api-types'
+import { AxiosError, AxiosResponse } from 'axios'
 import { Dictionary, StringObject } from 'common-types'
 import { Draft, produce } from 'immer'
 import { ChangeEventHandler, FC, useCallback, useEffect, useMemo, useState } from 'react'
 import { useMutation } from 'react-query'
 import { dataColumns, httpMethods } from '../data/constants'
-import { DataForResponseViewer } from '../types'
 import { convertReqToBodyForFetch } from '../utils/convertReqToBodyForFetch'
 import { parseResponse } from '../utils/parseResponse'
 import { APIPayloadEditor } from './APIPayloadEditor'
@@ -27,19 +26,16 @@ interface APIDetailProps {
 export const APIDetail: FC<APIDetailProps> = ({ idx, api, updateAPI }) => {
   const [sendBtnPressed, toggleSendButton] = useToggle(false)
 
-  const [dataForResponseViewer, setDataForResponseViewer] = useState<DataForResponseViewer | null>(null)
-
-  const apiMutation = useMutation<FetchApiResponse, AxiosError, FetchApiRequest, FetchApiResponse>({
+  const apiMutation = useMutation<AxiosResponse, AxiosError, FetchApiRequest, FetchApiResponse>({
     mutationFn: (request: IAPI['request']) => {
       return fetchApi(convertReqToBodyForFetch(request))
     },
-    onSuccess: data => {
+    onSuccess: (response: AxiosResponse) => {
       // TODO: 상태만 변경하는게 아니라 recoil 상태를 바꿔야대
-      parseResponse(data as any).then(({ body, headers }) => {
-        setDataForResponseViewer({
-          body: body as StringObject,
-          headers: headers as Dictionary<string>,
-          cookies: parseCookie(),
+      parseResponse(response).then(parsedResponse => {
+        updateAPI(idx)({
+          response: parsedResponse,
+          _tag: 'UpdateResponseAction',
         })
       })
     },
@@ -58,22 +54,22 @@ export const APIDetail: FC<APIDetailProps> = ({ idx, api, updateAPI }) => {
     toggleSendButton()
   }, [toggleSendButton])
 
-  const onChangeMethod: ChangeEventHandler = useCallback(
-    e => {
+  const onChangeMethod: WrappedChangeEventHandler = useCallback(
+    value => {
       updateAPI(idx)({
         key: 'httpMethod',
-        value: (e.target as HTMLSelectElement).value,
+        value,
         _tag: 'UpdateMetaAction',
       })
     },
     [idx, updateAPI]
   )
 
-  const onChangeUrl: ChangeEventHandler = useCallback(
-    e => {
+  const onChangeUrl: WrappedChangeEventHandler = useCallback(
+    value => {
       updateAPI(idx)({
         key: 'url',
-        value: (e.target as HTMLSelectElement).value,
+        value,
         _tag: 'UpdateMetaAction',
       })
     },
@@ -107,7 +103,7 @@ export const APIDetail: FC<APIDetailProps> = ({ idx, api, updateAPI }) => {
       </section>
       <section css={resSectionCss}>
         <Loader isLoading={isLoading}>
-          <APIResponseViewer data={dataForResponseViewer} />
+          <APIResponseViewer response={api.response} />
         </Loader>
       </section>
     </div>
@@ -145,6 +141,6 @@ const reqSectionHeaderCss = css`
   .send-button {
     width: calc(10% - 8px);
     margin-left: 4px;
-    height: 38px;
+    height: 40px;
   }
 `
