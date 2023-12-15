@@ -82,7 +82,7 @@ class AdaptorService(
         var responsesResult = mutableListOf<ResponseData>()
         var totalTime: Long = 0
 
-        if (count == 1) {
+        if (count <= 1) {
             val responseWithTime = responseWithTime(requestData)
             responsesResult.add(responseWithTime)
             totalTime = responseWithTime.responseTime
