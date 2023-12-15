@@ -45,6 +45,7 @@ Response
 ```
 
 > api 검증 (웹 소켓) : /api/perform/socket-connect
+Request
 ```
 {
     "userCount": 10,
@@ -55,9 +56,9 @@ Response
         "requestList" : [
             {
                 "time": {},
-                "count": "",
+                "count": 1,
                 "url" : "https://jsonplaceholder.typicode.com/todos/1",
-                "httpMethod" : "get",
+                "httpMethod" : "GET",
                 "param" : {},
                 "header" : {},
                 "body" : {}
@@ -67,6 +68,21 @@ Response
 }
 ```
 
+Response
+```
+{
+    "userId": "USER-6",
+    "response": {
+        "responseTime": 1687,
+        "body": {
+            "userId": 1,
+            "id": 1,
+            "title": "delectus aut autem",
+            "completed": false
+        },
+        "status": "200 OK"
+    }
+}```
 
 # adaptor
 > API TEST 자동화 Project
