@@ -1,6 +1,6 @@
 # API 정의서
 > api 호출 : /api/call
-Request
+- Request
 ```
 {
   "time": {
@@ -27,7 +27,7 @@ Request
 }
 ```
 
-Response
+- Response
 ```
 [
   {
@@ -41,11 +41,11 @@ Response
 
 > 여러 api 조합 : /api/combine
 ```
-예정
+- 예정
 ```
 
 > api 검증 (웹 소켓) : /api/perform/socket-connect
-Request
+- Request
 ```
 {
     "userCount": 10,
@@ -68,7 +68,7 @@ Request
 }
 ```
 
-Response
+- Response
 ```
 {
     "userId": "USER-6",
