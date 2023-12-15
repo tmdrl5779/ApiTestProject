@@ -82,7 +82,8 @@ Response
         },
         "status": "200 OK"
     }
-}```
+}
+```
 
 # adaptor
 > API TEST 자동화 Project
