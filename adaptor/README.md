@@ -10,7 +10,7 @@ Request
   },
   "count": 0, // 호출 횟수, 기본 1
   "url": "string",
-  "httpMethod": "string", // get, post, put, delete, patch 중 하나
+  "httpMethod": "string", // GET, POST, PUT, DELETE, PATCH 중 하나
   "param": {
     "param1": "string",
     "param2": "string",
