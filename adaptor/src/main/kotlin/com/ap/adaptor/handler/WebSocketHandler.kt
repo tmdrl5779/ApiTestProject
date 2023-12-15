@@ -3,6 +3,7 @@ package com.ap.adaptor.handler
 import com.ap.adaptor.dto.*
 import com.ap.adaptor.service.AdaptorService
 import com.ap.adaptor.utils.logger
+import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 import kotlinx.coroutines.*
 import org.springframework.stereotype.Component
@@ -15,7 +16,8 @@ import kotlin.system.measureTimeMillis
 
 @Component
 class WebSocketHandler(
-    val adaptorService: AdaptorService
+    val adaptorService: AdaptorService,
+    val objectMapper: ObjectMapper
 ) : WebSocketHandler {
 
     val log = logger()
@@ -75,7 +77,7 @@ class WebSocketHandler(
     private suspend fun parseRequestData(payload: String): PerformData? = withContext(Dispatchers.IO){
         try{
             if(payload.isNotBlank()){
-                val objectMapper = jacksonObjectMapper()
+//                val objectMapper = jacksonObjectMapper()
                 val map = objectMapper.readValue(payload, MutableMap::class.java)
 
                 val performData: PerformData = objectMapper.convertValue(map, PerformData::class.java)
