@@ -1,7 +1,6 @@
 package com.ap.adaptor.handler
 
 import com.ap.adaptor.dto.*
-import com.ap.adaptor.dto.enumData.PerformType
 import com.ap.adaptor.service.AdaptorService
 import com.ap.adaptor.utils.logger
 import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
@@ -63,22 +62,13 @@ class WebSocketHandler(
         coroutineScope {
             val userCallApiTime = measureTimeMillis{
                 val deferredValue = List(performData.userCount) {
-                    async { adaptorService.responsesForPerForm(performData.requestDataList) }
-//                    val async = async { adaptorService.responsesForPerForm(performData.requestDataList) }
-//                    val response = async.await()
-//                    session.send(Mono.just(session.textMessage(response.toString()))).subscribe()
+                    async { adaptorService.responsesForPerForm(performData.requestDataList, session, it) }
                 }
                 val totalResponseWithTime = deferredValue.awaitAll()
-                totalResponseWithTime.forEach{session.send(Mono.just(session.textMessage(it.toString()))).subscribe()}
+//                totalResponseWithTime.forEach{session.send(Mono.just(session.textMessage(it.toString()))).subscribe()}
             }
 
             log.info("User ${performData.userCount} finish API Call Total Time : $userCallApiTime")
-
-//            List(performData.userCount) {
-//                val async = async { adaptorService.responsesForPerForm(performData.requestDataList) }
-//                val response = async.await()
-//                session.send(Mono.just(session.textMessage(response.toString()))).subscribe()
-//            }
         }
     }
 

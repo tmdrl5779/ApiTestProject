@@ -1,10 +1,7 @@
 package com.ap.adaptor.service
 
 import com.ap.adaptor.constants.Constants
-import com.ap.adaptor.dto.RequestData
-import com.ap.adaptor.dto.RequestDataList
-import com.ap.adaptor.dto.ResponseData
-import com.ap.adaptor.dto.ResponseDataList
+import com.ap.adaptor.dto.*
 import com.ap.adaptor.dto.enumData.PerformType
 import com.ap.adaptor.utils.UrlUtils
 import com.ap.adaptor.utils.logger
@@ -22,6 +19,8 @@ import org.springframework.util.StopWatch
 import org.springframework.web.reactive.function.client.WebClient
 import org.springframework.web.reactive.function.client.WebClientResponseException
 import org.springframework.web.reactive.function.client.awaitBody
+import org.springframework.web.reactive.socket.WebSocketSession
+import reactor.core.publisher.Mono
 import reactor.netty.http.client.HttpClient
 import kotlin.system.measureTimeMillis
 
@@ -32,7 +31,7 @@ class AdaptorService(
 
     val log = logger()
 
-    suspend fun responsesForPerForm(requestDataList: RequestDataList): ResponseDataList = coroutineScope {
+    suspend fun responsesForPerForm(requestDataList: RequestDataList, session: WebSocketSession, i: Int): ResponseDataList = coroutineScope {
         val requestList = requestDataList.requestList
         var responsesResult = mutableListOf<ResponseData>()
         var totalTime: Long = 0
@@ -43,6 +42,14 @@ class AdaptorService(
                 for (i in 1..requestList.size) {
                     val responseWithTime = async { responseWithTime(requestList[i]) }
                     val deferredValue = responseWithTime.await()
+
+                    val responseDataWithUser = ResponseDataWithUser("USER-$i", deferredValue)
+
+                    log.info("Response Data Info : $responseDataWithUser")
+
+                    //send to websocket
+                    session.send(Mono.just(session.textMessage(responseDataWithUser.toString())))
+
                     responsesResult.add(deferredValue)
                     totalTime += deferredValue.responseTime
                     if(deferredValue.status != HttpStatus.OK.toString()){
@@ -54,6 +61,17 @@ class AdaptorService(
                 totalTime = measureTimeMillis {
                     val deferredValue = requestList.map { async { responseWithTime(it) }}
                     val totalResponseWithTime = deferredValue.awaitAll()
+
+                    //send to websocket
+                    totalResponseWithTime.forEach{
+                        val responseDataWithUser = ResponseDataWithUser("USER-$i", it )
+
+                        log.info("Response Data Info : $responseDataWithUser")
+
+                        //send to websocket
+                        session.send(Mono.just(session.textMessage(responseDataWithUser.toString()))).subscribe()
+                    }
+
                     responsesResult = totalResponseWithTime as MutableList<ResponseData>
                 }
 
@@ -70,8 +88,8 @@ class AdaptorService(
             }
         }
 
-        log.info("Response API result : $responsesResult")
-        log.info("Total API Call Time : $totalTime")
+//        log.info("Response API result : $responsesResult")
+//        log.info("Total API Call Time : $totalTime")
 
         ResponseDataList(responsesResult, totalTime, result)
     }
