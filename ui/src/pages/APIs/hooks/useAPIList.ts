@@ -1,3 +1,4 @@
+import { isUpdateBodyAction } from './../types/updateApiAction'
 import {
   isUpdateTimeAction,
   isUpdateMetaAction,
@@ -72,6 +73,11 @@ export const useAPIList = (): UseAPIReturns => {
             }
           })
         }
+      } else if (isUpdateBodyAction(action)) {
+        const { value } = action
+        _setAPIList(draft => {
+          draft[idx]['request']['body'] = value
+        })
       } else if (isUpdateResponseAction(action)) {
         _setAPIList(draft => {
           draft[idx]['response'] = action.response

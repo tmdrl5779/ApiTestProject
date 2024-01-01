@@ -68,9 +68,11 @@ Response
 ### 할 일
 
 - API 페이지 prop drilling 해결 
-- req url 창에 query params 보여지도록 변경
+
 - Suspense + Error Boundary 넣어서 선언적으로 컴포넌트 만들기
+
 - 스토리북 도입
+
 - 성능 테스트 페이지 들어가기
-- Tabs 리렌더링 최적화
-- Funnel 리팩토링 (불필요하게 상태로직, children 넣는 것 들어가 있는듯)
+
+  

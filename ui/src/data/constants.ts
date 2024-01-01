@@ -17,7 +17,7 @@ export const getDefaultFetchApiRequest = (): FetchApiRequest => ({
   httpMethod: 'GET',
   param: [getDefaultPayloadItem()],
   header: [getDefaultPayloadItem()],
-  body: [getDefaultPayloadItem()],
+  body: '{}',
 })
 
 export const getDefaultFetchApiResponse = (): FetchApiResponse => ({

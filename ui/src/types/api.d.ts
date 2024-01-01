@@ -13,13 +13,13 @@ declare module 'api-types' {
     httpMethod: string // get, post, put, delete, patch 중 하나
     param: PayloadItem[]
     header: PayloadItem[]
-    body: PayloadItem[]
+    body: string
   }
 
   export type BodyForFetchAPI = Omit<FetchApiRequest, 'param' | 'header' | 'body'> & {
     param: Dictionary<string>
     header: Dictionary<string>
-    body: Dictionary<string>
+    body: object
   }
 
   export interface FetchApiResponse {
@@ -30,9 +30,14 @@ declare module 'api-types' {
     cookies: Dictionary<string>
   }
 
+  export interface FetchApiResponseError {
+    code: string
+    message: string
+  }
+
   export interface IAPI {
     uuid: string
     request: FetchApiRequest
-    response: FetchApiResponse | null
+    response: FetchApiResponse | FetchApiResponseError | null
   }
 }

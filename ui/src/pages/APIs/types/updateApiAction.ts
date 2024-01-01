@@ -1,6 +1,11 @@
-import { FetchApiResponse } from 'api-types'
+import { FetchApiResponse, IAPI } from 'api-types'
 
-export type UpdateApiAction = UpdatePayloadAction | UpdateTimeAction | UpdateMetaAction | UpdateResponseAction
+export type UpdateApiAction =
+  | UpdatePayloadAction
+  | UpdateBodyAction
+  | UpdateTimeAction
+  | UpdateMetaAction
+  | UpdateResponseAction
 
 export type UpdateApiType = 'time' | 'payload' | 'meta' | 'response'
 
@@ -32,7 +37,7 @@ export type PayloadType = 'param' | 'header' | 'body'
 export type PayloadKeys = 'included' | 'key' | 'value' | 'description'
 
 export interface UpdatePayloadAction {
-  type: PayloadType
+  type: Exclude<PayloadType, 'body'>
   idx: number
   key: PayloadKeys
   value: string
@@ -43,8 +48,17 @@ export const isUpdatePayloadAction = (target: UpdateApiAction): target is Update
   return target?._tag === 'UpdatePayloadAction'
 }
 
+export interface UpdateBodyAction {
+  value: string
+  _tag: 'UpdateBodyAction'
+}
+
+export const isUpdateBodyAction = (target: UpdateApiAction): target is UpdateBodyAction => {
+  return target?._tag === 'UpdateBodyAction'
+}
+
 export interface UpdateResponseAction {
-  response: FetchApiResponse
+  response: IAPI['response']
   _tag: 'UpdateResponseAction'
 }
 

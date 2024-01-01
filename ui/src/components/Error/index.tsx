@@ -1,18 +1,22 @@
 import { color } from '@/data/variables.style'
+import { useDebounce } from '@/hooks/useDebounce'
 import { FrownOutlined } from '@ant-design/icons'
 import { css } from '@emotion/react'
-import { motion } from 'framer-motion'
-import { FC } from 'react'
+import { motion, useAnimate } from 'framer-motion'
+import { FC, ReactElement, useEffect } from 'react'
 
-export interface EmptyProps {
+export interface ErrorProps {
   message?: string
+  icon?: ReactElement
 }
 
-export const Error: FC<EmptyProps> = ({ message }) => {
+export const Error: FC<ErrorProps> = ({ message, icon }) => {
   return (
-    <motion.div css={errorCss} initial={{ y: -10 }} animate={{ y: 0 }}>
-      <FrownOutlined rev={'?'} style={{ fontSize: '100px' }} />
-      <span className="message">{message}</span>
+    <motion.div css={errorCss}>
+      <>
+        {icon === undefined ? <FrownOutlined rev={'?'} style={{ fontSize: '100px' }} /> : icon}
+        <span className="message">{message}</span>
+      </>
     </motion.div>
   )
 }

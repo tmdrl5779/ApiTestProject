@@ -5,7 +5,7 @@ import { Dictionary } from 'common-types'
 
 export function parseResponse(response: AxiosResponse): Promise<FetchApiResponse> {
   const { data, headers } = response
-  const { responseTime, status, body } = data
+  const { responseTime, status, body } = data[0]
   const _headers: Dictionary<any> = Object.entries(headers).reduce((acc, item) => {
     const [key, value] = item
     return { ...acc, [key]: value }

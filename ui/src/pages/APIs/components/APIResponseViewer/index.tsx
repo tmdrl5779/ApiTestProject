@@ -1,7 +1,8 @@
 import { Blinker, Funnel, Tabs, TabsItem, Error, ErrorBoundary } from '@/components'
 import { color, statusColor } from '@/data/variables.style'
+import { ApiOutlined } from '@ant-design/icons'
 import { css } from '@emotion/react'
-import { FetchApiResponse } from 'api-types'
+import { FetchApiResponse, FetchApiResponseError, IAPI } from 'api-types'
 import { FC, useCallback, useState } from 'react'
 import { Body } from './TabContent/Body'
 import { Cookies } from './TabContent/Cookies'
@@ -15,8 +16,12 @@ export const resTabItems: TabsItem[] = [
   // { title: 'Test Results', code: 'Test Results' },
 ]
 
+export const isResponseError = (response: IAPI['response']): response is FetchApiResponseError => {
+  return response !== null && 'code' in response && 'message' in response
+}
+
 interface APIResponseViewerProps {
-  response: FetchApiResponse | null
+  response: IAPI['response']
 }
 
 export const APIResponseViewer: FC<APIResponseViewerProps> = ({ response }) => {
@@ -25,9 +30,16 @@ export const APIResponseViewer: FC<APIResponseViewerProps> = ({ response }) => {
   const onSelectTab = useCallback((code: string) => {
     setSelectedTabCode(code)
   }, [])
-  // TODO: HOC 혹은 ErrorBoundary 활용하여 에러처리 부분 따로 빼주기
   if (response === null) {
-    return <Error message={'응답을 받기 위해 Send 버튼을 누르세요.'} />
+    return (
+      <Error
+        message={'응답을 받기 위해 Send 버튼을 누르세요.'}
+        icon={<ApiOutlined rev={'?'} style={{ fontSize: '100px' }} />}
+      />
+    )
+  }
+  if (isResponseError(response)) {
+    return <Error message={`${response.code}: ${response.message}`} />
   }
   return (
     <>

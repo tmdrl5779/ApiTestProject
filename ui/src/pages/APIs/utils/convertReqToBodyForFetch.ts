@@ -1,3 +1,4 @@
+import { parseStr2Json } from '@/utils'
 import { BodyForFetchAPI, FetchApiRequest } from 'api-types'
 import { Dictionary, PayloadItem } from 'common-types'
 
@@ -16,7 +17,7 @@ export const convertReqToBodyForFetch = (req: FetchApiRequest): BodyForFetchAPI 
   return {
     ...req,
     param: convertItemArrToObj(param),
-    body: convertItemArrToObj(body),
+    body: parseStr2Json(body),
     header: convertItemArrToObj(header),
   }
 }

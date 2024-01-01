@@ -31,12 +31,20 @@ export const APIDetail: FC<APIDetailProps> = ({ idx, api, updateAPI }) => {
       return fetchApi(convertReqToBodyForFetch(request))
     },
     onSuccess: (response: AxiosResponse) => {
-      // TODO: 상태만 변경하는게 아니라 recoil 상태를 바꿔야대
       parseResponse(response).then(parsedResponse => {
         updateAPI(idx)({
           response: parsedResponse,
           _tag: 'UpdateResponseAction',
         })
+      })
+    },
+    onError: (error: AxiosError) => {
+      updateAPI(idx)({
+        response: {
+          code: error.code ?? '',
+          message: error.message,
+        },
+        _tag: 'UpdateResponseAction',
       })
     },
   })

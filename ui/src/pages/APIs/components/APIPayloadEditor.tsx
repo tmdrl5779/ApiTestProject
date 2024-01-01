@@ -1,6 +1,7 @@
-import { Input, Tabs, TabsItem, WrappedChangeEventHandler } from '@/components'
+import { Blinker, Input, Tabs, TabsItem, WrappedChangeEventHandler } from '@/components'
 import { getDefaultPayloadItem } from '@/data/constants'
 import { color, overlayScrollBarYCss } from '@/data/variables.style'
+import { parseStr2Json } from '@/utils'
 import { UseAPIReturns } from '@/hooks'
 import { css } from '@emotion/react'
 import { IAPI } from 'api-types'
@@ -10,6 +11,10 @@ import { Draft } from 'immer'
 import { ChangeEventHandler, FC, memo, useCallback, useEffect, useMemo, useState } from 'react'
 import { tableHeaders } from '../data/constants'
 import { PayloadType, PayloadKeys } from '../types'
+import Ajv from 'ajv'
+import Editor from '@monaco-editor/react'
+
+const ajv = new Ajv({ allErrors: true, verbose: true })
 
 export const reqTabItems: Array<TabsItem & { key: PayloadType }> = [
   { title: 'Params', code: 'Params', key: 'param' },
@@ -22,7 +27,6 @@ interface APIPayloadEditorProps {
   api: IAPI
 }
 
-// TODO: table 따로 component로 빼서 사용
 export const APIPayloadEditor: FC<APIPayloadEditorProps> = ({ updateAPI, api }) => {
   const [selectedReqTab, setSelectedReqTab] = useState(reqTabItems[0])
 
@@ -31,7 +35,7 @@ export const APIPayloadEditor: FC<APIPayloadEditorProps> = ({ updateAPI, api }) 
   }, [])
 
   const onChangeCell = useCallback(
-    (type: PayloadType, idx: number) => (key: PayloadKeys, value: string) => {
+    (type: Exclude<PayloadType, 'body'>, idx: number) => (key: PayloadKeys, value: string) => {
       updateAPI({
         type,
         idx,
@@ -45,11 +49,24 @@ export const APIPayloadEditor: FC<APIPayloadEditorProps> = ({ updateAPI, api }) 
 
   const payloadType = useMemo(() => selectedReqTab.key as PayloadType, [selectedReqTab])
 
-  const payloadArrLen = api['request'][payloadType].length
+  const payloadArrLen = payloadType === 'body' ? 0 : api['request'][payloadType].length
 
   const onChangeCells = useMemo(
-    () => new Array(payloadArrLen).fill('_').map((_, idx) => onChangeCell(payloadType, idx)),
+    () =>
+      new Array(payloadArrLen)
+        .fill('_')
+        .map((_, idx) => (payloadType === 'body' ? () => {} : onChangeCell(payloadType, idx))),
     [payloadArrLen, onChangeCell, payloadType]
+  )
+
+  const onChangeBody = useCallback(
+    (value: string | undefined) => {
+      updateAPI({
+        value: value ?? '',
+        _tag: 'UpdateBodyAction',
+      })
+    },
+    [updateAPI]
   )
 
   return (
@@ -62,12 +79,28 @@ export const APIPayloadEditor: FC<APIPayloadEditorProps> = ({ updateAPI, api }) 
         type="line"
         tabPosition="top"
       />
-      <Header />
-      <motion.ul css={tableCss} layout key="API-payload-editor">
-        {api['request'][payloadType].map((_, idx) => (
-          <Row key={idx} onChangeCell={onChangeCells[idx]} data={api['request'][payloadType][idx]} />
-        ))}
-      </motion.ul>
+      <Blinker _key={selectedReqTab.code} _css={[tableCss, bodyEditorWrapperCss]}>
+        {payloadType === 'body' ? (
+          <Editor
+            height="100%"
+            theme="vs-dark"
+            language="json"
+            defaultLanguage="json"
+            defaultValue={api['request'].body}
+            onChange={onChangeBody}
+            loading={<></>}
+          />
+        ) : (
+          <>
+            <Header />
+            <motion.ul css={tableCss} layout key="API-payload-editor">
+              {api['request'][payloadType].map((_, idx) => (
+                <Row key={idx} onChangeCell={onChangeCells[idx]} data={api['request'][payloadType][idx]} />
+              ))}
+            </motion.ul>
+          </>
+        )}
+      </Blinker>
     </>
   )
 }
@@ -130,6 +163,12 @@ const Cell = memo(
     )
   }
 )
+
+const bodyEditorWrapperCss = css`
+  height: calc(100% - 40px - 8px - 40px);
+  min-height: calc(100% - 40px - 8px - 40px);
+  max-height: calc(100% - 40px - 8px - 40px);
+`
 
 //TODO: 하드코딩으로 높이 계산 ㄴㄴ flex auto grid 이런걸로 바꾸기
 const tableCss = css`
