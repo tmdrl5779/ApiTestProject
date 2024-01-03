@@ -45,7 +45,7 @@ class AdaptorService(
 
         when (requestDataList.performType) {
             PerformType.SEQ -> {
-                for (i in 1..requestList.size) {
+                for (i in 0 until requestList.size) {
                     val responseWithTime = async { responseWithTime(requestList[i]) }
                     val deferredValue = responseWithTime.await()
 
@@ -60,7 +60,7 @@ class AdaptorService(
                 log.info("Response Data Info : $responseDataList")
 
                 //send to websocket
-                session.send(Mono.just(session.textMessage(objectMapper.writeValueAsString(responseDataList))))
+                session.send(Mono.just(session.textMessage(objectMapper.writeValueAsString(responseDataList)))).subscribe()
 
             }
             PerformType.CONCUR -> {
@@ -82,8 +82,7 @@ class AdaptorService(
                 log.info("Response Data Info : $responseDataList")
 
                 //send to websocket
-                session.send(Mono.just(session.textMessage(objectMapper.writeValueAsString(responseDataList))))
-                    .subscribe()
+                session.send(Mono.just(session.textMessage(objectMapper.writeValueAsString(responseDataList)))).subscribe()
 
             }
             else -> {
