@@ -36,8 +36,8 @@ class AdaptorService(
     suspend fun responsesForPerForm(
         requestDataList: RequestDataList,
         session: WebSocketSession,
-        i: Int
-    ): ResponseDataList = coroutineScope {
+        userIdx: Int
+    ) = coroutineScope {
         val requestList = requestDataList.requestList
         var responsesResult = mutableListOf<ResponseData>()
         var totalTime: Long = 0
@@ -49,35 +49,24 @@ class AdaptorService(
                     val responseWithTime = async { responseWithTime(requestList[i]) }
                     val deferredValue = responseWithTime.await()
 
-                    val responseDataWithUser = ResponseDataWithUser("USER-$i", deferredValue)
-
-                    log.info("Response Data Info : $responseDataWithUser")
-
-                    //send to websocket
-                    session.send(Mono.just(session.textMessage(objectMapper.writeValueAsString(responseDataWithUser))))
-
                     responsesResult.add(deferredValue)
                     totalTime += deferredValue.responseTime
                     if (deferredValue.status != HttpStatus.OK.toString()) {
                         result = false
                     }
                 }
+
+                var responseDataList = ResponseDataList(responsesResult, totalTime, result, "USER-$userIdx")
+                log.info("Response Data Info : $responseDataList")
+
+                //send to websocket
+                session.send(Mono.just(session.textMessage(objectMapper.writeValueAsString(responseDataList))))
+
             }
             PerformType.CONCUR -> {
                 totalTime = measureTimeMillis {
                     val deferredValue = requestList.map { async { responseWithTime(it) } }
                     val totalResponseWithTime = deferredValue.awaitAll()
-
-                    //send to websocket
-                    totalResponseWithTime.forEach {
-                        val responseDataWithUser = ResponseDataWithUser("USER-$i", it)
-
-                        log.info("Response Data Info : $responseDataWithUser")
-
-                        //send to websocket
-                        session.send(Mono.just(session.textMessage(objectMapper.writeValueAsString(responseDataWithUser))))
-                            .subscribe()
-                    }
 
                     responsesResult = totalResponseWithTime as MutableList<ResponseData>
                 }
@@ -89,16 +78,18 @@ class AdaptorService(
                     }
                 }
 
+                var responseDataList = ResponseDataList(responsesResult, totalTime, result, "USER-$userIdx")
+                log.info("Response Data Info : $responseDataList")
+
+                //send to websocket
+                session.send(Mono.just(session.textMessage(objectMapper.writeValueAsString(responseDataList))))
+                    .subscribe()
+
             }
             else -> {
                 throw Exception()
             }
         }
-
-//        log.info("Response API result : $responsesResult")
-//        log.info("Total API Call Time : $totalTime")
-
-        ResponseDataList(responsesResult, totalTime, result)
     }
 
     suspend fun responsesForCallApi(requestData: RequestData): MutableList<ResponseData> = coroutineScope {

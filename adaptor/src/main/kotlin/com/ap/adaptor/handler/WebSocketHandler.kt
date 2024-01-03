@@ -63,11 +63,9 @@ class WebSocketHandler(
     private suspend fun callApi(performData: PerformData, session: WebSocketSession) {
         coroutineScope {
             val userCallApiTime = measureTimeMillis{
-                val deferredValue = List(performData.userCount) {
+                List(performData.userCount) {
                     async { adaptorService.responsesForPerForm(performData.requestDataList, session, it) }
                 }
-                val totalResponseWithTime = deferredValue.awaitAll()
-//                totalResponseWithTime.forEach{session.send(Mono.just(session.textMessage(it.toString()))).subscribe()}
             }
 
             log.info("User ${performData.userCount} finish API Call Total Time : $userCallApiTime")
@@ -77,7 +75,6 @@ class WebSocketHandler(
     private suspend fun parseRequestData(payload: String): PerformData? = withContext(Dispatchers.IO){
         try{
             if(payload.isNotBlank()){
-//                val objectMapper = jacksonObjectMapper()
                 val map = objectMapper.readValue(payload, MutableMap::class.java)
 
                 val performData: PerformData = objectMapper.convertValue(map, PerformData::class.java)
