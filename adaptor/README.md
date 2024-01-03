@@ -70,9 +70,8 @@
 
 - Response
 ```
-{
-    "userId": "USER-6",
-    "response": {
+{  
+    "responseList": [{
         "responseTime": 1687,
         "body": {
             "userId": 1,
@@ -81,7 +80,10 @@
             "completed": false
         },
         "status": "200 OK"
-    }
+    }],
+    "totalTime" : 10,
+    "result" : true,
+    "userId": "USER-6"
 }
 ```
 
