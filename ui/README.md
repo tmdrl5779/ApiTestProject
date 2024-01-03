@@ -73,7 +73,7 @@ Response
         "requestList" : [
             {
                 "time": {},
-                "count": 1,
+                "count": 1, //검증 테스트시에는 1로 고정
                 "url" : "https://jsonplaceholder.typicode.com/todos/1",
                 "httpMethod" : "GET",
                 "param" : {},
