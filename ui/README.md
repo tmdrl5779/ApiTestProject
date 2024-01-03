@@ -7,7 +7,17 @@
 
 ![image-20230614235105261](README.assets/image-20230614235105261.png)
 
-### API Call 규격
+
+
+API 검증 화면
+
+![image](https://github.com/tmdrl5779/ApiTestProject/assets/45285712/9baa6281-a860-4b46-bde1-91291d1e7050)
+![image](https://github.com/tmdrl5779/ApiTestProject/assets/45285712/78a66625-befa-45f6-92fe-198dd98ef304)
+
+
+
+
+### API Call 규격 : /api/call
 
 Request
 
@@ -49,6 +59,51 @@ Response
   ... //Request의 count횟수 만큼 list에 담아서 전달
 ]
 ```
+
+
+### API 검증 규격 (웹 소켓) : /api/perform/socket-connect
+- Request
+```
+{
+    "userCount": 10,
+    "repeatCount": 1,
+    "interval" : 0,
+    "requestDataList" : {
+        "performType" : "CONCUR",
+        "requestList" : [
+            {
+                "time": {},
+                "count": 1, //검증 테스트시에는 1로 고정
+                "url" : "https://jsonplaceholder.typicode.com/todos/1",
+                "httpMethod" : "GET",
+                "param" : {},
+                "header" : {},
+                "body" : {}
+            }
+        ]
+    }
+}
+```
+
+- Response
+```
+{  
+    "responseList": [{
+        "responseTime": 1687,
+        "body": {
+            "userId": 1,
+            "id": 1,
+            "title": "delectus aut autem",
+            "completed": false
+        },
+        "status": "200 OK"
+    }],
+    "totalTime" : 10,
+    "result" : true,
+    "userId": "USER-6"
+}
+```
+
 
 ### 컴포넌트 기반 개발
 
