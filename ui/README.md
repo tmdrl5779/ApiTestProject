@@ -17,7 +17,7 @@ API 검증 화면
   2. 이때 동시성 활성화 > 설정한 API가 어려개면 User는 API를 동시에 호출
   3. 이때 동시성 비활성화 > 설정한 API가 어려개면 User는 API를 순차적에 호출
   4. User 2명의 호출이 다 완료되면 인터벌 시간만큼 대기
-  5. 반복 횟수 만큼 1~3번 반복 
+  5. 반복 횟수 만큼 1~4번 반복 
 
 ![image](https://github.com/tmdrl5779/ApiTestProject/assets/45285712/3ec20a2b-3eb1-453d-9c29-2deae65b45db)
 ![image](https://github.com/tmdrl5779/ApiTestProject/assets/45285712/78a66625-befa-45f6-92fe-198dd98ef304)
