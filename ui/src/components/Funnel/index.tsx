@@ -2,11 +2,8 @@ import { useContext } from '@/utils/RobustContext'
 import { useState } from 'react'
 import { FunnelContext } from './FunnelContext'
 
-//먼저 사용할 떄 모습
-
 export interface FunnelProps {
   step: string
-  steps: string[]
   children: React.ReactNode
 }
 
@@ -14,7 +11,7 @@ export interface FunnelComposition {
   Step: typeof Step
 }
 
-export const Funnel: React.FC<FunnelProps> & FunnelComposition = ({ steps, step, children }) => {
+export const Funnel: React.FC<FunnelProps> & FunnelComposition = ({ step, children }) => {
   return <FunnelContext.Provider value={{ step }}>{children}</FunnelContext.Provider>
 }
 

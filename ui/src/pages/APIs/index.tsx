@@ -7,6 +7,17 @@ import { useAPIList } from '@/hooks'
 import { genearteUUID } from '@/utils'
 import { APIDetail } from './components/APIDetail'
 import { IAPI } from 'api-types'
+import { height } from './rect'
+
+const renderAPITabTitle = (title: string) => {
+  const [httpMethod, ...rest] = title.split(' ')
+  const url = rest.join(' ')
+  return (
+    <span>
+      <span style={{ color: `${methodColor[httpMethod]}` }}>{httpMethod}</span> {url === '' ? 'Untitled Request' : url}
+    </span>
+  )
+}
 
 export const APIs: React.FC = () => {
   const { APIList, createAPI, deleteAPI, updateAPI } = useAPIList()
@@ -21,18 +32,6 @@ export const APIs: React.FC = () => {
     [APIList]
   )
 
-  const renderAPITabTitle = useCallback((title: string) => {
-    const [httpMethod, ...rest] = title.split(' ')
-    const url = rest.join(' ')
-    return (
-      <span>
-        <span style={{ color: `${methodColor[httpMethod]}` }}>{httpMethod}</span>{' '}
-        {url === '' ? 'Untitled Request' : url}
-      </span>
-    )
-  }, [])
-
-  // TODO: 이게 여깄으면 안되고 Tab쪽으로 가야할 듯
   const onDeleteTab = useCallback(
     (idx: number) => {
       if (APITabItems[idx].code === selectedTabCode) {
@@ -55,7 +54,7 @@ export const APIs: React.FC = () => {
   }, [])
 
   return (
-    <>
+    <div css={apiMainCss}>
       <Tabs
         items={APITabItems}
         selectedCode={selectedTabCode}
@@ -68,15 +67,25 @@ export const APIs: React.FC = () => {
         editable
         renderTabTitle={renderAPITabTitle}
       />
-      <Blinker _key={selectedTabCode} style={{ height: 'calc(100% - 40px)' }}>
-        <Funnel steps={APITabItems.map(item => item.code)} step={selectedTabCode}>
-          {APIList.map((API, idx) => (
-            <Funnel.Step key={API.uuid} name={API.uuid}>
-              {<APIDetail api={API} idx={idx} updateAPI={updateAPI} />}
-            </Funnel.Step>
-          ))}
-        </Funnel>
-      </Blinker>
-    </>
+      <div css={apiContentCss}>
+        <Blinker _key={selectedTabCode}>
+          <Funnel step={selectedTabCode}>
+            {APIList.map((API, idx) => (
+              <Funnel.Step key={API.uuid} name={API.uuid}>
+                {<APIDetail api={API} idx={idx} updateAPI={updateAPI} />}
+              </Funnel.Step>
+            ))}
+          </Funnel>
+        </Blinker>
+      </div>
+    </div>
   )
 }
+
+const apiMainCss = css`
+  height: 100%;
+`
+
+const apiContentCss = css`
+  height: calc(100% - ${height.apiTabs});
+`

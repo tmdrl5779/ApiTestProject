@@ -1,48 +1,46 @@
-import { Blinker, Funnel, Tabs, TabsItem, Error, ErrorBoundary } from '@/components'
+import { Blinker, Funnel, Tabs, TabsItem, ErrorBoundary, Info, Error } from '@/components'
+import { ApiOutlinedBigIcon } from '@/data/icons'
 import { color, statusColor } from '@/data/variables.style'
 import { ApiOutlined } from '@ant-design/icons'
 import { css } from '@emotion/react'
 import { FetchApiResponse, FetchApiResponseError, IAPI } from 'api-types'
 import { FC, useCallback, useState } from 'react'
-import { Body } from './TabContent/Body'
-import { Cookies } from './TabContent/Cookies'
-import { Headers } from './TabContent/Headers'
-import { TestResults } from './TabContent/TestResults'
+import { Body } from './Body'
+import { Cookies } from './Cookies'
+import { Headers } from './Headers'
 
 export const resTabItems: TabsItem[] = [
   { title: 'Body', code: 'Body' },
   { title: 'Cookies', code: 'Cookies' },
   { title: 'Headers', code: 'Headers' },
-  // { title: 'Test Results', code: 'Test Results' },
 ]
 
-export const isResponseError = (response: IAPI['response']): response is FetchApiResponseError => {
-  return response !== null && 'code' in response && 'message' in response
+const isError = (response: IAPI['response']): response is FetchApiResponseError => {
+  return response !== null && 'name' in response && 'message' in response
 }
 
-interface APIResponseViewerProps {
+const apiError = {
+  name: 'API 에러',
+  message: 'API 요청 중에 오류가 발생했어요.',
+}
+
+export interface APIResponseViewerProps {
   response: IAPI['response']
 }
 
 export const APIResponseViewer: FC<APIResponseViewerProps> = ({ response }) => {
-  // TODO: props 다 주지말고 context 쓰자
   const [selectedTabCode, setSelectedTabCode] = useState(resTabItems[0].code)
   const onSelectTab = useCallback((code: string) => {
     setSelectedTabCode(code)
   }, [])
   if (response === null) {
-    return (
-      <Error
-        message={'응답을 받기 위해 Send 버튼을 누르세요.'}
-        icon={<ApiOutlined rev={'?'} style={{ fontSize: '100px' }} />}
-      />
-    )
+    return <Info message={'응답을 받기 위해 Send 버튼을 눌러주세요.'} icon={<ApiOutlinedBigIcon />} />
   }
-  if (isResponseError(response)) {
-    return <Error message={`${response.code}: ${response.message}`} />
+  if (isError(response)) {
+    return <Error error={response} />
   }
   return (
-    <>
+    <div css={apiResponseMainCss}>
       <Tabs
         items={resTabItems}
         selectedCode={selectedTabCode}
@@ -60,8 +58,8 @@ export const APIResponseViewer: FC<APIResponseViewerProps> = ({ response }) => {
           Time: <span className="data">{response.responseTime} ms</span>
         </span>
       </div>
-      <Blinker _key={selectedTabCode} _css={blinkerCss}>
-        <Funnel steps={resTabItems.map(item => item.code)} step={selectedTabCode}>
+      <Blinker _key={selectedTabCode}>
+        <Funnel step={selectedTabCode}>
           <Funnel.Step name="Body">
             <Body body={response.body} />
           </Funnel.Step>
@@ -71,17 +69,14 @@ export const APIResponseViewer: FC<APIResponseViewerProps> = ({ response }) => {
           <Funnel.Step name="Headers">
             <Headers headers={response.headers} />
           </Funnel.Step>
-          {/* <Funnel.Step name="Test Results">
-            <TestResults />
-          </Funnel.Step> */}
         </Funnel>
       </Blinker>
-    </>
+    </div>
   )
 }
 
-const blinkerCss = css`
-  height: calc(100% - 52px);
+const apiResponseMainCss = css`
+  height: 100%;
 `
 
 const statusCss = css`

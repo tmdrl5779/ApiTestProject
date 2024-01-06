@@ -43,3 +43,9 @@ export const CloseOutlinedIcon: React.FC<EmptyObj> = () => <CloseOutlined rev={'
 export const LeftOutlinedIcon: React.FC<EmptyObj> = () => <LeftOutlined rev={'?'} />
 
 export const RightOutlinedIcon: React.FC<EmptyObj> = () => <RightOutlined rev={'?'} />
+
+const bigIconStyle = {
+  fontSize: '100px',
+}
+
+export const ApiOutlinedBigIcon: React.FC<EmptyObj> = () => <ApiOutlined rev={'?'} style={bigIconStyle} />

@@ -23,16 +23,18 @@ module.exports = {
     'plugin:jest-dom/recommended',
   ],
   plugins: ['@typescript-eslint', 'import', 'prettier', 'react', 'react-hooks', 'testing-library', 'jest-dom'],
-  overrides: [{
-    files: ['**/__tests__/**/*.[jt]s?(x)', '**/?(*.)+(spec|test).[jt]s?(x)'],
-    extends: ['plugin:testing-library/react'],
-  }],
+  overrides: [
+    {
+      files: ['**/__tests__/**/*.[jt]s?(x)', '**/?(*.)+(spec|test).[jt]s?(x)'],
+      extends: ['plugin:testing-library/react'],
+    },
+  ],
   settings: { react: { version: 'detect' } },
 
   rules: {
     'prettier/prettier': ['error', { endOfLine: 'auto', semi: false }],
     'no-implicit-coercion': 'error',
-    'react/no-unknown-property': ['error', {'ignore': ['css']}],
+    'react/no-unknown-property': ['error', { ignore: ['css'] }],
     'no-undef': 'off',
 
     indent: 'off',
@@ -105,7 +107,7 @@ module.exports = {
     'no-warning-comments': [
       'warn',
       {
-        terms: ['TODO', 'FIXME', 'XXX', 'BUG'],
+        terms: ['TODO', 'FIXME', 'XXX', 'BUG', 'POST'],
         location: 'anywhere',
       },
     ],

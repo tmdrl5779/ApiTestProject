@@ -1,4 +1,4 @@
-import { Error, Table } from '@/components'
+import { Error, Info, Table } from '@/components'
 import { useObjectEntries } from '@/hooks'
 import { FetchApiResponse } from 'api-types'
 import { FC, useMemo } from 'react'
@@ -11,7 +11,7 @@ interface CookiesProps {
 export const Cookies: FC<CookiesProps> = ({ cookies }) => {
   const cookiesArr = useObjectEntries(cookies)
   if (cookies === null) {
-    return <Error message={'Cookie가 없습니다...'} />
+    return <Info message={'Cookie가 없습니다.'} />
   }
   return (
     <div css={tableWrapperScrollableCss}>

@@ -1,4 +1,4 @@
-import { Select, Tabs, TabsItem, WrappedChangeEventHandler } from '@/components'
+import { Blinker, Select, Tabs, TabsItem, WrappedChangeEventHandler } from '@/components'
 import { color, overlayScrollBarYCss } from '@/data/variables.style'
 import { css } from '@emotion/react'
 import { FetchApiResponse } from 'api-types'
@@ -19,7 +19,6 @@ interface BodyProps {
   body: FetchApiResponse['body']
 }
 
-// TODO: Tabs + Blinker + Funnel + useState로 tab선택로직 관리까지 묶어서 하나로 쓰자
 export const Body: FC<BodyProps> = ({ body }) => {
   const [resBodyTypeCode, setResBodyTypeCode] = useState(resBodyTypes[0].code)
 
@@ -55,21 +54,22 @@ export const Body: FC<BodyProps> = ({ body }) => {
           />
         ) : null}
       </div>
-      {/* TODO: Funnel 널까말까 */}
       <div css={bodyContentCss}>
-        {resBodyTypeCode === 'Pretty' ? (
-          <>
-            {prettierType === 'JSON' ? (
-              <JSONPretty
-                id="json-pretty"
-                data={body}
-                mainStyle={`margin: 0; background: ${color.background}`}
-              ></JSONPretty>
-            ) : null}
-          </>
-        ) : (
-          <p>{stringifiedBody}</p>
-        )}
+        <Blinker _key={resBodyTypeCode}>
+          {resBodyTypeCode === 'Pretty' ? (
+            <>
+              {prettierType === 'JSON' ? (
+                <JSONPretty
+                  id="json-pretty"
+                  data={body}
+                  mainStyle={`margin: 0; background: ${color.background}`}
+                ></JSONPretty>
+              ) : null}
+            </>
+          ) : (
+            <p>{stringifiedBody}</p>
+          )}
+        </Blinker>
       </div>
     </>
   )

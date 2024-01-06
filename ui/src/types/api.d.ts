@@ -31,7 +31,7 @@ declare module 'api-types' {
   }
 
   export interface FetchApiResponseError {
-    code: string
+    name: string
     message: string
   }
 

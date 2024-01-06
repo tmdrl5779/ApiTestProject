@@ -130,9 +130,9 @@ Response
 
 ### 할 일
 
-- API 페이지 prop drilling 해결 
+- 재렌더링 이슈
 
-- Suspense + Error Boundary 넣어서 선언적으로 컴포넌트 만들기
+- 다크모드
 
 - 스토리북 도입
 

@@ -8,6 +8,7 @@ import { AnimatePresence, motion } from 'framer-motion'
 import { css } from '@emotion/react'
 import { Blinker, Tabs } from './components'
 import { RecoilRoot } from 'recoil'
+import { GlobalErrorBoundary } from './components/ErrorBoundary/GloablErrorBoundary'
 
 const navItems = [
   {
@@ -33,31 +34,35 @@ function App() {
     setSelectedItemCode(code)
   }, [])
   return (
-    <RecoilRoot>
-      <div className="App">
-        <GNB>API Test</GNB>
-        <Layout style={{ flexDirection: 'row' }}>
-          <SNB>
-            <Tabs items={navItems} onSelect={onSelect} tabPosition="right" style={{ overflowX: 'hidden' }} />
-          </SNB>
-          <Content>
-            <Blinker _key={selectedItemCode} _css={contentWrapperCss}>
-              <Funnel steps={navItems.map(item => item.code)} step={selectedItemCode}>
-                <Funnel.Step name="callApi">
-                  <APIs />
-                </Funnel.Step>
-                <Funnel.Step name="performanceTest">
-                  <PerformTest />
-                </Funnel.Step>
-                <Funnel.Step name="mergeApi">
-                  <APIMerge />
-                </Funnel.Step>
-              </Funnel>
-            </Blinker>
-          </Content>
-        </Layout>
-      </div>
-    </RecoilRoot>
+    <GlobalErrorBoundary>
+      <RecoilRoot>
+        <div className="App">
+          <GNB>API Test</GNB>
+          <Layout style={{ flexDirection: 'row' }}>
+            <SNB>
+              <Tabs items={navItems} onSelect={onSelect} tabPosition="right" style={{ overflowX: 'hidden' }} />
+            </SNB>
+            <Content>
+              <div css={contentWrapperCss}>
+                <Blinker _key={selectedItemCode}>
+                  <Funnel step={selectedItemCode}>
+                    <Funnel.Step name="callApi">
+                      <APIs />
+                    </Funnel.Step>
+                    <Funnel.Step name="performanceTest">
+                      <PerformTest />
+                    </Funnel.Step>
+                    <Funnel.Step name="mergeApi">
+                      <APIMerge />
+                    </Funnel.Step>
+                  </Funnel>
+                </Blinker>
+              </div>
+            </Content>
+          </Layout>
+        </div>
+      </RecoilRoot>
+    </GlobalErrorBoundary>
   )
 }
 
