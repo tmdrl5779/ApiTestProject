@@ -8,7 +8,6 @@ interface IAPIValuesContext {
 
 interface IAPIActionsContext {
   updateSingleAPI: ReturnType<UseAPIReturns['updateAPI']>
-  setIsFetching: React.Dispatch<React.SetStateAction<boolean>>
 }
 
 export const APIValuesContext = createContext<IAPIValuesContext>()
@@ -18,6 +17,6 @@ APIActionsContext.displayName = 'APIActionsContext'
 
 export const useAPIContext = (): IAPIValuesContext & IAPIActionsContext => {
   const { api } = useContext(APIValuesContext)
-  const { updateSingleAPI, setIsFetching } = useContext(APIActionsContext)
-  return { api, updateSingleAPI, setIsFetching }
+  const { updateSingleAPI } = useContext(APIActionsContext)
+  return { api, updateSingleAPI }
 }

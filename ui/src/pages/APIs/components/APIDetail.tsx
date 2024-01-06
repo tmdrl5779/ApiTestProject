@@ -1,14 +1,12 @@
 import { ErrorBoundary, Loader } from '@/components'
 import { color } from '@/data/variables.style'
-import { UseAPIReturns } from '@/hooks'
 import { css } from '@emotion/react'
 import { IAPI } from 'api-types'
 import { FC, useMemo, useState } from 'react'
-import { padding } from '../rect'
-import { APIValuesContext, APIActionsContext } from './APIContext'
-import { APIContoller } from './APIController'
-import { APIPayloadEditor } from './APIPayloadEditor'
+import { APIValuesContext, APIActionsContext, padding, UseAPIReturns } from '@/features/API'
+
 import { APIResponseViewer } from './APIResponseViewer'
+import { APIRequestEditor } from '@/features/API/components/APIRequestEditor'
 
 interface APIDetailProps {
   idx: number
@@ -23,12 +21,15 @@ export const APIDetail: FC<APIDetailProps> = ({ idx, api, updateAPI }) => {
 
   return (
     <APIValuesContext.Provider value={{ api }}>
-      <APIActionsContext.Provider value={{ updateSingleAPI, setIsFetching }}>
+      <APIActionsContext.Provider value={{ updateSingleAPI }}>
         <div css={apiDetailMainCss}>
           <section css={reqSectionCss}>
-            <ErrorBoundary>
-              <APIContoller />
+            {/* <ErrorBoundary>
+              <APIContoller setIsFetching={setIsFetching} />
               <APIPayloadEditor />
+            </ErrorBoundary> */}
+            <ErrorBoundary>
+              <APIRequestEditor api={api} idx={idx} updateAPI={updateAPI} />
             </ErrorBoundary>
           </section>
           <section css={resSectionCss}>

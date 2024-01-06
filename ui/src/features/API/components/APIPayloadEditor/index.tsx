@@ -5,10 +5,10 @@ import { motion } from 'framer-motion'
 import { FC, useCallback, useMemo, useState } from 'react'
 import { PayloadType, PayloadKeys } from '../../types'
 import Editor from '@monaco-editor/react'
-import { useAPIContext } from '../APIContext'
+import { useAPIContext } from '../../APIContext'
 import { Row } from './Row'
 import { Header } from './Header'
-import { height, padding } from '../../rect'
+import { height, padding } from '../../data/rect'
 
 export const reqTabItems: Array<TabsItem & { key: PayloadType }> = [
   { title: 'Params', code: 'Params', key: 'param' },

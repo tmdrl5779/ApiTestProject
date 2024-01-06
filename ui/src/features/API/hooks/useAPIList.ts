@@ -1,4 +1,4 @@
-import { isUpdateBodyAction } from './../types/updateApiAction'
+import { isUpdateBodyAction } from '../types/updateApiAction'
 import {
   isUpdateTimeAction,
   isUpdateMetaAction,
@@ -9,11 +9,15 @@ import {
   isUpdateResponseAction,
 } from '../types'
 import { getDefaultAPI, getDefaultPayloadItem } from '../../../data/constants'
-import { APIListState } from '@/data/store'
+import { APIListForTestState, APIListState } from '@/data/store'
 import { useCallback } from 'react'
 import { useRecoilState } from 'recoil'
 import { IAPI } from 'api-types'
 import { produce, Draft } from 'immer'
+
+export interface UseAPIProps {
+  type: 'Call' | 'Test'
+}
 
 export interface UseAPIReturns {
   APIList: IAPI[]
@@ -22,8 +26,8 @@ export interface UseAPIReturns {
   updateAPI: (idx: number) => (action: UpdateApiAction) => void
 }
 
-export const useAPIList = (): UseAPIReturns => {
-  const [APIList, setAPIList] = useRecoilState(APIListState)
+export const useAPIList = ({ type = 'Call' }: UseAPIProps): UseAPIReturns => {
+  const [APIList, setAPIList] = useRecoilState(type === 'Call' ? APIListState : APIListForTestState)
 
   const _setAPIList = useCallback(
     (recipe: (draft: Draft<IAPI[]>) => void): void => {

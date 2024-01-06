@@ -1,20 +1,23 @@
 import { Button, Input, Select, WrappedChangeEventHandler } from '@/components'
 import { fetchApi } from '@/remotes/fetchApi'
-import { useContext } from '@/utils/RobustContext'
 import { css } from '@emotion/react'
 import { FetchApiRequest, FetchApiResponse, IAPI } from 'api-types'
 import { AxiosError, AxiosResponse } from 'axios'
 import { FC, useCallback, useEffect } from 'react'
 import { useMutation } from 'react-query'
 import { httpMethods } from '../data/constants'
-import { height, width } from '../rect'
+import { height, width } from '../data/rect'
 import { convertReqToBodyForFetch } from '../utils/convertReqToBodyForFetch'
 import { parseResponse } from '../utils/parseResponse'
-import { useAPIContext } from './APIContext'
+import { useAPIContext } from '../APIContext'
 
-export const APIContoller: FC = () => {
-  const { api, updateSingleAPI, setIsFetching } = useAPIContext()
+interface APIControllerProps {
+  hasFetchFunc?: boolean
+  setIsFetching?: React.Dispatch<React.SetStateAction<boolean>>
+}
 
+export const APIContoller: FC<APIControllerProps> = ({ hasFetchFunc = true, setIsFetching }) => {
+  const { api, updateSingleAPI } = useAPIContext()
   const apiMutation = useMutation<AxiosResponse, AxiosError, FetchApiRequest, FetchApiResponse>({
     mutationFn: (request: IAPI['request']) => {
       return fetchApi(convertReqToBodyForFetch(request))
@@ -42,7 +45,7 @@ export const APIContoller: FC = () => {
   const { isLoading } = apiMutation
 
   useEffect(() => {
-    setIsFetching(isLoading)
+    setIsFetching?.(isLoading)
   }, [isLoading, setIsFetching])
 
   const onClickSendButton = useCallback(() => {
@@ -79,9 +82,11 @@ export const APIContoller: FC = () => {
         placeholder="Request URL을 입력해주세요."
         onChange={onChangeUrl}
       />
-      <Button onClick={onClickSendButton} className="send-button" disabled={isLoading}>
-        {isLoading ? 'Sending...' : 'Send'}
-      </Button>
+      {hasFetchFunc ? (
+        <Button onClick={onClickSendButton} className="send-button" disabled={isLoading}>
+          {isLoading ? 'Sending...' : 'Send'}
+        </Button>
+      ) : null}
     </div>
   )
 }

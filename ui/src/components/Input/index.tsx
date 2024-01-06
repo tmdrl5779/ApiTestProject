@@ -13,7 +13,9 @@ export interface InputProps extends ComponentCommonProps {
   autoComplete?: string
   type?: HTMLInputTypeAttribute
   checked?: boolean
-  value?: string
+  value?: string | number
+  min?: number
+  max?: number
 }
 
 const Input: React.FC<InputProps> = ({
@@ -27,6 +29,8 @@ const Input: React.FC<InputProps> = ({
   type = 'text',
   value,
   checked,
+  min,
+  max,
 }) => {
   const [uuid, _] = useState(genearteUUID())
   const mergedCss = mergeCss([inputCss, _css, type === 'checkbox' ? checkboxCss : undefined].flatMap(e => e))
@@ -61,6 +65,8 @@ const Input: React.FC<InputProps> = ({
         autoComplete={autoComplete}
         css={mergedCss}
         id={uuid}
+        min={min}
+        max={max}
         {...animation}
       />
       <label htmlFor={uuid}></label>
