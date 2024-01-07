@@ -183,3 +183,8 @@ REST API
 
 > 테스트 조건 실패
 - FAIL -> 이유 확인
+  
+# 기능
+- connection 에러 수정
+- interval
+- 1000 동시
