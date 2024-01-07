@@ -179,6 +179,7 @@ Response
   - 재렌더링 이슈
   - 드래그해서 res, req탭 높이 조정
   - 쿠키,헤더 받아오는걸로 넣어야댐
+  - 빈 url일 때 못보내게 하기
 
 - 성능 테스트
 
@@ -186,12 +187,16 @@ Response
     - 아코디언 렉 졸라 심한거 고치기
     - api 아코디언에 삭제 버튼 달기
     - api 2개 말고 1개로
+    - input 창 불편함
+    - 빈 url일 때 못보내게 하기
   - 결과 페이지
     - response의 request url, method등 도 보여줘야함
     - testResponse하나당 1개로 해서 걔의 responseList를 탭으로 오른쪽 detail에서 보여주는 형태로 변경
     - 쿠키,헤더 받아오는걸로 넣어야댐
     - result 값 말고 true false 동그라미로
     - 그래프 만들기
+    - api 목록창에 스크롤 주기, 애니메이션 주기
+    - 
 
 - 다크모드
 
