@@ -10,7 +10,7 @@ import { getDefaultFetchApiResponse } from '@/data/constants'
 import { FetchApiResponse, FetchApiResponseError } from 'api-types'
 import useWebSocket, { ReadyState } from 'react-use-websocket'
 
-const testWebsocketUrl = `ws://${process.env.REACT_APP_ADAPTOR_BASE_URL}'/api/perform/socket-connect'`
+const testWebsocketUrl = `ws://localhost:8080/api/perform/socket-connect`
 
 interface APITestResponse {
   responseList: Array<Omit<FetchApiResponse, 'cookies' | 'headers'>>
@@ -25,37 +25,60 @@ export const PerformTest: React.FC = () => {
   const [expanded, setExpanded] = useAccordion()
   const [step, setStep] = useState<'edit' | 'result'>('edit')
   const [APITestResponses, setAPITestResponses] = useState<APITestResponse[]>([
-    {
-      responseList: [
-        {
-          responseTime: 1687,
-          body: {
-            userId: 1,
-            id: 1,
-            title: 'delectus aut autem',
-            completed: false,
-          },
-          status: '200 OK',
-        },
-      ],
-      totalTime: 10,
-      result: true,
-      userId: 'USER-6',
-    },
+    // {
+    //   responseList: [
+    //     {
+    //       responseTime: 1687,
+    //       body: {
+    //         userId: 1,
+    //         id: 1,
+    //         title: 'delectus aut autem',
+    //         completed: false,
+    //       },
+    //       status: '200 OK',
+    //     },
+    //   ],
+    //   totalTime: 10,
+    //   result: true,
+    //   userId: 'USER-6',
+    // },
   ])
   const [showed, setShowed] = useState<false | { tIdx: number; rIdx: number }>(false)
+
+  // websocket
   const { sendMessage, lastMessage, readyState } = useWebSocket(testWebsocketUrl)
-  const [messageHistory, setMessageHistory] = useState<Array<MessageEvent<any>>>([])
+
+  useEffect(() => {
+    if (step === 'result') {
+      sendMessage(
+        JSON.stringify({
+          userCount: testMetaData.userCount,
+          repeatCount: testMetaData.repeatCount,
+          interval: testMetaData.interval,
+          requestDataList: {
+            performType: testMetaData.isConcur ? 'CONCUR' : 'SEQ',
+            requestList: APIList,
+          },
+        })
+      )
+    }
+  }, [
+    APIList,
+    sendMessage,
+    step,
+    testMetaData.interval,
+    testMetaData.isConcur,
+    testMetaData.repeatCount,
+    testMetaData.userCount,
+  ])
+
   useEffect(() => {
     if (lastMessage !== null) {
-      setMessageHistory(prev => prev.concat(lastMessage))
+      const parsedLastMessage = JSON.parse(lastMessage.data)
+      setAPITestResponses(prev => prev.concat(parsedLastMessage))
     }
-  }, [lastMessage, setMessageHistory])
-
-  // socket test
-  useEffect(() => {
-    console.log(messageHistory)
-  }, [messageHistory])
+  }, [lastMessage, setAPITestResponses])
+  //// websocket
 
   const onClickResponseListItem = useCallback((e: React.MouseEvent<HTMLElement>) => {
     if (e.target instanceof HTMLDivElement && e.target.hasAttribute('id')) {
