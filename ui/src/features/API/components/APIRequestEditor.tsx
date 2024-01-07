@@ -9,15 +9,22 @@ export interface APIRequestEditorProps {
   api: IAPI
   idx: number
   updateAPI: UseAPIReturns['updateAPI']
+  setIsFetching?: React.Dispatch<React.SetStateAction<boolean>>
   hasFetchFunc?: boolean
 }
 
-export const APIRequestEditor: FC<APIRequestEditorProps> = ({ api, idx, updateAPI, hasFetchFunc = true }) => {
+export const APIRequestEditor: FC<APIRequestEditorProps> = ({
+  api,
+  idx,
+  updateAPI,
+  hasFetchFunc = true,
+  setIsFetching,
+}) => {
   const updateSingleAPI = useMemo(() => updateAPI(idx), [idx, updateAPI])
   return (
     <APIValuesContext.Provider value={{ api }}>
       <APIActionsContext.Provider value={{ updateSingleAPI }}>
-        <APIContoller hasFetchFunc={hasFetchFunc} />
+        <APIContoller hasFetchFunc={hasFetchFunc} setIsFetching={setIsFetching} />
         <APIPayloadEditor />
       </APIActionsContext.Provider>
     </APIValuesContext.Provider>

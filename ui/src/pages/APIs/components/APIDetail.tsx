@@ -3,10 +3,14 @@ import { color } from '@/data/variables.style'
 import { css } from '@emotion/react'
 import { IAPI } from 'api-types'
 import { FC, useMemo, useState } from 'react'
-import { APIValuesContext, APIActionsContext, padding, UseAPIReturns } from '@/features/API'
-
-import { APIResponseViewer } from './APIResponseViewer'
-import { APIRequestEditor } from '@/features/API/components/APIRequestEditor'
+import {
+  APIValuesContext,
+  APIActionsContext,
+  padding,
+  UseAPIReturns,
+  APIResponseViewer,
+  APIRequestEditor,
+} from '@/features/API'
 
 interface APIDetailProps {
   idx: number
@@ -24,12 +28,8 @@ export const APIDetail: FC<APIDetailProps> = ({ idx, api, updateAPI }) => {
       <APIActionsContext.Provider value={{ updateSingleAPI }}>
         <div css={apiDetailMainCss}>
           <section css={reqSectionCss}>
-            {/* <ErrorBoundary>
-              <APIContoller setIsFetching={setIsFetching} />
-              <APIPayloadEditor />
-            </ErrorBoundary> */}
             <ErrorBoundary>
-              <APIRequestEditor api={api} idx={idx} updateAPI={updateAPI} />
+              <APIRequestEditor api={api} idx={idx} updateAPI={updateAPI} setIsFetching={setIsFetching} />
             </ErrorBoundary>
           </section>
           <section css={resSectionCss}>

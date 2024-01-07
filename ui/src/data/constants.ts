@@ -8,7 +8,7 @@ export const defaultFetchApiTime = {
   writeTime: 0,
 }
 
-export const defaultFetchApiCount = 0
+export const defaultFetchApiCount = 1
 
 export const getDefaultFetchApiRequest = (): FetchApiRequest => ({
   time: defaultFetchApiTime,

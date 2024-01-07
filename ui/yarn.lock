@@ -6099,6 +6099,7 @@ __metadata:
     react-query: ^3.39.3
     react-refresh: ^0.14.0
     react-test-renderer: ^18.2.0
+    react-use-websocket: ^4.5.0
     recoil: ^0.7.7
     sass: ^1.61.0
     sass-loader: ^13.2.2
@@ -10250,6 +10251,16 @@ __metadata:
   peerDependencies:
     react: ^18.2.0
   checksum: 6b6980ced93fa2b72662d5e4ab3b4896833586940047ce52ca9aca801e5432adf05fcbe28289b0af3ce6a2a7c590974e25dcc8aa43d0de658bfe8bbcd686f958
+  languageName: node
+  linkType: hard
+
+"react-use-websocket@npm:^4.5.0":
+  version: 4.5.0
+  resolution: "react-use-websocket@npm:4.5.0"
+  peerDependencies:
+    react: ">= 18.0.0"
+    react-dom: ">= 18.0.0"
+  checksum: 0bae0716f0675fa9414736a3b7d846e7cab4e86dfc3933eb0fda74eef9477708b67cee4c1000a877d7db65c9125ee7d68215e43b5b9cdb82bfefb16e995b55b9
   languageName: node
   linkType: hard
 

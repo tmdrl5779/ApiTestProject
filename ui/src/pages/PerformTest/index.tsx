@@ -1,17 +1,68 @@
-import { Accordion, Button, Funnel, Input, useAccordion } from '@/components'
+import { Accordion, Button, ErrorBoundary, Funnel, Input, useAccordion } from '@/components'
 import { color, overlayScrollBarYCss } from '@/data/variables.style'
 import { useAPIList } from '@/hooks'
 import { css } from '@emotion/react'
-import { useCallback, useState } from 'react'
-import { APIRequestEditor, renderAPITabTitle } from '@/features/API'
+import { useCallback, useEffect, useState } from 'react'
+import { APIRequestEditor, APIResponseViewer, renderAPITabTitle } from '@/features/API'
 import { useTestMetaData } from './useTestMetaData'
-import { motion } from 'framer-motion'
+import { AnimatePresence, motion } from 'framer-motion'
+import { getDefaultFetchApiResponse } from '@/data/constants'
+import { FetchApiResponse, FetchApiResponseError } from 'api-types'
+import useWebSocket, { ReadyState } from 'react-use-websocket'
+
+const testWebsocketUrl = `ws://${process.env.REACT_APP_ADAPTOR_BASE_URL}'/api/perform/socket-connect'`
+
+interface APITestResponse {
+  responseList: Array<Omit<FetchApiResponse, 'cookies' | 'headers'>>
+  totalTime: number
+  result: boolean
+  userId: string
+}
 
 export const PerformTest: React.FC = () => {
   const { APIList, createAPI, deleteAPI, updateAPI } = useAPIList({ type: 'Test' })
   const { testMetaData, testMetaDataConfig } = useTestMetaData()
   const [expanded, setExpanded] = useAccordion()
   const [step, setStep] = useState<'edit' | 'result'>('edit')
+  const [APITestResponses, setAPITestResponses] = useState<APITestResponse[]>([
+    {
+      responseList: [
+        {
+          responseTime: 1687,
+          body: {
+            userId: 1,
+            id: 1,
+            title: 'delectus aut autem',
+            completed: false,
+          },
+          status: '200 OK',
+        },
+      ],
+      totalTime: 10,
+      result: true,
+      userId: 'USER-6',
+    },
+  ])
+  const [showed, setShowed] = useState<false | { tIdx: number; rIdx: number }>(false)
+  const { sendMessage, lastMessage, readyState } = useWebSocket(testWebsocketUrl)
+  const [messageHistory, setMessageHistory] = useState<Array<MessageEvent<any>>>([])
+  useEffect(() => {
+    if (lastMessage !== null) {
+      setMessageHistory(prev => prev.concat(lastMessage))
+    }
+  }, [lastMessage, setMessageHistory])
+
+  // socket test
+  useEffect(() => {
+    console.log(messageHistory)
+  }, [messageHistory])
+
+  const onClickResponseListItem = useCallback((e: React.MouseEvent<HTMLElement>) => {
+    if (e.target instanceof HTMLDivElement && e.target.hasAttribute('id')) {
+      const [tIdx, rIdx] = e.target.id.split('-').map(idx => Number(idx))
+      setShowed({ tIdx, rIdx })
+    }
+  }, [])
 
   const onClickAddButton = useCallback(() => {
     createAPI()
@@ -61,11 +112,50 @@ export const PerformTest: React.FC = () => {
             ))}
           </motion.section>
         </Funnel.Step>
-        <Funnel.Step name="result">결과는 아직 없어</Funnel.Step>
+        <Funnel.Step name="result">
+          <section css={flexCss}>
+            <motion.div css={responseListCss} onClick={onClickResponseListItem} layout layoutScroll>
+              <AnimatePresence>
+                {APITestResponses.map((testResponse, tIdx) =>
+                  testResponse.responseList.map((responseEach, rIdx) => (
+                    <motion.div
+                      layout
+                      layoutScroll
+                      key={`${tIdx}-${rIdx}`}
+                      css={responseListItemCss}
+                      id={`${tIdx}-${rIdx}`}
+                      className={showed !== false && showed?.tIdx === tIdx && showed?.rIdx === rIdx ? 'active' : ''}
+                      whileHover={{
+                        color: color.primaryText,
+                      }}
+                    >
+                      {`${testResponse.userId} ${responseEach?.status}`}{' '}
+                    </motion.div>
+                  ))
+                )}
+              </AnimatePresence>
+            </motion.div>
+            <div css={responseDetailCss}>
+              {showed ? (
+                <ErrorBoundary>
+                  <APIResponseViewer
+                    response={APITestResponses[showed.tIdx]?.responseList[showed.rIdx] as FetchApiResponse}
+                  />
+                </ErrorBoundary>
+              ) : null}
+            </div>
+          </section>
+        </Funnel.Step>
       </Funnel>
     </div>
   )
 }
+
+const flexCss = css`
+  display: flex;
+  height: 100%;
+  width: 100%;
+`
 
 const performTestMainCss = css`
   height: 100%;
@@ -127,4 +217,36 @@ const controlButtonCss = css`
 const apiEditorCss = css`
   height: calc(100% - ${height.metaDataEditor});
   ${overlayScrollBarYCss};
+`
+
+const responseListCss = css`
+  width: 30%;
+  height: 100%;
+  padding: 0px 8px;
+  border-right: 1px solid ${color.pale};
+`
+// TODO: accordion header와 css 겹침 card로 컴포넌트로 따로 빼기
+const responseListItemCss = css`
+  background: ${color.navBar};
+  border: 1px solid ${color.pale};
+  border-radius: 4px 4px 0 0;
+  cursor: pointer;
+  height: 40px;
+  font-size: 20px;
+  display: flex;
+  align-items: center;
+  padding: 4px;
+  margin-top: 8px;
+  color: ${color.secondaryText};
+  &.active {
+    color: ${color.primaryText} !important;
+  }
+`
+
+const responseDetailCss = css`
+  position: relative;
+  width: 70%;
+  height: 100%;
+  padding: 0px 8px;
+  overflow: hidden;
 `

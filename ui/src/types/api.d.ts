@@ -25,7 +25,7 @@ declare module 'api-types' {
   export interface FetchApiResponse {
     responseTime: number
     status: string
-    body: StringObject | string
+    body: Dictionary<any> | string
     headers: Dictionary<any>
     cookies: Dictionary<string>
   }
