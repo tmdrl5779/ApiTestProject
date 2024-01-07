@@ -53,7 +53,9 @@
         "header" : "String",
         "whenCreated" : long,
       }
-    ] //응답값 cookie
+    ], //응답값 cookie
+    "url" : "String", //요청 url
+    "httpMethod" : "String", //요청 method
     "status": "string" // 200, 500 등의 상태 코드
   },
   ... //Request의 count횟수 만큼 list에 담아서 전달
@@ -93,15 +95,35 @@
 ```
 {  
     "responseList": [{
-        "responseTime": 1687,
-        "body": {
-            "userId": 1,
-            "id": 1,
-            "title": "delectus aut autem",
-            "completed": false
-        },
-        "status": "200 OK"
-    }],
+    "responseTime": 0, //응답 시간
+    "body": {}, //응답값 body
+    "header": {
+      "key" : [] //여러값이 올 수 있어서 list임
+    }, //응답값 header
+    "cookie": [
+      {
+        "name" : "String",
+        "value" : "String",
+        "comment" : "String",
+        "commentURL" : "String",
+        "toDiscard" : Boolean,
+        "domain" : "String",
+        "maxAge" : long,
+        "path" : "String",
+        "portlist" : "String",
+        "secure" : Boolean,
+        "httpOnly" : Boolean,
+        "version" : int,
+        "header" : "String",
+        "whenCreated" : long,
+      }
+    ], //응답값 cookie
+    "url" : "String", //요청 url
+    "httpMethod" : "String", //요청 method
+    "status": "string" // 200, 500 등의 상태 코드
+  },
+  ...
+  ],
     "totalTime" : 10,
     "result" : true,
     "userId": "USER-6"
