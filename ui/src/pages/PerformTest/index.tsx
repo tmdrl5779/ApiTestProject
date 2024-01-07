@@ -3,12 +3,13 @@ import { color, overlayScrollBarYCss } from '@/data/variables.style'
 import { useAPIList } from '@/hooks'
 import { css } from '@emotion/react'
 import { useCallback, useEffect, useState } from 'react'
-import { APIRequestEditor, APIResponseViewer, renderAPITabTitle } from '@/features/API'
+import { APIRequestEditor, APIResponseViewer, renderAPITabTitle, convertReqToBodyForFetch } from '@/features/API'
 import { useTestMetaData } from './useTestMetaData'
 import { AnimatePresence, motion } from 'framer-motion'
 import { getDefaultFetchApiResponse } from '@/data/constants'
 import { FetchApiResponse, FetchApiResponseError } from 'api-types'
 import useWebSocket, { ReadyState } from 'react-use-websocket'
+import { fetchApi } from '@/remotes/fetchApi'
 
 const testWebsocketUrl = `ws://localhost:8080/api/perform/socket-connect`
 
@@ -57,7 +58,7 @@ export const PerformTest: React.FC = () => {
           interval: testMetaData.interval,
           requestDataList: {
             performType: testMetaData.isConcur ? 'CONCUR' : 'SEQ',
-            requestList: APIList,
+            requestList: APIList.map(api => convertReqToBodyForFetch(api.request)),
           },
         })
       )
