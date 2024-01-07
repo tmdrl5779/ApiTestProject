@@ -183,3 +183,9 @@ REST API
 
 > 테스트 조건 실패
 - FAIL -> 이유 확인
+  
+# To-Do
+- connection 에러 수정
+- interval
+- 1000이상 동시 호출
+- 30009 port Cors 뚫기

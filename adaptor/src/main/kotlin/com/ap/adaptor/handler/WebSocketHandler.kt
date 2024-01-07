@@ -34,7 +34,7 @@ class WebSocketHandler(
                     if(performData != null){
                         repeat(performData.repeatCount) {
                             callApi(performData, session)
-                            delay(performData.interval)
+                            delay(performData.interval * 1000)
                         }
                     }
 
