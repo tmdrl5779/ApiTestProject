@@ -9,5 +9,5 @@ export const APIListState = atom<IAPI[]>({
 
 export const APIListForTestState = atom<IAPI[]>({
   key: 'apiListForTest',
-  default: [getDefaultAPI(), getDefaultAPI()],
+  default: [getDefaultAPI()],
 })

@@ -23,11 +23,9 @@ export const APIContoller: FC<APIControllerProps> = ({ hasFetchFunc = true, setI
       return fetchApi(convertReqToBodyForFetch(request))
     },
     onSuccess: (response: AxiosResponse) => {
-      parseResponse(response).then(parsedResponse => {
-        updateSingleAPI({
-          response: parsedResponse,
-          _tag: 'UpdateResponseAction',
-        })
+      updateSingleAPI({
+        response: parseResponse(response.data[0]),
+        _tag: 'UpdateResponseAction',
       })
     },
     onError: (error: AxiosError) => {

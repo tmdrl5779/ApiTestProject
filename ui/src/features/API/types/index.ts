@@ -24,4 +24,14 @@ export type Datas = Record<DataNames, ReqData[]>
 
 export type HttpMethods = (typeof httpMethods)[number]
 
+export interface ServerResponse {
+  responseTime: number
+  status: string
+  body: object
+  header: object
+  cookie: object
+  url: string
+  httpMethod: string
+}
+
 export * from './updateApiAction'

@@ -27,7 +27,11 @@ declare module 'api-types' {
     status: string
     body: Dictionary<any> | string
     headers: Dictionary<any>
-    cookies: Dictionary<string>
+    cookies: Dictionary<any>
+    request?: {
+      url: string
+      httpMethod: string
+    }
   }
 
   export interface FetchApiResponseError {

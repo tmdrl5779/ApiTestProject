@@ -1,12 +1,34 @@
 import { produce } from 'immer'
 import { ChangeEvent, useCallback, useMemo, useState } from 'react'
 
-interface TestMetaData {
+export interface TestMetaData {
   userCount: number
   repeatCount: number
   interval: number
   isConcur: boolean
 }
+
+export type TestMetaDataConfigItem =
+  | {
+      label: string
+      type: string
+      value: number
+      onChange: (value: string) => void
+      placeholder: string
+      min: number
+      checked?: undefined
+    }
+  | {
+      label: string
+      type: string
+      checked: boolean
+      onChange: (value: string) => void
+      placeholder: string
+      value?: undefined
+      min?: undefined
+    }
+
+export type TestMetaDataConfig = TestMetaDataConfigItem[]
 
 const defaultTestMetaData: TestMetaData = {
   userCount: 10,
@@ -32,7 +54,7 @@ export const useTestMetaData = () => {
     []
   )
 
-  const testMetaDataConfig = useMemo(
+  const testMetaDataConfig: TestMetaDataConfig = useMemo(
     () => [
       {
         label: 'Number of Threads (users)',

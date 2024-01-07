@@ -10,7 +10,7 @@ interface CookiesProps {
 
 export const Cookies: FC<CookiesProps> = ({ cookies }) => {
   const cookiesArr = useObjectEntries(cookies)
-  if (cookies === null) {
+  if (cookies == null || cookies?.length === 0) {
     return <Info message={'Cookie가 없습니다.'} />
   }
   return (

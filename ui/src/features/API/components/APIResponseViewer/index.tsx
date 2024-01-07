@@ -58,25 +58,35 @@ export const APIResponseViewer: FC<APIResponseViewerProps> = ({ response }) => {
           Time: <span className="data">{response.responseTime} ms</span>
         </span>
       </div>
-      <Blinker _key={selectedTabCode}>
-        <Funnel step={selectedTabCode}>
-          <Funnel.Step name="Body">
-            <Body body={response.body} />
-          </Funnel.Step>
-          <Funnel.Step name="Cookies">
-            <Cookies cookies={response.cookies} />
-          </Funnel.Step>
-          <Funnel.Step name="Headers">
-            <Headers headers={response.headers} />
-          </Funnel.Step>
-        </Funnel>
-      </Blinker>
+      <div css={apiResponseContentCss}>
+        <Blinker _key={selectedTabCode}>
+          <Funnel step={selectedTabCode}>
+            <Funnel.Step name="Body">
+              <Body body={response.body} />
+            </Funnel.Step>
+            <Funnel.Step name="Cookies">
+              <Cookies cookies={response.cookies} />
+            </Funnel.Step>
+            <Funnel.Step name="Headers">
+              <Headers headers={response.headers} />
+            </Funnel.Step>
+          </Funnel>
+        </Blinker>
+      </div>
     </div>
   )
 }
 
 const apiResponseMainCss = css`
   height: 100%;
+`
+
+const height = {
+  tabs: '52px',
+}
+
+const apiResponseContentCss = css`
+  height: calc(100% - ${height.tabs});
 `
 
 const statusCss = css`
