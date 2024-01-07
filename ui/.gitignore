@@ -10,6 +10,7 @@
 .yarn/.cache/*
 !.yarn/cache
 .yarn/.cache/*
+.yarn/install-state.gz
 #.pnp.*
 
 .editorconfig
