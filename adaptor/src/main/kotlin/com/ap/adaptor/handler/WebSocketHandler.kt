@@ -54,7 +54,7 @@ class WebSocketHandler(
             .then()
 
 
-        return session.send(Mono.just(session.textMessage("Connection open success")))
+        return session.send(Mono.just(session.textMessage("connection open success")))
             .thenMany(receiveAndCallApi)
             .then()
 
