@@ -74,7 +74,7 @@ export const PerformTest: React.FC = () => {
   ])
 
   useEffect(() => {
-    if (lastMessage !== null) {
+    if (lastMessage !== null && !lastMessage.data.startsWith('connection')) {
       const parsedLastMessage = JSON.parse(lastMessage.data)
       setAPITestResponses(prev => prev.concat(parsedLastMessage))
     }
