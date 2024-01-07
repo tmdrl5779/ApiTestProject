@@ -77,7 +77,7 @@ Response
     "repeatCount": 1,
     "interval" : 0,
     "requestDataList" : {
-        "performType" : "CONCUR",
+        "performType" : "CONCUR", // "SEQ"
         "requestList" : [
             {
                 "time": {},
@@ -132,7 +132,9 @@ Response
 
 - API 호출
 
+  - 시간 설정 (Time 탭으로 감)
   - 재렌더링 이슈
+  - 드래그해서 res, req탭 높이 조정
 
 - 성능 테스트
 
