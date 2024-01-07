@@ -63,7 +63,8 @@ class AdaptorService(
                 log.info("Response Data Info : $responseDataList")
 
                 //send to websocket
-                session.send(Mono.just(session.textMessage(objectMapper.writeValueAsString(responseDataList)))).subscribe()
+                session.send(Mono.just(session.textMessage(objectMapper.writeValueAsString(responseDataList))))
+                    .subscribe()
 
             }
             PerformType.CONCUR -> {
@@ -85,7 +86,8 @@ class AdaptorService(
                 log.info("Response Data Info : $responseDataList")
 
                 //send to websocket
-                session.send(Mono.just(session.textMessage(objectMapper.writeValueAsString(responseDataList)))).subscribe()
+                session.send(Mono.just(session.textMessage(objectMapper.writeValueAsString(responseDataList))))
+                    .subscribe()
 
             }
             else -> {
@@ -133,7 +135,15 @@ class AdaptorService(
         }
         stopWatch.stop()
 
-        return ResponseData(stopWatch.totalTimeMillis, response["responseBody"], status, response["responseHeader"], response["responseCookie"])
+        return ResponseData(
+            stopWatch.totalTimeMillis,
+            response["responseBody"],
+            status,
+            response["responseHeader"],
+            response["responseCookie"],
+            response["url"] as String,
+            response["httpMethod"] as String
+        )
     }
 
 
@@ -210,10 +220,22 @@ class AdaptorService(
 //            .awaitBody<Any>()
 
         val responseBody = responseSpec.awaitBody<Any>()
-        val responseHeader = responseSpec.toEntity(MutableMap::class.java).awaitSingle().headers
+        val responseHeader = responseSpec.toEntity(String::class.java).awaitSingle().headers
         val setCookieHeaders = responseHeader[HttpHeaders.SET_COOKIE]
         val responseCookie: List<HttpCookie> = setCookieHeaders?.flatMap { HttpCookie.parse(it) } ?: emptyList()
 
-        return mutableMapOf("responseBody" to responseBody, "responseHeader" to responseHeader, "responseCookie" to responseCookie)
+        val url = if (param == "") {
+            requestData.url + param
+        } else {
+            requestData.url + "?" + param
+        }
+
+        return mutableMapOf(
+            "responseBody" to responseBody,
+            "responseHeader" to responseHeader,
+            "responseCookie" to responseCookie,
+            "url " to url,
+            "httpMethod" to method
+        )
     }
 }

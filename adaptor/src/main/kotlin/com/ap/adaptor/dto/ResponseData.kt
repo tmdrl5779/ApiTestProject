@@ -5,5 +5,7 @@ data class ResponseData(
     var body: Any ?= null,
     var status: String = "",
     var header: Any ?= null,
-    var cookie: Any ? = null,
+    var cookie: Any ?= null,
+    var url: String ?= "",
+    var httpMethod: String = ""
 )
