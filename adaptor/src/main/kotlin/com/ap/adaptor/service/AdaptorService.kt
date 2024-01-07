@@ -12,6 +12,8 @@ import io.netty.handler.timeout.WriteTimeoutHandler
 import kotlinx.coroutines.async
 import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.coroutineScope
+import kotlinx.coroutines.reactor.awaitSingle
+import org.springframework.http.HttpHeaders
 import org.springframework.http.HttpStatus
 import org.springframework.http.MediaType
 import org.springframework.http.client.reactive.ReactorClientHttpConnector
@@ -23,6 +25,7 @@ import org.springframework.web.reactive.function.client.awaitBody
 import org.springframework.web.reactive.socket.WebSocketSession
 import reactor.core.publisher.Mono
 import reactor.netty.http.client.HttpClient
+import java.net.HttpCookie
 import kotlin.system.measureTimeMillis
 
 @Service
@@ -118,7 +121,7 @@ class AdaptorService(
 
     suspend fun responseWithTime(requestData: RequestData): ResponseData {
         val stopWatch = StopWatch()
-        var response: Any? = null
+        var response: MutableMap<String, Any> = mutableMapOf()
         var status = HttpStatus.OK.toString()
         stopWatch.start()
         try {
@@ -130,11 +133,11 @@ class AdaptorService(
         }
         stopWatch.stop()
 
-        return ResponseData(stopWatch.totalTimeMillis, response, status)
+        return ResponseData(stopWatch.totalTimeMillis, response["responseBody"], status, response["responseHeader"], response["responseCookie"])
     }
 
 
-    suspend fun callApi(requestData: RequestData): Any {
+    suspend fun callApi(requestData: RequestData): MutableMap<String, Any> {
         val connectionTime = requestData.time.connectionTime
         val readTime = requestData.time.readTime
         val writeTime = requestData.time.writeTime
@@ -158,7 +161,7 @@ class AdaptorService(
 
         log.info("Request Data Info : ${requestData.toString()}")
 
-        return webClient.mutate().clientConnector(ReactorClientHttpConnector(httpClient))
+        val responseSpec = webClient.mutate().clientConnector(ReactorClientHttpConnector(httpClient))
             .baseUrl(baseUrl).build()
             .run {
                 when (method) {
@@ -204,7 +207,13 @@ class AdaptorService(
                 }
             }
             .retrieve()
-            .awaitBody<Any>()
+//            .awaitBody<Any>()
 
+        val responseBody = responseSpec.awaitBody<Any>()
+        val responseHeader = responseSpec.toEntity(MutableMap::class.java).awaitSingle().headers
+        val setCookieHeaders = responseHeader[HttpHeaders.SET_COOKIE]
+        val responseCookie: List<HttpCookie> = setCookieHeaders?.flatMap { HttpCookie.parse(it) } ?: emptyList()
+
+        return mutableMapOf("responseBody" to responseBody, "responseHeader" to responseHeader, "responseCookie" to responseCookie)
     }
 }
