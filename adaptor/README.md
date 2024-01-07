@@ -53,9 +53,9 @@
         "header" : "String",
         "whenCreated" : long,
       }
-    ] //응답값 cookie
-    "url" : "String" //요청 url
-    "httpMethod" : "String" //요청 method
+    ], //응답값 cookie
+    "url" : "String", //요청 url
+    "httpMethod" : "String", //요청 method
     "status": "string" // 200, 500 등의 상태 코드
   },
   ... //Request의 count횟수 만큼 list에 담아서 전달
@@ -117,9 +117,9 @@
         "header" : "String",
         "whenCreated" : long,
       }
-    ] //응답값 cookie
-    "url" : "String" //요청 url
-    "httpMethod" : "String" //요청 method
+    ], //응답값 cookie
+    "url" : "String", //요청 url
+    "httpMethod" : "String", //요청 method
     "status": "string" // 200, 500 등의 상태 코드
   },
   ...
