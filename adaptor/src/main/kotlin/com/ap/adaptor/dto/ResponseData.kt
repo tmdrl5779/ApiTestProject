@@ -6,6 +6,6 @@ data class ResponseData(
     var status: String = "",
     var header: Any ?= null,
     var cookie: Any ?= null,
-    var url: String ?= "",
+    var url: String ?= null,
     var httpMethod: String = ""
 )

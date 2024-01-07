@@ -141,8 +141,8 @@ class AdaptorService(
             status,
             response["responseHeader"],
             response["responseCookie"],
-            response["url"] as String,
-            response["httpMethod"] as String
+            requestData.url,
+            requestData.httpMethod
         )
     }
 
@@ -224,18 +224,10 @@ class AdaptorService(
         val setCookieHeaders = responseHeader[HttpHeaders.SET_COOKIE]
         val responseCookie: List<HttpCookie> = setCookieHeaders?.flatMap { HttpCookie.parse(it) } ?: emptyList()
 
-        val url = if (param == "") {
-            requestData.url + param
-        } else {
-            requestData.url + "?" + param
-        }
-
         return mutableMapOf(
             "responseBody" to responseBody,
             "responseHeader" to responseHeader,
-            "responseCookie" to responseCookie,
-            "url " to url,
-            "httpMethod" to method
+            "responseCookie" to responseCookie
         )
     }
 }
