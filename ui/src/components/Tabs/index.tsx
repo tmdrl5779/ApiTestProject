@@ -81,7 +81,7 @@ export const Tabs: React.FC<TabsProps> = ({
   const [uuid] = useState(genearteUUID())
 
   const ulRef = useRef<HTMLUListElement>(null)
-  const isUlOverflow = useIsOverflow(ulRef, false, items.length, 80)
+  const isUlOverflow = useIsOverflow(ulRef, false, items.length, editable ? 80 : 0)
 
   const finalSelectedCode = selectedCode ? selectedCode : _selectedCode
 
@@ -135,11 +135,9 @@ export const Tabs: React.FC<TabsProps> = ({
             motionKey={`scroll-left-button-${uuid}`}
             css={[tabsItemCss, scrollLeftButtonCss]}
           >
-            {editable ? (
-              <Button type="text" onClick={handleScroll('left')}>
-                <LeftOutlinedIcon />
-              </Button>
-            ) : null}
+            <Button type="text" onClick={handleScroll('left')}>
+              <LeftOutlinedIcon />
+            </Button>
           </TabItem>
         ) : null}
         {items.map((item, idx) => (
@@ -188,11 +186,9 @@ export const Tabs: React.FC<TabsProps> = ({
             motionKey={`scroll-right-button-${uuid}`}
             _css={[tabsItemCss, scrollRightButtonCss]}
           >
-            {editable ? (
-              <Button type="text" onClick={handleScroll('right')}>
-                <RightOutlinedIcon />
-              </Button>
-            ) : null}
+            <Button type="text" onClick={handleScroll('right')}>
+              <RightOutlinedIcon />
+            </Button>
           </TabItem>
         ) : null}
       </AnimatePresence>

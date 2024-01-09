@@ -55,4 +55,5 @@ export const statusColor: Dictionary<string> = {
   GOOD: '#90ee90',
   WARNING: 'yellow',
   BAD: 'orange',
+  FAIL: '#e23636',
 }

@@ -5,6 +5,8 @@ import { ApiOutlined } from '@ant-design/icons'
 import { css } from '@emotion/react'
 import { FetchApiResponse, FetchApiResponseError, IAPI } from 'api-types'
 import { FC, useCallback, useState } from 'react'
+import { getStatusColor } from '../..'
+import { getTimeColor } from '../../utils/getTimeColor'
 import { Body } from './Body'
 import { Cookies } from './Cookies'
 import { Headers } from './Headers'
@@ -52,10 +54,10 @@ export const APIResponseViewer: FC<APIResponseViewerProps> = ({ response }) => {
       />
       <div css={statusCss}>
         <span className="item">
-          Status: <span className="data">{response.status}</span>
+          Status: <span style={{ color: getStatusColor(response.status) }}>{response.status}</span>
         </span>
         <span className="item">
-          Time: <span className="data">{response.responseTime} ms</span>
+          Time: <span style={{ color: getTimeColor(response.responseTime) }}>{response.responseTime} ms</span>
         </span>
       </div>
       <div css={apiResponseContentCss}>
@@ -79,6 +81,7 @@ export const APIResponseViewer: FC<APIResponseViewerProps> = ({ response }) => {
 
 const apiResponseMainCss = css`
   height: 100%;
+  position: relative;
 `
 
 const height = {

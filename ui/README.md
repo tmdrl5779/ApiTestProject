@@ -192,21 +192,16 @@ Response
   - 편집 페이지
     - 아코디언 렉 졸라 심한거 고치기
     - api 아코디언에 삭제 버튼 달기
-    - input 창 불편함
+    - input 창 불편함 (number input 쪽 수정 필요)
     - 빈 url일 때 못보내게 하기
     - 클리어 버튼?
     
   - 결과 페이지
-    - response의 request url, method등 도 보여줘야함
-    
-    - testResponse하나당 1개로 해서 걔의 responseList를 탭으로 오른쪽 detail에서 보여주는 형태로 변경
-    
-    - result 값 말고 true false 동그라미로
     
     - 그래프 만들기
     
-      
-
+    
+  
 - 다크모드
 
 - 배포해서 SEO, 성능, 접근성 최적화

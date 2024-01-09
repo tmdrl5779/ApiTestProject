@@ -13,9 +13,7 @@ export function parseResponse(response: ServerResponse): FetchApiResponse {
     body,
     headers: header,
     cookies: cookie,
-    request: {
-      url,
-      httpMethod,
-    },
+    url,
+    httpMethod,
   }
 }

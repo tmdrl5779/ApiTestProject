@@ -7,7 +7,10 @@ export const APIListState = atom<IAPI[]>({
   default: [getDefaultAPI()],
 })
 
+const defaultAPIForTest = getDefaultAPI()
+defaultAPIForTest.request.url = 'https://jsonplaceholder.typicode.com/todos/1'
+
 export const APIListForTestState = atom<IAPI[]>({
   key: 'apiListForTest',
-  default: [getDefaultAPI()],
+  default: [defaultAPIForTest],
 })

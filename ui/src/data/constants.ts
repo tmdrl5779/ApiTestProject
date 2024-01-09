@@ -26,6 +26,8 @@ export const getDefaultFetchApiResponse = (): FetchApiResponse => ({
   body: {},
   headers: {},
   cookies: {},
+  url: '',
+  httpMethod: 'GET',
 })
 
 export const getDefaultAPI = (): IAPI => ({
