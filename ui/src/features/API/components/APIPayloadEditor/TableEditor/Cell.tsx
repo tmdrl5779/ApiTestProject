@@ -1,7 +1,7 @@
 import { Input, WrappedChangeEventHandler } from '@/components'
 import { motion } from 'framer-motion'
 import { memo, useMemo } from 'react'
-import { PayloadKeys } from '../../types'
+import { PayloadKeys } from '../../../types'
 
 export const Cell = memo(
   ({

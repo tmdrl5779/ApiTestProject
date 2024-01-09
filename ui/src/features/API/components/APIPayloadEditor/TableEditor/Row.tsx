@@ -4,8 +4,8 @@ import { css } from '@emotion/react'
 import { PayloadItem } from 'common-types'
 import { motion } from 'framer-motion'
 import { memo, useCallback } from 'react'
-import { tableHeaders } from '../../data/constants'
-import { PayloadKeys } from '../../types'
+import { tableHeaders } from '../../../data/constants'
+import { PayloadKeys } from '../../../types'
 import { Cell } from './Cell'
 
 export const Row = memo(

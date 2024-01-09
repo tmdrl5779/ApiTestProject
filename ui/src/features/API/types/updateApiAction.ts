@@ -9,6 +9,12 @@ export type UpdateApiAction =
 
 export type UpdateApiType = 'time' | 'payload' | 'meta' | 'response'
 
+export type PayloadTypeUsingTableEditor = Exclude<PayloadType, 'body' | 'time'>
+
+export const isPayloadTypeUsingTableEditor = (type: PayloadType): type is PayloadTypeUsingTableEditor => {
+  return type === 'header' || type === 'param'
+}
+
 export type TimePropertyNames = 'connectionTime' | 'readTime' | 'writeTime'
 
 export interface UpdateTimeAction {
@@ -33,11 +39,11 @@ export const isUpdateMetaAction = (target: UpdateApiAction): target is UpdateMet
   return target?._tag === 'UpdateMetaAction'
 }
 
-export type PayloadType = 'param' | 'header' | 'body'
+export type PayloadType = 'param' | 'header' | 'body' | 'time'
 export type PayloadKeys = 'included' | 'key' | 'value' | 'description'
 
 export interface UpdatePayloadAction {
-  type: Exclude<PayloadType, 'body'>
+  type: PayloadTypeUsingTableEditor
   idx: number
   key: PayloadKeys
   value: string

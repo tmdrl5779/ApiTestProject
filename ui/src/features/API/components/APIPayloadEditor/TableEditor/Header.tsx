@@ -1,7 +1,7 @@
 import { css } from '@emotion/react'
 import { motion } from 'framer-motion'
 import { memo } from 'react'
-import { tableHeaders } from '../../data/constants'
+import { tableHeaders } from '../../../data/constants'
 import { rowCss } from './Row'
 
 export const Header = memo(() => {
