@@ -179,6 +179,8 @@ Response
   
   - 로컬스토리지, API 저장 데이터 동기화
   
+  - icon rev={'?'} 주는거 adpator 하나 만들어서 중복 다 지워버리기
+  
 - API 호출
 
   - 시간 설정 (Time 탭으로 감)
