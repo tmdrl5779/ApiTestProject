@@ -6,6 +6,7 @@ import {
   renderAPITabTitle,
   useAPIList,
   UseAPIReturns,
+  validateApiRequest,
 } from '@/features/API'
 import { css } from '@emotion/react'
 import { IAPI } from 'api-types'
@@ -42,8 +43,12 @@ export const EditPanel: FC<EditPanelProps> = ({ setStep, setStartTestMsg }) => {
 
   // 눌르면 결과 페이지로 넘어감 startMsg도 전달
   const onClickRunButton = useCallback(() => {
-    setStep('result')
-    setStartTestMsg(composeWebsocketMessage(testMetaData, APIList))
+    if (APIList.every(api => validateApiRequest(api.request))) {
+      setStep('result')
+      setStartTestMsg(composeWebsocketMessage(testMetaData, APIList))
+    } else {
+      alert('Request URL을 입력해주세요.')
+    }
   }, [APIList, setStartTestMsg, setStep, testMetaData])
   return (
     <>

@@ -10,6 +10,7 @@ import { height, width } from '../data/rect'
 import { convertReqToBodyForFetch } from '../utils/convertReqToBodyForFetch'
 import { parseResponse } from '../utils/parseResponse'
 import { useAPIContext } from '../APIContext'
+import { validateApiRequest } from '..'
 
 interface APIControllerProps {
   hasFetchFunc?: boolean
@@ -47,7 +48,11 @@ export const APIContoller: FC<APIControllerProps> = ({ hasFetchFunc = true, setI
   }, [isLoading, setIsFetching])
 
   const onClickSendButton = useCallback(() => {
-    apiMutation.mutate(api.request)
+    if (validateApiRequest(api.request)) {
+      apiMutation.mutate(api.request)
+    } else {
+      alert('Request URL을 입력해주세요.')
+    }
   }, [api.request, apiMutation])
 
   const onChangeMethod: WrappedChangeEventHandler = useCallback(
