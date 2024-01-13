@@ -46,9 +46,13 @@ const Input: React.FC<InputProps> = ({
 
   const _onChange: ChangeEventHandler = useCallback(
     e => {
-      onChange((e.target as HTMLInputElement).value)
+      const targetValue = (e.target as HTMLInputElement).value
+      if (type === 'number') {
+        ;(e.target as HTMLInputElement).value = targetValue.replace(/(^0+)/, '')
+      }
+      onChange(targetValue)
     },
-    [onChange]
+    [onChange, type]
   )
 
   return (
