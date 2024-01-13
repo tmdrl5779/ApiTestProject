@@ -176,10 +176,7 @@ Response
 - 공통
 
   - PWA 적용
-  
   - 로컬스토리지, API 저장 데이터 동기화
-  
-  - icon rev={'?'} 주는거 adpator 하나 만들어서 중복 다 지워버리기
   
 - API 호출
 
@@ -190,7 +187,6 @@ Response
 
   - 편집 페이지
     - input 창 불편함 (number input 쪽 수정 필요)
-    - 클리어 버튼?
     
   - 결과 페이지
     

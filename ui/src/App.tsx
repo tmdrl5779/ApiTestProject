@@ -37,7 +37,7 @@ function App() {
     <GlobalErrorBoundary>
       <RecoilRoot>
         <div className="App">
-          <GNB>API Test</GNB>
+          <GNB>Postweb</GNB>
           <Layout style={{ flexDirection: 'row' }}>
             <SNB>
               <Tabs items={navItems} onSelect={onSelect} tabPosition="right" style={{ overflowX: 'hidden' }} />

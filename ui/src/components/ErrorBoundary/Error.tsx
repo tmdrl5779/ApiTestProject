@@ -19,13 +19,17 @@ export const Error: FC<ErrorProps> = ({ error, resetErrorBoundary, icon }) => {
   return (
     <motion.div css={errorCss}>
       <>
-        {icon === undefined ? <FrownOutlined rev={'?'} style={{ fontSize: '100px' }} /> : icon}
+        {icon === undefined ? <FrownOutlined style={FrownOutlinedStyle} /> : icon}
         <span className="message">{error.message}</span>
         <span className="help">{help}</span>
         {resetErrorBoundary ? <Button onClick={resetErrorBoundary}>새로 고침</Button> : null}
       </>
     </motion.div>
   )
+}
+
+const FrownOutlinedStyle = {
+  fontSize: '100px',
 }
 
 const errorCss = css`

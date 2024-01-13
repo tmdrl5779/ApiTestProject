@@ -1,10 +1,3 @@
-import {
-  CloseOutlinedIcon,
-  DeleteOutlinedIcon,
-  LeftOutlinedIcon,
-  PlusOutlinedIcon,
-  RightOutlinedIcon,
-} from '@/data/icons'
 import { color } from '@/data/variables.style'
 import { useIsOverflow } from '@/hooks'
 import { genearteUUID } from '@/utils'
@@ -35,6 +28,7 @@ import { tabsCss, scrollRightButtonCss, scrollLeftButtonCss, addButtonCss, addBu
 import { TabPosition, TabType } from './types'
 import { scrollBy } from 'seamless-scroll-polyfill'
 import { css } from '@emotion/react'
+import { CloseOutlined, LeftOutlined, RightOutlined } from '@ant-design/icons'
 
 const editableTabsMotion = {
   initial: { opacity: 0, x: -10 },
@@ -136,7 +130,7 @@ export const Tabs: React.FC<TabsProps> = ({
             css={[tabsItemCss, scrollLeftButtonCss]}
           >
             <Button type="text" onClick={handleScroll('left')}>
-              <LeftOutlinedIcon />
+              <LeftOutlined />
             </Button>
           </TabItem>
         ) : null}
@@ -158,7 +152,7 @@ export const Tabs: React.FC<TabsProps> = ({
             )}
             {editable ? (
               <Button type="text" onClick={handleDelete(idx)}>
-                <CloseOutlinedIcon />
+                <CloseOutlined />
               </Button>
             ) : null}
             {lineVisible && finalSelectedCode === item.code ? (
@@ -185,7 +179,7 @@ export const Tabs: React.FC<TabsProps> = ({
             _css={[tabsItemCss, scrollRightButtonCss]}
           >
             <Button type="text" onClick={handleScroll('right')}>
-              <RightOutlinedIcon />
+              <RightOutlined />
             </Button>
           </TabItem>
         ) : null}

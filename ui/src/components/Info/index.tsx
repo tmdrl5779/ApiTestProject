@@ -12,16 +12,20 @@ export interface InfoProps {
 
 export const Info: FC<InfoProps> = ({ message, icon }) => {
   return (
-    <motion.div css={errorCss}>
+    <motion.div css={infoCss}>
       <>
-        {icon === undefined ? <InfoCircleOutlined rev={'?'} style={{ fontSize: '100px' }} /> : icon}
+        {icon === undefined ? <InfoCircleOutlined style={InfoOutlinedStyle} /> : icon}
         <span className="message">{message}</span>
       </>
     </motion.div>
   )
 }
 
-const errorCss = css`
+const InfoOutlinedStyle = {
+  fontSize: '100px',
+}
+
+const infoCss = css`
   width: 100%;
   height: 100%;
   display: flex;

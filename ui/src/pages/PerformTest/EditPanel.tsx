@@ -1,5 +1,4 @@
 import { Accordion, Button, Input, useAccordion } from '@/components'
-import { DeleteOutlinedIcon } from '@/data/icons'
 import { overlayScrollBarYCss } from '@/data/variables.style'
 import {
   APIRequestEditor,
@@ -9,6 +8,7 @@ import {
   UseAPIReturns,
   validateApiRequest,
 } from '@/features/API'
+import { DeleteOutlined } from '@ant-design/icons'
 import { css } from '@emotion/react'
 import { IAPI } from 'api-types'
 import { motion, AnimatePresence } from 'framer-motion'
@@ -43,10 +43,14 @@ export const EditPanel: FC<EditPanelProps> = ({ setStep, setStartTestMsg }) => {
   }, [createAPI])
 
   const onClickDeleteButton = useCallback(
-    (idx: number) => () => {
+    (id: string, idx: number) => (e: React.MouseEvent) => {
+      e.stopPropagation()
+      if (id === expanded) {
+        setExpanded(false)
+      }
       deleteAPI(idx)
     },
-    [deleteAPI]
+    [deleteAPI, expanded, setExpanded]
   )
 
   // 눌르면 결과 페이지로 넘어감 startMsg도 전달
@@ -79,11 +83,11 @@ export const EditPanel: FC<EditPanelProps> = ({ setStep, setStartTestMsg }) => {
         ))}
       </section>
       <motion.section css={apiEditorCss}>
-        <AnimatePresence initial={false}>
+        <AnimatePresence>
           {APIList.map((api, idx) => (
             <Accordion
               key={api.uuid}
-              idx={idx}
+              id={api.uuid}
               expanded={expanded}
               setExpanded={setExpanded}
               height="300px"
@@ -92,8 +96,8 @@ export const EditPanel: FC<EditPanelProps> = ({ setStep, setStartTestMsg }) => {
               )}
               actions={
                 <>
-                  <Button type="text" onClick={onClickDeleteButton(idx)} css={[deleteButtonCss]}>
-                    <DeleteOutlinedIcon />
+                  <Button type="text" onClick={onClickDeleteButton(api.uuid, idx)} css={[deleteButtonCss]}>
+                    <DeleteOutlined />
                   </Button>
                 </>
               }
