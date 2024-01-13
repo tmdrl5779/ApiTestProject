@@ -1,4 +1,5 @@
 import { Accordion, Button, Input, useAccordion } from '@/components'
+import { DeleteOutlinedIcon } from '@/data/icons'
 import { overlayScrollBarYCss } from '@/data/variables.style'
 import {
   APIRequestEditor,
@@ -10,7 +11,7 @@ import {
 } from '@/features/API'
 import { css } from '@emotion/react'
 import { IAPI } from 'api-types'
-import { motion } from 'framer-motion'
+import { motion, AnimatePresence } from 'framer-motion'
 import { FC, useCallback } from 'react'
 import { TestMetaData, TestMetaDataConfig, useTestMetaData } from './useTestMetaData'
 
@@ -41,6 +42,13 @@ export const EditPanel: FC<EditPanelProps> = ({ setStep, setStartTestMsg }) => {
     createAPI()
   }, [createAPI])
 
+  const onClickDeleteButton = useCallback(
+    (idx: number) => () => {
+      deleteAPI(idx)
+    },
+    [deleteAPI]
+  )
+
   // 눌르면 결과 페이지로 넘어감 startMsg도 전달
   const onClickRunButton = useCallback(() => {
     if (APIList.every(api => validateApiRequest(api.request))) {
@@ -70,21 +78,30 @@ export const EditPanel: FC<EditPanelProps> = ({ setStep, setStartTestMsg }) => {
           </div>
         ))}
       </section>
-      <motion.section layout layoutScroll css={apiEditorCss}>
-        {APIList.map((api, idx) => (
-          <Accordion
-            key={api.uuid}
-            idx={idx}
-            expanded={expanded}
-            setExpanded={setExpanded}
-            height="300px"
-            title={renderAPITabTitle(
-              `${api.request.httpMethod} ${api.request.url === '' ? 'Untitled Request' : api.request.url}`
-            )}
-          >
-            <APIRequestEditor api={api} updateAPI={updateAPI} idx={idx} hasFetchFunc={false} />
-          </Accordion>
-        ))}
+      <motion.section css={apiEditorCss}>
+        <AnimatePresence initial={false}>
+          {APIList.map((api, idx) => (
+            <Accordion
+              key={api.uuid}
+              idx={idx}
+              expanded={expanded}
+              setExpanded={setExpanded}
+              height="300px"
+              title={renderAPITabTitle(
+                `${api.request.httpMethod} ${api.request.url === '' ? 'Untitled Request' : api.request.url}`
+              )}
+              actions={
+                <>
+                  <Button type="text" onClick={onClickDeleteButton(idx)} css={[deleteButtonCss]}>
+                    <DeleteOutlinedIcon />
+                  </Button>
+                </>
+              }
+            >
+              <APIRequestEditor api={api} updateAPI={updateAPI} idx={idx} hasFetchFunc={false} />
+            </Accordion>
+          ))}
+        </AnimatePresence>
       </motion.section>
     </>
   )
@@ -145,4 +162,12 @@ const controlButtonCss = css`
 const apiEditorCss = css`
   height: calc(100% - ${height.metaDataEditor});
   ${overlayScrollBarYCss};
+`
+
+const deleteButtonCss = css`
+  position: absolute;
+  width: 40px;
+  height: 40px;
+  top: 0;
+  right: 0;
 `

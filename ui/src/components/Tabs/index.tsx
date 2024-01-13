@@ -173,11 +173,9 @@ export const Tabs: React.FC<TabsProps> = ({
             motionKey={`add-tab-button-${uuid}`}
             css={[tabsItemCss, addButtonWrapperCss]}
           >
-            {editable ? (
-              <Button type="text" onClick={handleAdd} css={addButtonCss}>
-                +
-              </Button>
-            ) : null}
+            <Button type="text" onClick={handleAdd} css={addButtonCss}>
+              +
+            </Button>
           </TabItem>
         ) : null}
         {isUlOverflow ? (
