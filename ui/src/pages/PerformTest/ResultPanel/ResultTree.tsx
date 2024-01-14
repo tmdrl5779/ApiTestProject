@@ -1,70 +1,21 @@
 import { Blinker, ErrorBoundary, Tabs } from '@/components'
 import { color, overlayScrollBarYCss, statusColor } from '@/data/variables.style'
-import {
-  APIResponseViewer,
-  parseResponse,
-  renderAPITabTitle,
-  renderResponseTabTitle,
-  ServerResponse,
-  TabItem,
-} from '@/features/API'
+import { APIResponseViewer, renderResponseTabTitle } from '@/features/API'
 import { css } from '@emotion/react'
 import { FetchApiResponse } from 'api-types'
 import { AnimatePresence, motion } from 'framer-motion'
-import { FC, useCallback, useEffect, useState } from 'react'
-import useWebSocket from 'react-use-websocket'
+import { FC, useCallback, useState } from 'react'
+import { APITestResponse } from './types'
 
-interface APITestResponse {
-  responseList: FetchApiResponse[]
-  totalTime: number
-  result: boolean
-  userId: string
+interface ResultTreeProps {
+  APITestResponses: APITestResponse[]
 }
 
-const testWebsocketUrl = `${process.env.REACT_APP_ADAPTOR_WEBSOCKET_URL}/api/perform/socket-connect`
-
-export const parseTestResponse = (
-  testResponse: Omit<APITestResponse, 'responseList'> & { responseList: ServerResponse[] }
-): APITestResponse => {
-  return {
-    ...testResponse,
-    responseList: testResponse.responseList.map(response => parseResponse(response)),
-  }
-}
-
-interface ResultPanelProps {
-  startTestMsg: string | null
-}
-
-export const ResultPanel: FC<ResultPanelProps> = ({ startTestMsg }) => {
+export const ResultTree: FC<ResultTreeProps> = ({ APITestResponses }) => {
   const [showed, setShowed] = useState<false | { tIdx: number; rIdx: number }>(false)
-  const [APITestResponses, setAPITestResponses] = useState<APITestResponse[]>([])
-  // websocket
-  const { sendMessage, lastMessage, getWebSocket } = useWebSocket(testWebsocketUrl)
-
-  useEffect(() => {
-    if (startTestMsg !== null) {
-      sendMessage(startTestMsg)
-    }
-  }, [startTestMsg, sendMessage, getWebSocket])
-
-  useEffect(() => {
-    return () => {
-      getWebSocket()?.close()
-    }
-  }, [getWebSocket])
-
-  useEffect(() => {
-    if (lastMessage !== null && !lastMessage.data.startsWith('connection')) {
-      const parsedLastMessage = JSON.parse(lastMessage.data)
-      const testResponse = parseTestResponse(parsedLastMessage)
-      setAPITestResponses(prev => prev.concat(testResponse))
-    }
-  }, [lastMessage, setAPITestResponses])
-  //// websocket
 
   const onClickResponseGroupItem = useCallback((e: React.MouseEvent<HTMLElement>) => {
-    if (e.target instanceof HTMLDivElement && e.target.hasAttribute('id')) {
+    if (e.target instanceof HTMLElement && e.target.hasAttribute('id')) {
       const tIdx = parseInt(e.target.id) ?? 0
       setShowed({ tIdx, rIdx: 0 })
     }
@@ -83,9 +34,8 @@ export const ResultPanel: FC<ResultPanelProps> = ({ startTestMsg }) => {
         code: `${rIdx}`,
       }))
     : []
-
   return (
-    <section css={flexCss}>
+    <>
       <motion.div css={responseGroupCss} onClick={onClickResponseGroupItem} layout layoutScroll>
         <AnimatePresence>
           {APITestResponses.map((testResponse, tIdx) => (
@@ -105,8 +55,10 @@ export const ResultPanel: FC<ResultPanelProps> = ({ startTestMsg }) => {
                 scale: 0.9,
               }}
             >
-              <span className="title">{testResponse.userId}</span>
-              <span className={`status ${testResponse?.result ? 'success' : 'fail'}`}></span>
+              <span className="title" id={`${tIdx}`}>
+                {testResponse.userId}
+              </span>
+              <span className={`status ${testResponse?.result ? 'success' : 'fail'}`} id={`${tIdx}`}></span>
             </motion.div>
           ))}
         </AnimatePresence>
@@ -134,15 +86,9 @@ export const ResultPanel: FC<ResultPanelProps> = ({ startTestMsg }) => {
           </ErrorBoundary>
         ) : null}
       </div>
-    </section>
+    </>
   )
 }
-
-const flexCss = css`
-  display: flex;
-  height: 100%;
-  width: 100%;
-`
 
 const responseGroupCss = css`
   width: 30%;

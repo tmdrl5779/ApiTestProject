@@ -6,7 +6,7 @@ import { ComponentCommonProps } from '../types'
 
 export interface TableProps extends ComponentCommonProps {
   columns: string[]
-  data: string[][]
+  data: Array<Array<string | number>>
 }
 
 export const Table: FC<TableProps> = ({ columns, data, _css, style }) => {

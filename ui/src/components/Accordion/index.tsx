@@ -55,7 +55,7 @@ export const Accordion: FC<AccordionProps> = memo(({ id, expanded, setExpanded, 
               open: { opacity: 1, height },
               collapsed: { opacity: 0, height: 0 },
             }}
-            transition={{ duration: 0.6, ease: [0.54, 0.12, 0.23, 0.98] }}
+            transition={{ duration: 0.8, ease: [0.44, 0.22, 0.23, 0.98] }}
             css={sectionCss}
             // layout
             layoutScroll
@@ -78,9 +78,9 @@ const headerCss = css`
   display: flex;
   align-items: center;
   padding: 4px;
-  // margin-top: 8px;
+  margin-top: 8px;
   // position: relative;
-  margin-bottom: 8px;
+  // margin-bottom: 8px;
 `
 
 const sectionCss = css`
