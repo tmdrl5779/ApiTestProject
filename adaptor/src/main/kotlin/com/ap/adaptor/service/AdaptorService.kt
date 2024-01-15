@@ -20,6 +20,7 @@ import org.springframework.http.client.reactive.ReactorClientHttpConnector
 import org.springframework.stereotype.Service
 import org.springframework.util.StopWatch
 import org.springframework.web.reactive.function.client.WebClient
+import org.springframework.web.reactive.function.client.WebClientRequestException
 import org.springframework.web.reactive.function.client.WebClientResponseException
 import org.springframework.web.reactive.function.client.awaitBody
 import org.springframework.web.reactive.socket.WebSocketSession
@@ -131,7 +132,12 @@ class AdaptorService(
             log.info("API Call success : $response")
         } catch (e: WebClientResponseException) {
             status = e.statusCode.toString()
-            log.info("API Call Fail")
+            log.info("API Call Fail : ${e.message.toString()}")
+        }catch (e: WebClientRequestException){
+            val errorSplit = e.message.toString().split(";")
+            status = "599 Request Exception ${errorSplit[0]}"
+            log.info("API Call Fail : ${e.message.toString()}")
+
         }
         stopWatch.stop()
 

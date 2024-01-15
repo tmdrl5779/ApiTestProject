@@ -34,7 +34,9 @@ class WebSocketHandler(
                     if(performData != null){
                         repeat(performData.repeatCount) {
                             callApi(performData, session)
-                            delay(performData.interval * 1000)
+                            if(it < performData.repeatCount-1) {
+                                delay(performData.interval * 1000)
+                            }
                         }
                     }
 
@@ -63,9 +65,10 @@ class WebSocketHandler(
     private suspend fun callApi(performData: PerformData, session: WebSocketSession) {
         coroutineScope {
             val userCallApiTime = measureTimeMillis{
-                List(performData.userCount) {
+                val list = List(performData.userCount) {
                     async { adaptorService.responsesForPerForm(performData.requestDataList, session, it) }
                 }
+                list.awaitAll()
             }
 
             log.info("User ${performData.userCount} finish API Call Total Time : $userCallApiTime")
