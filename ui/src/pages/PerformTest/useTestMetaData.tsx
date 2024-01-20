@@ -1,12 +1,7 @@
+import { MetaDataForTestState, TestMetaData } from '@/data/store'
 import { produce } from 'immer'
 import { ChangeEvent, useCallback, useMemo, useState } from 'react'
-
-export interface TestMetaData {
-  userCount: number
-  repeatCount: number
-  interval: number
-  isConcur: boolean
-}
+import { useRecoilState } from 'recoil'
 
 export type TestMetaDataConfigItem =
   | {
@@ -30,15 +25,8 @@ export type TestMetaDataConfigItem =
 
 export type TestMetaDataConfig = TestMetaDataConfigItem[]
 
-const defaultTestMetaData: TestMetaData = {
-  userCount: 10,
-  repeatCount: 1,
-  interval: 0,
-  isConcur: true,
-}
-
 export const useTestMetaData = () => {
-  const [testMetaData, setTestMetaData] = useState<TestMetaData>(defaultTestMetaData)
+  const [testMetaData, setTestMetaData] = useRecoilState<TestMetaData>(MetaDataForTestState)
 
   const setTestMetaDataByKey = useCallback(
     (key: keyof TestMetaData) => (value: string) =>

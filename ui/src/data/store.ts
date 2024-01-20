@@ -14,3 +14,22 @@ export const APIListForTestState = atom<IAPI[]>({
   key: 'apiListForTest',
   default: [defaultAPIForTest],
 })
+
+export interface TestMetaData {
+  userCount: number
+  repeatCount: number
+  interval: number
+  isConcur: boolean
+}
+
+const defaultTestMetaData: TestMetaData = {
+  userCount: 10,
+  repeatCount: 1,
+  interval: 0,
+  isConcur: true,
+}
+
+export const MetaDataForTestState = atom<TestMetaData>({
+  key: 'metaDataForTest',
+  default: defaultTestMetaData,
+})

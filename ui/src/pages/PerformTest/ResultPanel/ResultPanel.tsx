@@ -42,6 +42,7 @@ export const ResultPanel: FC<ResultPanelProps> = ({ startTestMsg }) => {
 
   useEffect(() => {
     return () => {
+      console.log('websocket close')
       getWebSocket()?.close()
     }
   }, [getWebSocket])

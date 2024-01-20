@@ -1,4 +1,5 @@
 import { Accordion, Button, Input, useAccordion } from '@/components'
+import { TestMetaData } from '@/data/store'
 import { overlayScrollBarYCss } from '@/data/variables.style'
 import {
   APIRequestEditor,
@@ -13,7 +14,7 @@ import { css } from '@emotion/react'
 import { IAPI } from 'api-types'
 import { motion, AnimatePresence } from 'framer-motion'
 import { FC, useCallback } from 'react'
-import { TestMetaData, TestMetaDataConfig, useTestMetaData } from './useTestMetaData'
+import { useTestMetaData } from './useTestMetaData'
 
 const composeWebsocketMessage = (testMetaData: TestMetaData, APIList: IAPI[]): string => {
   const { userCount, repeatCount, interval, isConcur } = testMetaData

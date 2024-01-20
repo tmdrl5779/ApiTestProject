@@ -204,7 +204,8 @@ Response
 - Socket open 되면 메세지 보내기, 메세지 1번만 보내기 (O)
   (현재 open전에 보내는 중, 메세지 2번 보내는중)
   ![image](https://github.com/tmdrl5779/ApiTestProject/assets/45285712/1a503cac-ac70-440b-a704-6f9f1fdea08e)
-- 결과 페이지에서 뒤로가기 누르면 socket close하기, 뒤로가기 누르면 기존 세팅한 값 보여주기
+- 결과 페이지에서 뒤로가기 누르면 socket close하기 (getWebsocket.close() 로 닫는데? 따로 메세지 보내야대니)
+- 뒤로가기 누르면 기존 세팅한 값 보여주기 (O)
   (현재 api 설정값은 기존 세팅한값 불러오는데, 위에 user, repeat, loop는 초기값으로 바뀜
 - 결과 트리 기본 세팅이 맨위 결과 포커스 되면 좋을듯 뭔가 허전한느낌
 - Request exception 추가했음
