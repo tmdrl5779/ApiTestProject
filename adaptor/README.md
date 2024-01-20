@@ -185,7 +185,7 @@ REST API
 - FAIL -> 이유 확인
   
 # To-Do
-- connection 에러 수정
-- interval
-- 1000이상 동시 호출
-- 30009 port Cors 뚫기
+- connection 에러 수정 (완료)
+- interval 시간 ms -> s (완료)
+- 1000이상 동시 호출 (connection pool 해결 못하는중 ㅜ..)
+- 30009 port Cors 뚫기 (완료)
