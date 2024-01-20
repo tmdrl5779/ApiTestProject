@@ -7,7 +7,7 @@ import { FC, ReactElement, useEffect } from 'react'
 import { Button } from '@/components/Button'
 
 // TODO: 에러 유형에 따라 도움말 메핑
-const help = '잠시 후 다시 시도해주세요.'
+const help = ''
 
 export interface ErrorProps {
   error: Error
@@ -20,7 +20,7 @@ export const Error: FC<ErrorProps> = ({ error, resetErrorBoundary, icon }) => {
     <motion.div css={errorCss}>
       <>
         {icon === undefined ? <FrownOutlined style={FrownOutlinedStyle} /> : icon}
-        <span className="message">{error.message}</span>
+        <span className="message">{`${error.name}: ${error.message}`}</span>
         <span className="help">{help}</span>
         {resetErrorBoundary ? <Button onClick={resetErrorBoundary}>새로 고침</Button> : null}
       </>

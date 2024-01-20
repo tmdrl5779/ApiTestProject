@@ -5,7 +5,7 @@ import { ApiOutlined } from '@ant-design/icons'
 import { css } from '@emotion/react'
 import { FetchApiResponse, FetchApiResponseError, IAPI } from 'api-types'
 import { FC, useCallback, useState } from 'react'
-import { getStatusColor } from '../..'
+import { getStatusColor, isErrorCode, parseStatus } from '../..'
 import { getTimeColor } from '../../utils/getTimeColor'
 import { Body } from './Body'
 import { Cookies } from './Cookies'
@@ -21,9 +21,23 @@ const isError = (response: IAPI['response']): response is FetchApiResponseError 
   return response !== null && 'name' in response && 'message' in response
 }
 
-const apiError = {
-  name: 'API 에러',
-  message: 'API 요청 중에 오류가 발생했어요.',
+const isDestinationError = (
+  response: FetchApiResponse
+):
+  | boolean
+  | {
+      name: string
+      message: string
+    } => {
+  const [code, message] = parseStatus(response.status)
+  console.log(code, message)
+  if (isErrorCode(code)) {
+    return {
+      name: code,
+      message,
+    }
+  }
+  return false
 }
 
 export interface APIResponseViewerProps {
@@ -40,6 +54,11 @@ export const APIResponseViewer: FC<APIResponseViewerProps> = ({ response }) => {
   }
   if (isError(response)) {
     return <Error error={response} />
+  }
+  const destinationError = isDestinationError(response)
+  console.log(destinationError)
+  if (typeof destinationError !== 'boolean') {
+    return <Error error={destinationError} />
   }
   return (
     <div css={apiResponseMainCss}>

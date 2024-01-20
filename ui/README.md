@@ -177,7 +177,6 @@ Response
 
   - PWA 적용
   - 로컬스토리지, API 저장 데이터 동기화
-  - API 결과 status 오류일시 파싱해서 에러화면 띄우기
   - TODO들 다 처리하기
 - API 호출
 
@@ -191,8 +190,10 @@ Response
       - API 별로도 볼 수 있으면 좋을 듯
         - 오른쪽에 legends 놓고 label, total 눌러서 switch 하도록?
     
+    - 트리
+      - url안보이는거 고치기
     - 요약
-      - total이 맨 밑에 가게
+      - 
 - 다크모드
 - 배포해서 SEO, 성능, 접근성 최적화
 - 스토리북 도입
@@ -206,7 +207,7 @@ Response
 - 뒤로가기 누르면 기존 세팅한 값 보여주기 (O)
   (현재 api 설정값은 기존 세팅한값 불러오는데, 위에 user, repeat, loop는 초기값으로 바뀜
 - 결과 트리 기본 세팅이 맨위 결과 포커스 되면 좋을듯 뭔가 허전한느낌 (O)
-- Request exception 추가했음
+- Request exception 추가했음 (status 에러 상태면 에러 표시나게함)
   - Connection time out -> http status 597
   - ReadTime out -> http status 598
   - else -> http stats 599

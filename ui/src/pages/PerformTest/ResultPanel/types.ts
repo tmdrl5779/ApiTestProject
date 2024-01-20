@@ -1,4 +1,4 @@
-import { FetchApiResponse } from 'api-types'
+import { FetchApiResponse, FetchApiResponseError } from 'api-types'
 
 export interface APITestResponse {
   responseList: FetchApiResponse[]

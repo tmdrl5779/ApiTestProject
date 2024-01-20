@@ -1,7 +1,7 @@
 import { Button, Input, Select, WrappedChangeEventHandler } from '@/components'
 import { fetchApi } from '@/remotes/fetchApi'
 import { css } from '@emotion/react'
-import { FetchApiRequest, FetchApiResponse, IAPI } from 'api-types'
+import { FetchApiRequest, FetchApiResponse, FetchApiResponseError, IAPI } from 'api-types'
 import { AxiosError, AxiosResponse } from 'axios'
 import { FC, useCallback, useEffect } from 'react'
 import { useMutation } from 'react-query'
