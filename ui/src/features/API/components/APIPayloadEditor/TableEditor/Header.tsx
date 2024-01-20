@@ -1,3 +1,4 @@
+import { color } from '@/data/variables.style'
 import { css } from '@emotion/react'
 import { motion } from 'framer-motion'
 import { memo } from 'react'
@@ -20,4 +21,5 @@ const headerCss = css`
   font-weight: bold;
   margin-top: 8px;
   width: calc(100% - 6px);
+  background: ${color.navBar};
 `
