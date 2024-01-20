@@ -7,6 +7,7 @@ import com.ap.adaptor.utils.UrlUtils
 import com.ap.adaptor.utils.logger
 import com.fasterxml.jackson.databind.ObjectMapper
 import io.netty.channel.ChannelOption
+import io.netty.handler.timeout.ReadTimeoutException
 import io.netty.handler.timeout.ReadTimeoutHandler
 import io.netty.handler.timeout.WriteTimeoutHandler
 import kotlinx.coroutines.async
@@ -26,6 +27,7 @@ import org.springframework.web.reactive.function.client.awaitBody
 import org.springframework.web.reactive.socket.WebSocketSession
 import reactor.core.publisher.Mono
 import reactor.netty.http.client.HttpClient
+import java.net.ConnectException
 import java.net.HttpCookie
 import kotlin.system.measureTimeMillis
 
@@ -134,8 +136,20 @@ class AdaptorService(
             status = e.statusCode.toString()
             log.info("API Call Fail : ${e.message.toString()}")
         }catch (e: WebClientRequestException){
-            val errorSplit = e.message.toString().split(";")
-            status = "599 Request Exception ${errorSplit[0]}"
+            when(e.rootCause){
+                is ConnectException -> {
+                    status = "597 Connection Time out"
+                    log.info("API Call Fail : ${e.rootCause}")
+                }
+                is ReadTimeoutException -> {
+                    status = "598 ReadTime out"
+                    log.info("API Call Fail : ${e.rootCause}")
+                }
+                else -> {
+                    val errorSplit = e.message.toString().split(";")
+                    status = "599 Request Exception ${errorSplit[0]}"
+                }
+            }
             log.info("API Call Fail : ${e.message.toString()}")
 
         }
