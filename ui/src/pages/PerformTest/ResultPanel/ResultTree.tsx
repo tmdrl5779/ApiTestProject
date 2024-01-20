@@ -4,7 +4,7 @@ import { APIResponseViewer, renderResponseTabTitle } from '@/features/API'
 import { css } from '@emotion/react'
 import { FetchApiResponse } from 'api-types'
 import { AnimatePresence, motion } from 'framer-motion'
-import { FC, useCallback, useState } from 'react'
+import { FC, useCallback, useEffect, useState } from 'react'
 import { APITestResponse } from './types'
 
 interface ResultTreeProps {
@@ -13,6 +13,14 @@ interface ResultTreeProps {
 
 export const ResultTree: FC<ResultTreeProps> = ({ APITestResponses }) => {
   const [showed, setShowed] = useState<false | { tIdx: number; rIdx: number }>(false)
+
+  const [isInitialized, setIsInitialized] = useState(false)
+  useEffect(() => {
+    if (!isInitialized && APITestResponses.length > 0) {
+      setShowed({ tIdx: 0, rIdx: 0 })
+      setIsInitialized(true)
+    }
+  }, [APITestResponses, isInitialized])
 
   const onClickResponseGroupItem = useCallback((e: React.MouseEvent<HTMLElement>) => {
     if (e.target instanceof HTMLElement && e.target.hasAttribute('id')) {

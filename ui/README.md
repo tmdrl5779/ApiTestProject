@@ -177,26 +177,24 @@ Response
 
   - PWA 적용
   - 로컬스토리지, API 저장 데이터 동기화
-  - 불편한거 피드백 받고 수정
-  
+  - API 결과 status 오류일시 파싱해서 에러화면 띄우기
+  - TODO들 다 처리하기
 - API 호출
 
   - 재렌더링 이슈
   - 드래그해서 res, req탭 높이 조정
-  
 - 성능 테스트
 
   - 결과 페이지
-  
     - 그래프
+      - 1.0 0.8아니고 0 ,1 로만
       - API 별로도 볼 수 있으면 좋을 듯
         - 오른쪽에 legends 놓고 label, total 눌러서 switch 하도록?
     
-  
+    - 요약
+      - total이 맨 밑에 가게
 - 다크모드
-
 - 배포해서 SEO, 성능, 접근성 최적화
-
 - 스토리북 도입
 
 ### 수정요청
@@ -207,7 +205,7 @@ Response
 - 결과 페이지에서 뒤로가기 누르면 socket close하기 (getWebsocket.close() 로 닫는데? 따로 메세지 보내야대니)
 - 뒤로가기 누르면 기존 세팅한 값 보여주기 (O)
   (현재 api 설정값은 기존 세팅한값 불러오는데, 위에 user, repeat, loop는 초기값으로 바뀜
-- 결과 트리 기본 세팅이 맨위 결과 포커스 되면 좋을듯 뭔가 허전한느낌
+- 결과 트리 기본 세팅이 맨위 결과 포커스 되면 좋을듯 뭔가 허전한느낌 (O)
 - Request exception 추가했음
   - Connection time out -> http status 597
   - ReadTime out -> http status 598
