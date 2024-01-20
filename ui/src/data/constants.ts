@@ -3,9 +3,9 @@ import { FetchApiRequest, FetchApiResponse, IAPI } from 'api-types'
 import { PayloadItem } from 'common-types'
 
 export const defaultFetchApiTime = {
-  connectionTime: 0,
-  readTime: 0,
-  writeTime: 0,
+  connectionTime: 10,
+  readTime: 10,
+  writeTime: 10,
 }
 
 export const defaultFetchApiCount = 1

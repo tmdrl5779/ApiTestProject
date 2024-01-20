@@ -55,11 +55,20 @@ export const EditPanel: FC<EditPanelProps> = ({ setStep, setStartTestMsg }) => {
 
   // 눌르면 결과 페이지로 넘어감 startMsg도 전달
   const onClickRunButton = useCallback(() => {
-    if (APIList.every(api => validateApiRequest(api.request))) {
+    const canSend = APIList.every(api => validateApiRequest(api.request).canSend)
+    const alertMessage = APIList.map(api => validateApiRequest(api.request))
+      .map((each, idx) => {
+        if (each.canSend) {
+          return ''
+        }
+        return `${idx + 1}번째 API의 ${each.message}\n`
+      })
+      .join('')
+    if (canSend) {
       setStep('result')
       setStartTestMsg(composeWebsocketMessage(testMetaData, APIList))
     } else {
-      alert('Request URL을 입력해주세요.')
+      alert(alertMessage)
     }
   }, [APIList, setStartTestMsg, setStep, testMetaData])
   return (

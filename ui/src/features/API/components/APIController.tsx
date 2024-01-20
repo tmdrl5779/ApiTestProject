@@ -48,10 +48,11 @@ export const APIContoller: FC<APIControllerProps> = ({ hasFetchFunc = true, setI
   }, [isLoading, setIsFetching])
 
   const onClickSendButton = useCallback(() => {
-    if (validateApiRequest(api.request)) {
+    const { canSend, message } = validateApiRequest(api.request)
+    if (canSend) {
       apiMutation.mutate(api.request)
     } else {
-      alert('Request URL을 입력해주세요.')
+      alert(message)
     }
   }, [api.request, apiMutation])
 
