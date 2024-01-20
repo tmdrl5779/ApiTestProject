@@ -200,8 +200,8 @@ Response
 - 스토리북 도입
 
 ### 수정요청
-- API Time 설정하는 부분 기본 10초로 지정, 1초 이하로 설정 못하도록 수정
-- Socket open 되면 메세지 보내기, 메세지 1번만 보내기
+- API Time 설정하는 부분 기본 10초로 지정, 1초 이하로 설정 못하도록 수정 (O)
+- Socket open 되면 메세지 보내기, 메세지 1번만 보내기 (O)
   (현재 open전에 보내는 중, 메세지 2번 보내는중)
   ![image](https://github.com/tmdrl5779/ApiTestProject/assets/45285712/1a503cac-ac70-440b-a704-6f9f1fdea08e)
 - 결과 페이지에서 뒤로가기 누르면 socket close하기, 뒤로가기 누르면 기존 세팅한 값 보여주기

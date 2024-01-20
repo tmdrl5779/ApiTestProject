@@ -41,12 +41,6 @@ export const ResultPanel: FC<ResultPanelProps> = ({ startTestMsg }) => {
   const startTimeRef = useRef(0)
 
   useEffect(() => {
-    if (startTestMsg !== null) {
-      sendMessage(startTestMsg)
-    }
-  }, [startTestMsg, sendMessage, getWebSocket])
-
-  useEffect(() => {
     return () => {
       getWebSocket()?.close()
     }
@@ -59,9 +53,12 @@ export const ResultPanel: FC<ResultPanelProps> = ({ startTestMsg }) => {
       testResponse.totalTime = lastMessage.timeStamp
       setAPITestResponses(prev => prev.concat(testResponse))
     } else if (lastMessage?.data.includes('open')) {
+      if (startTestMsg !== null) {
+        sendMessage(startTestMsg)
+      }
       startTimeRef.current = lastMessage?.timeStamp
     }
-  }, [lastMessage, setAPITestResponses])
+  }, [lastMessage, sendMessage, setAPITestResponses, startTestMsg])
   //// websocket
 
   const onSelectTab = useCallback((code: string) => {
