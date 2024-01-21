@@ -4,7 +4,7 @@
   "version": "1.0.0",
   "description": "react-boilerplate with webpack, babel, jest, lint, typescript",
   "main": "src/index.tsx",
-  "packageManager": "yarn@3.3.0",
+  "packageManager": "yarn@4.0.2",
   "author": "fe-jhw",
   "license": "MIT",
   "dependencies": {
