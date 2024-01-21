@@ -174,7 +174,7 @@ Response
 ### 할 일
 
 - 공통
-  - PWA 적용
+  - PWA 적용 (내 bolilerplate 환경에서 정석방법이 안먹혀서 안되는 중)
   - 로컬스토리지, API 저장 데이터 동기화
   - TODO들 다 처리하기
 - API 호출

@@ -1,12 +1,28 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ApiTestProject</title>
+    <meta charset="utf-8" />
+    <link rel="icon" href="/public/favicon.ico" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#000000" />
+    <meta name="description" content="Postweb | API Platform for web" />
+    <link rel="apple-touch-icon" href="/public/logo192.png" />
+    <base href="/" />
+    <title>Postweb</title>
 </head>
 <body>
+  <script>
+    (function () {
+      if ('serviceWorker' in navigator) {
+        window.addEventListener('sw.js', function() {
+          navigator.serviceWorker.register('sw.js', {
+            scope: '/',
+          });
+        });
+      } 
+      window.process = { env: { NODE_ENV: 'production' } };
+    })();
+  </script>
   <div id="root"></div>
 </body>
 </html>
