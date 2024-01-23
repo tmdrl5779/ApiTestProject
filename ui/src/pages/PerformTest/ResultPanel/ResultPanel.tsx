@@ -42,7 +42,6 @@ export const ResultPanel: FC<ResultPanelProps> = ({ startTestMsg }) => {
 
   useEffect(() => {
     return () => {
-      console.log('websocket close')
       getWebSocket()?.close()
     }
   }, [getWebSocket])
@@ -52,6 +51,8 @@ export const ResultPanel: FC<ResultPanelProps> = ({ startTestMsg }) => {
       const parsedLastMessage = JSON.parse(lastMessage.data)
       const testResponse = parseTestResponse(parsedLastMessage)
       testResponse.totalTime = lastMessage.timeStamp
+      // TODO: test response를 쓰로틀링해서 1초마다 업뎃시키기
+      // TODO: 결과트리에는 windowing 적용하기
       setAPITestResponses(prev => prev.concat(testResponse))
     } else if (lastMessage?.data.includes('open')) {
       if (startTestMsg !== null) {
