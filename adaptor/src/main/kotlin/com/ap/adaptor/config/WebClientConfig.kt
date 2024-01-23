@@ -16,16 +16,14 @@ class WebClientConfig {
 
     @Bean
     fun webClient(): WebClient {
-        val connectionProvider =
-            ConnectionProvider.builder("myConnectionPool").maxConnections(10000).pendingAcquireMaxCount(10000).build()
 
         val httpClient = HttpClient
-            .create(connectionProvider)
-            .option(ChannelOption.CONNECT_TIMEOUT_MILLIS, 100000)
+            .create()
+            .option(ChannelOption.CONNECT_TIMEOUT_MILLIS, 0)
             .doOnConnected { conn ->
                 conn
-                    .addHandlerLast(ReadTimeoutHandler(300))
-                    .addHandlerLast(WriteTimeoutHandler(300))
+                    .addHandlerLast(ReadTimeoutHandler(0))
+                    .addHandlerLast(WriteTimeoutHandler(0))
             }
 
 

@@ -7,6 +7,7 @@ import com.ap.adaptor.utils.UrlUtils
 import com.ap.adaptor.utils.logger
 import com.fasterxml.jackson.databind.ObjectMapper
 import io.netty.channel.ChannelOption
+import io.netty.handler.ssl.SslContextBuilder
 import io.netty.handler.timeout.ReadTimeoutException
 import io.netty.handler.timeout.ReadTimeoutHandler
 import io.netty.handler.timeout.WriteTimeoutHandler
@@ -27,6 +28,7 @@ import org.springframework.web.reactive.function.client.awaitBody
 import org.springframework.web.reactive.socket.WebSocketSession
 import reactor.core.publisher.Mono
 import reactor.netty.http.client.HttpClient
+import reactor.netty.resources.ConnectionProvider
 import java.net.ConnectException
 import java.net.HttpCookie
 import kotlin.system.measureTimeMillis
@@ -181,7 +183,10 @@ class AdaptorService(
         val header = requestData.header
         val body = requestData.body
 
-        val httpClient = HttpClient.create()
+        val connectionProvider =
+            ConnectionProvider.builder("myConnectionPool").maxConnections(1000).pendingAcquireMaxCount(1000).build()
+
+        val httpClient = HttpClient.create(connectionProvider)
             .option(ChannelOption.CONNECT_TIMEOUT_MILLIS, connectionTime * 1000)
             .doOnConnected { conn ->
                 conn
