@@ -56,12 +56,12 @@ export const composeSummaryReport = (apiTestResponses: APITestResponse[]): ISumm
     result.total.failRate += result[label].failRate
     // 2)
     result[label].avgResponseTime = result[label].avgResponseTime / result[label].total
-    result[label].failRate = result[label].failRate / result[label].total
+    result[label].failRate = (result[label].failRate / result[label].total) * 100
   })
 
   // 3)
   result.total.avgResponseTime = result.total.avgResponseTime / result.total.total
-  result.total.failRate = result.total.failRate / result.total.total
+  result.total.failRate = (result.total.failRate / result.total.total) * 100
 
   return result
 }

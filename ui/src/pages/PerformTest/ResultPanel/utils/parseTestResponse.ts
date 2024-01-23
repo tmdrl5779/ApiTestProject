@@ -6,6 +6,6 @@ export const parseTestResponse = (
 ): APITestResponse => {
   return {
     ...testResponse,
-    responseList: testResponse.responseList.map(response => parseResponse(response)),
+    responseList: testResponse.responseList.map(parseResponse),
   }
 }

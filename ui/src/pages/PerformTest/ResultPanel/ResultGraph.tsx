@@ -16,13 +16,41 @@ import { css } from '@emotion/react'
 
 ChartJS.register(CategoryScale, LinearScale, PointElement, LineElement, Title, Tooltip, Legend)
 
+const plugins = {
+  legend: {
+    position: 'right' as const,
+  },
+  tooltip: {
+    mode: 'index',
+    intersect: false,
+  },
+  hover: {
+    mode: 'index',
+    intersec: false,
+  },
+}
+
 const options = {
   responsive: true,
   maintainAspectRatio: true,
   aspectRatio: 2,
-  plugins: {
-    legend: {
-      position: 'right' as const,
+
+  scales: {
+    x: {
+      title: {
+        display: true,
+        text: 'ms',
+      },
+    },
+    y: {
+      title: {
+        display: true,
+        text: 'count',
+      },
+      min: 0,
+      ticks: {
+        stepSize: 1,
+      },
     },
   },
 }
@@ -36,18 +64,19 @@ export const ResultGraph: FC<ResultGraphProps> = ({ graphData }) => {
   const data = useMemo(
     () => ({
       labels,
+      plugins,
       datasets: [
         {
           label: 'SUCCESS',
           data: success,
-          borderColor: 'rgb(144, 238, 144)',
-          backgroundColor: 'rgba(144, 238, 144, 0.5)',
+          borderColor: statusColor.GOOD,
+          backgroundColor: statusColor.GOOD,
         },
         {
           label: 'FAIL',
           data: fail,
-          borderColor: 'rgb(226, 54, 54)',
-          backgroundColor: 'rgba(226, 54, 54, 0.5)',
+          borderColor: statusColor.FAIL,
+          backgroundColor: statusColor.FAIL,
         },
       ],
     }),

@@ -37,6 +37,7 @@ const tableCss = css`
   border-collapse: collapse;
   thead tr {
     font-weight: bold;
+    background: ${color.navBar};
   }
   td {
     border: 1px solid ${color.pale};

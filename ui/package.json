@@ -1,9 +1,10 @@
 {
   "name": "fe-jhw-react-boilerplate",
+  "homepage": ".",
   "version": "1.0.0",
   "description": "react-boilerplate with webpack, babel, jest, lint, typescript",
   "main": "src/index.tsx",
-  "packageManager": "yarn@3.3.0",
+  "packageManager": "yarn@4.0.2",
   "author": "fe-jhw",
   "license": "MIT",
   "dependencies": {
@@ -15,6 +16,7 @@
     "ajv": "^8.12.0",
     "axios": "^1.4.0",
     "chart.js": "^4.4.1",
+    "express": "^4.18.2",
     "framer-motion": "^10.12.16",
     "immer": "^10.0.3",
     "react": "^18.2.0",
@@ -95,7 +97,8 @@
     "lint-staged": "lint-staged",
     "lint": "eslint './src/**/*.{ts,tsx,js,jsx}'",
     "lint:fix": "eslint --fix './src/**/*.{ts,tsx,js,jsx}'",
-    "test": "jest --config config/jest/jest.config.js"
+    "test": "jest --config config/jest/jest.config.js",
+    "server": "node ./server.js"
   },
   "lint-staged": {
     "*.{js,jsx}": [

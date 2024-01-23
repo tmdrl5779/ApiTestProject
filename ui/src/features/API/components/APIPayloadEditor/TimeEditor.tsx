@@ -44,6 +44,7 @@ export const TimeEditor = () => {
             type="number"
             value={api['request']['time'][key]}
             className="input"
+            min={1}
           />
         </div>
       ))}

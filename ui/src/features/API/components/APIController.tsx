@@ -1,7 +1,7 @@
 import { Button, Input, Select, WrappedChangeEventHandler } from '@/components'
 import { fetchApi } from '@/remotes/fetchApi'
 import { css } from '@emotion/react'
-import { FetchApiRequest, FetchApiResponse, IAPI } from 'api-types'
+import { FetchApiRequest, FetchApiResponse, FetchApiResponseError, IAPI } from 'api-types'
 import { AxiosError, AxiosResponse } from 'axios'
 import { FC, useCallback, useEffect } from 'react'
 import { useMutation } from 'react-query'
@@ -48,10 +48,11 @@ export const APIContoller: FC<APIControllerProps> = ({ hasFetchFunc = true, setI
   }, [isLoading, setIsFetching])
 
   const onClickSendButton = useCallback(() => {
-    if (validateApiRequest(api.request)) {
+    const { canSend, message } = validateApiRequest(api.request)
+    if (canSend) {
       apiMutation.mutate(api.request)
     } else {
-      alert('Request URL을 입력해주세요.')
+      alert(message)
     }
   }, [api.request, apiMutation])
 

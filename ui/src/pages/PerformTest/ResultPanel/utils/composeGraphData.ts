@@ -10,10 +10,10 @@ export const composeGraphData = (startTime: number, apiTestResponses: APITestRes
   return {
     labels: apiTestResponses.map(testResponse => (testResponse.totalTime - startTime).toFixed(0)),
     success: apiTestResponses.map(
-      testResponse => testResponse.responseList.filter(response => response.status.includes('200')).length
+      testResponse => testResponse.responseList.filter(response => response.status.startsWith('2')).length
     ),
     fail: apiTestResponses.map(
-      testResponse => testResponse.responseList.filter(response => !response.status.includes('200')).length
+      testResponse => testResponse.responseList.filter(response => !response.status.startsWith('2')).length
     ),
   }
 }
