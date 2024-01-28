@@ -4,8 +4,50 @@ import { APIResponseViewer, renderResponseTabTitle } from '@/features/API'
 import { css } from '@emotion/react'
 import { FetchApiResponse } from 'api-types'
 import { AnimatePresence, motion } from 'framer-motion'
-import { FC, useCallback, useEffect, useState } from 'react'
+import { FC, memo, useCallback, useEffect, useMemo, useState } from 'react'
 import { APITestResponse } from './types'
+import { areEqual, FixedSizeList as List } from 'react-window'
+import AutoSizer from 'react-virtualized-auto-sizer'
+
+interface ResponseGroupItemProps {
+  index: number
+  style?: React.CSSProperties
+  data: Array<{
+    userId: string
+    result: boolean
+    isActive: boolean
+  }>
+}
+
+const ResponseGroupItem = memo(({ data, index, style }: ResponseGroupItemProps) => {
+  const { userId, result, isActive } = data[index]
+
+  return (
+    <div style={style}>
+      <motion.div
+        layout
+        layoutScroll
+        key={`${index}`}
+        css={responseGroupItemCss}
+        id={`${index}`}
+        className={isActive ? 'active' : ''}
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        whileHover={{
+          color: color.primaryText,
+        }}
+        whileTap={{
+          scale: 0.9,
+        }}
+      >
+        <span className="title" id={`${index}`}>
+          {userId}
+        </span>
+        <span className={`status ${result ? 'success' : 'fail'}`} id={`${index}`}></span>
+      </motion.div>
+    </div>
+  )
+}, areEqual)
 
 interface ResultTreeProps {
   APITestResponses: APITestResponse[]
@@ -42,33 +84,34 @@ export const ResultTree: FC<ResultTreeProps> = ({ APITestResponses }) => {
         code: `${rIdx}`,
       }))
     : []
+
+  const responseGroupItems = useMemo(
+    () =>
+      APITestResponses.map((responseGroup, index) => ({
+        userId: responseGroup.userId,
+        result: responseGroup.result,
+        isActive: showed && showed?.tIdx === index,
+      })),
+    [APITestResponses, showed]
+  )
   return (
     <>
       <motion.div css={responseGroupCss} onClick={onClickResponseGroupItem} layout layoutScroll>
         <AnimatePresence>
-          {APITestResponses.map((testResponse, tIdx) => (
-            <motion.div
-              layout
-              layoutScroll
-              key={`${tIdx}`}
-              css={responseGroupItemCss}
-              id={`${tIdx}`}
-              className={showed && showed?.tIdx === tIdx ? 'active' : ''}
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              whileHover={{
-                color: color.primaryText,
-              }}
-              whileTap={{
-                scale: 0.9,
-              }}
-            >
-              <span className="title" id={`${tIdx}`}>
-                {testResponse.userId}
-              </span>
-              <span className={`status ${testResponse?.result ? 'success' : 'fail'}`} id={`${tIdx}`}></span>
-            </motion.div>
-          ))}
+          <AutoSizer>
+            {({ height, width }: { height: number; width: number }) => (
+              <List
+                itemCount={responseGroupItems.length}
+                height={height}
+                itemSize={48}
+                width={width}
+                itemData={responseGroupItems}
+                css={overlayScrollBarYCss}
+              >
+                {ResponseGroupItem}
+              </List>
+            )}
+          </AutoSizer>
         </AnimatePresence>
       </motion.div>
       <div css={responseListCss}>
@@ -103,7 +146,7 @@ const responseGroupCss = css`
   height: 100%;
   padding: 0px 8px;
   border-right: 1px solid ${color.pale};
-  ${overlayScrollBarYCss};
+  // ${overlayScrollBarYCss};
 `
 // TODO: accordion header와 css 겹침 card로 컴포넌트로 따로 빼기
 const responseGroupItemCss = css`

@@ -155,27 +155,10 @@ Response
 }
 ```
 
-
-### 컴포넌트 기반 개발
-
-- TDD로 진행
-  - 스토리북, jest, rtl 활용 테스트
-  - emotion, framer, scss로 애니메이션과 스타일링
-  - atomic, compound 패턴 활용
-
-### 전역 상태관리
-
-- recoil만 사용?
-
-### 에러처리
-
-- ErrorBoundary, Suspense 활용하기
-
 ### 할 일
 
 - 공통
   - PWA 적용 (내 bolilerplate 환경에서 정석방법이 안먹혀서 안되는 중)
-  - 로컬스토리지, API 저장 데이터 동기화 (O)
   - TODO들 다 처리하기
 - API 호출
 
@@ -192,27 +175,13 @@ Response
         - 오른쪽에 legends 놓고 label, total 눌러서 switch 하도록?
       
     - 트리
-      - 왼쪽 유저 목록에 windowing 적용하기
     - 요약
-
 - 다크모드
 - 배포해서 SEO, 성능, 접근성 최적화
 - 스토리북 도입
 
 ### 수정요청
-- API Time 설정하는 부분 기본 10초로 지정, 1초 이하로 설정 못하도록 수정 (O)
-- Socket open 되면 메세지 보내기, 메세지 1번만 보내기 (O)
-  (현재 open전에 보내는 중, 메세지 2번 보내는중)
-  ![image](https://github.com/tmdrl5779/ApiTestProject/assets/45285712/1a503cac-ac70-440b-a704-6f9f1fdea08e)
-- 결과 페이지에서 뒤로가기 누르면 socket close하기 (getWebsocket.close() 로 닫는데? 따로 메세지 보내야대니)
-- 뒤로가기 누르면 기존 세팅한 값 보여주기 (O)
-  (현재 api 설정값은 기존 세팅한값 불러오는데, 위에 user, repeat, loop는 초기값으로 바뀜
-- 결과 트리 기본 세팅이 맨위 결과 포커스 되면 좋을듯 뭔가 허전한느낌 (O)
-- Request exception 추가했음 (status 에러 상태면 에러 표시나게함)
-  - Connection time out -> http status 597
-  - ReadTime out -> http status 598
-  - else -> http stats 599
-  ( test.com < 없는 도메인으로 call 하면 기존에는 서버에러 나왔지만 Connection time out -> http status 597로 나오게 수정했음)
+- 다 함~
 
 
   ## 일정
