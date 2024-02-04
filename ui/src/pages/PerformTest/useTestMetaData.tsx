@@ -3,7 +3,7 @@ import { produce } from 'immer'
 import { ChangeEvent, useCallback, useMemo, useState } from 'react'
 import { useRecoilState } from 'recoil'
 
-const MAX_THREADS= 7000
+const MAX_THREADS = 7000
 
 export type TestMetaDataConfigItem =
   | {
@@ -37,7 +37,7 @@ export const useTestMetaData = () => {
           if (key === 'isConcur') {
             draft[key] = !draft[key]
           } else {
-            const numValue = Math.min(MAX_THREADS, Number(value))            
+            const numValue = Math.min(MAX_THREADS, Number(value))
             draft[key] = numValue
           }
         })
@@ -70,7 +70,7 @@ export const useTestMetaData = () => {
         value: testMetaData.interval,
         onChange: setTestMetaDataByKey('interval'),
         placeholder: 'API 호출 간격(시간)을 입력해주세요.',
-        min: 0,
+        min: 1,
       },
       {
         label: '동시호출 활성화',

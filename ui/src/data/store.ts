@@ -18,7 +18,7 @@ const localStorageEffect: <T>(key: string) => AtomEffect<T> =
 export const APIListState = atom<IAPI[]>({
   key: 'apiList',
   default: [getDefaultAPI()],
-  effects: [localStorageEffect<IAPI[]>('apiList')]
+  effects: [localStorageEffect<IAPI[]>('apiList')],
 })
 
 const defaultAPIForTest = getDefaultAPI()
@@ -27,7 +27,7 @@ defaultAPIForTest.request.url = 'https://jsonplaceholder.typicode.com/todos/1'
 export const APIListForTestState = atom<IAPI[]>({
   key: 'apiListForTest',
   default: [defaultAPIForTest],
-  effects: [localStorageEffect<IAPI[]>('apiListForTest')]
+  effects: [localStorageEffect<IAPI[]>('apiListForTest')],
 })
 
 export interface TestMetaData {
@@ -40,12 +40,12 @@ export interface TestMetaData {
 const defaultTestMetaData: TestMetaData = {
   userCount: 10,
   repeatCount: 1,
-  interval: 0,
+  interval: 1,
   isConcur: true,
 }
 
 export const MetaDataForTestState = atom<TestMetaData>({
   key: 'metaDataForTest',
   default: defaultTestMetaData,
-  effects: [localStorageEffect<TestMetaData>('metaDataForTest')]
+  effects: [localStorageEffect<TestMetaData>('metaDataForTest')],
 })
