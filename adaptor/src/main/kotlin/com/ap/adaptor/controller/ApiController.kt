@@ -34,21 +34,9 @@ class ApiController(
 
     }
 
-//    @PostMapping("/api/test")
-//    suspend fun testApi():MutableMap<String, Any> = withContext(Dispatchers.IO){
-//        log.info(">>>>>>>>>>>> start suspend")
-//        performService.measureTestPerform()
-//    }
-//
-//    @PostMapping("/api/test2")
-//    fun testApi2():MutableMap<String, Any>{
-//        log.info(">>>>>>>>>>>> start normal")
-//        return performService.measureTestPerform2()
-//    }
-//
-//    @PostMapping("/api/test3")
-//    suspend fun testApi3():MutableMap<String, Any> = coroutineScope{
-//        log.info(">>>>>>>>>>>> start suspend")
-//        performService.measureTestPerform3()
-//    }
+    @PostMapping("/api/test")
+    fun testApi():String{
+        return "Hello World!"
+    }
+
 }
