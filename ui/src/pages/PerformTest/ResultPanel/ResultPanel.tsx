@@ -1,8 +1,9 @@
 import { Blinker, Funnel, Tabs, TabsItem } from '@/components'
 import { color } from '@/data/variables.style'
 import { parseResponse, ServerResponse } from '@/features/API'
+import { useQueuing } from '@/hooks'
 import { css } from '@emotion/react'
-import { FC, useCallback, useEffect, useMemo, useRef, useState } from 'react'
+import { FC, memo, useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import useWebSocket from 'react-use-websocket'
 import { ResultGraph } from './ResultGraph'
 import { ResultTree } from './ResultTree'
@@ -33,34 +34,29 @@ interface ResultPanelProps {
   startTestMsg: string | null
 }
 
-export const ResultPanel: FC<ResultPanelProps> = ({ startTestMsg }) => {
+export const ResultPanel: FC<ResultPanelProps> = memo(({ startTestMsg }) => {
   const [APITestResponses, setAPITestResponses] = useState<APITestResponse[]>([])
   const [step, setStep] = useState<(typeof steps)[number]>(steps[0])
-  // websocket
-  const { sendMessage, lastMessage, getWebSocket } = useWebSocket(testWebsocketUrl)
   const startTimeRef = useRef(0)
+  // websocket
+  useQueuing({
+    websocketUrl: testWebsocketUrl,
+    startMsg: startTestMsg,
+    onQueue: queue => {
+      setAPITestResponses(prev => {
+        const added = queue.map(msg => {
+          const response = parseTestResponse(JSON.parse(msg?.data))
+          response.totalTime = msg?.timeStamp as number
+          return parseTestResponse(JSON.parse(msg?.data))
+        })
+        return [...prev, ...added]
+      })
+    },
+    onOpen: msg => {
+      startTimeRef.current = msg?.timeStamp
+    },
+  })
 
-  useEffect(() => {
-    return () => {
-      getWebSocket()?.close()
-    }
-  }, [getWebSocket])
-
-  useEffect(() => {
-    if (lastMessage !== null && !lastMessage.data.startsWith('connection')) {
-      const parsedLastMessage = JSON.parse(lastMessage.data)
-      const testResponse = parseTestResponse(parsedLastMessage)
-      testResponse.totalTime = lastMessage.timeStamp
-      // TODO: test response를 쓰로틀링해서 1초마다 업뎃시키기
-      // TODO: 결과트리에는 windowing 적용하기
-      setAPITestResponses(prev => prev.concat(testResponse))
-    } else if (lastMessage?.data.includes('open')) {
-      if (startTestMsg !== null) {
-        sendMessage(startTestMsg)
-      }
-      startTimeRef.current = lastMessage?.timeStamp
-    }
-  }, [lastMessage, sendMessage, setAPITestResponses, startTestMsg])
   //// websocket
 
   const onSelectTab = useCallback((code: string) => {
@@ -99,7 +95,7 @@ export const ResultPanel: FC<ResultPanelProps> = ({ startTestMsg }) => {
       </div>
     </section>
   )
-}
+})
 
 const wrapperCss = css`
   height: 100%;

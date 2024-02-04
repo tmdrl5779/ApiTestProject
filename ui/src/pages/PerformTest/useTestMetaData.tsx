@@ -3,6 +3,8 @@ import { produce } from 'immer'
 import { ChangeEvent, useCallback, useMemo, useState } from 'react'
 import { useRecoilState } from 'recoil'
 
+const MAX_THREADS= 7000
+
 export type TestMetaDataConfigItem =
   | {
       label: string
@@ -35,7 +37,8 @@ export const useTestMetaData = () => {
           if (key === 'isConcur') {
             draft[key] = !draft[key]
           } else {
-            draft[key] = Number(value)
+            const numValue = Math.min(MAX_THREADS, Number(value))            
+            draft[key] = numValue
           }
         })
       ),
@@ -51,6 +54,7 @@ export const useTestMetaData = () => {
         onChange: setTestMetaDataByKey('userCount'),
         placeholder: '유저 수를 입력해주세요.',
         min: 1,
+        max: 10000,
       },
       {
         label: 'Repeat Count',
