@@ -1,6 +1,7 @@
 package com.ap.adaptor.service
 
 import com.ap.adaptor.constants.Constants
+import com.ap.adaptor.customException.CustomWebSocketException
 import com.ap.adaptor.dto.*
 import com.ap.adaptor.dto.enumData.PerformType
 import com.ap.adaptor.utils.UrlUtils
@@ -31,6 +32,7 @@ import reactor.netty.http.client.HttpClient
 import reactor.netty.resources.ConnectionProvider
 import java.net.ConnectException
 import java.net.HttpCookie
+import java.net.http.WebSocketHandshakeException
 import kotlin.system.measureTimeMillis
 
 @Service
@@ -67,9 +69,15 @@ class AdaptorService(
                 var responseDataList = ResponseDataList(responsesResult, totalTime, result, "USER-$userIdx")
                 log.info("Response Data Info : $responseDataList")
 
-                //send to websocket
-                session.send(Mono.just(session.textMessage(objectMapper.writeValueAsString(responseDataList))))
-                    .subscribe()
+                if(session.isOpen){
+                    //send to websocket
+                    session.send(Mono.just(session.textMessage(objectMapper.writeValueAsString(responseDataList))))
+                        .subscribe()
+                }else{
+                    log.info(Constants.WEBSOCKET_CLOSE)
+                    throw CustomWebSocketException(Constants.WEBSOCKET_CLOSE)
+                }
+
 
             }
             PerformType.CONCUR -> {
@@ -90,9 +98,15 @@ class AdaptorService(
                 var responseDataList = ResponseDataList(responsesResult, totalTime, result, "USER-$userIdx")
                 log.info("Response Data Info : $responseDataList")
 
-                //send to websocket
-                session.send(Mono.just(session.textMessage(objectMapper.writeValueAsString(responseDataList))))
-                    .subscribe()
+
+                if(session.isOpen){
+                    //send to websocket
+                    session.send(Mono.just(session.textMessage(objectMapper.writeValueAsString(responseDataList))))
+                        .subscribe()
+                }else{
+                    log.info(Constants.WEBSOCKET_CLOSE)
+                    throw CustomWebSocketException(Constants.WEBSOCKET_CLOSE)
+                }
 
             }
             else -> {
