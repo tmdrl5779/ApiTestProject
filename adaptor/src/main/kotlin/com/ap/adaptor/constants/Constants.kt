@@ -6,4 +6,6 @@ object Constants {
     const val HTTP_METHOD_PUT = "PUT"
     const val HTTP_METHOD_DELETE = "DELETE"
     const val HTTP_METHOD_PATCH = "PATCH"
+
+    const val WEBSOCKET_CLOSE = "WebSocket is closed"
 }
