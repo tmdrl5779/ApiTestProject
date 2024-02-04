@@ -34,7 +34,7 @@ class ApiController(
 
     }
 
-    @PostMapping("/api/test")
+    @GetMapping("/api/test")
     fun testApi():String{
         return "Hello World!"
     }
