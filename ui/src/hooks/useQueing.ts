@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from 'react'
+import { useCallback, useEffect, useRef, useState } from 'react'
 import useWebSocket from 'react-use-websocket'
 
 let GLOBALQUEUE: Array<MessageEvent<any>> = []
@@ -30,24 +30,21 @@ export const useQueuing = ({ websocketUrl, onOpen, startMsg, onQueue, onClose }:
   const { sendMessage, lastMessage, getWebSocket } = useWebSocket(websocketUrl)
 
   const [queue, setQueue] = useState<any[]>([])
+  const prevQueueLen = useRef<number>(0)
 
   const startTick = useCallback(() => {
     const timer = setInterval(() => {
-      console.log('tick')
       if (GLOBALQUEUE.length !== 0) {
         const t = [...GLOBALQUEUE]
         GLOBALQUEUE = []
-        if (onQueue) {
-          onQueue?.(t)
-        } else {
-          setQueue(prev => {
-            return [...prev, ...t]
-          })
-        }
+        setQueue(prev => {
+          prevQueueLen.current = prev.length
+          return [...prev, ...t]
+        })
       }
     }, 500)
     return timer
-  }, [onQueue])
+  }, [])
 
   useEffect(() => {
     if (lastMessage != null) {
@@ -67,6 +64,11 @@ export const useQueuing = ({ websocketUrl, onOpen, startMsg, onQueue, onClose }:
       }
     }
   }, [lastMessage, onClose, onOpen, sendMessage, startMsg, startTick])
+
+  useEffect(() => {
+    const added = queue.slice(prevQueueLen.current)
+    onQueue?.(added)
+  }, [onQueue, queue])
 
   useEffect(() => {
     return () => {
