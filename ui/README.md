@@ -7,9 +7,8 @@
 
 ![image-20230614235105261](README.assets/image-20230614235105261.png)
 
-
-
 API 검증 화면
+
 - API 여러개 추가 가능한이유? 한 User가 여러개의 API를 호출할 수 있게 테스트를 하기 위함 (동시에 호출, 순차적 호출)
 - 쓰레드란? User
 - ex) 쓰레드 2, 반복횟수 2, 인터벌 30초
@@ -17,13 +16,10 @@ API 검증 화면
   2. 이때 동시성 활성화 > 설정한 API가 어려개면 User는 API를 동시에 호출
   3. 이때 동시성 비활성화 > 설정한 API가 어려개면 User는 API를 순차적에 호출
   4. User 2명의 호출이 다 완료되면 인터벌 시간만큼 대기
-  5. 반복 횟수 만큼 1~4번 반복 
+  5. 반복 횟수 만큼 1~4번 반복
 
 ![image](https://github.com/tmdrl5779/ApiTestProject/assets/45285712/3ec20a2b-3eb1-453d-9c29-2deae65b45db)
 ![image](https://github.com/tmdrl5779/ApiTestProject/assets/45285712/78a66625-befa-45f6-92fe-198dd98ef304)
-
-
-
 
 ### API Call 규격 : /api/call
 
@@ -91,9 +87,10 @@ Response
 ]
 ```
 
-
 ### API 검증 규격 (웹 소켓) : /api/perform/socket-connect
+
 - Request
+
 ```
 {
     "userCount": 10,
@@ -117,8 +114,9 @@ Response
 ```
 
 - Response
+
 ```
-{  
+{
     "responseList": [{
     "responseTime": 0, //응답 시간
     "body": {}, //응답값 body
@@ -164,18 +162,15 @@ Response
 
   - 재렌더링 이슈
   - 드래그해서 res, req탭 높이 조정
+
 - 성능 테스트
   - 공통
     - 재렌더링도 다 잡아야함
-    - test response를 쓰로틀링해서 1초마다 업뎃시키기
-      - 1초마다하는데 큐에 빼고 하는 과정에서 중복 데이터 들어감
-      - 그래프 아래 시간 -로 잡힘
-    
   - 결과 페이지
     - 그래프
       - API 별로도 볼 수 있으면 좋을 듯
         - 오른쪽에 legends 놓고 label, total 눌러서 switch 하도록?
-      
+      - 최적화 + line -> 점 그래프로 변경
     - 트리
     - 요약
 - 다크모드
@@ -183,21 +178,17 @@ Response
 - 스토리북 도입
 
 ### 수정요청
-- 다 함~
 
+- 다 함~
 
   ## 일정
 
   - API 합치기, 다크모드
     - 나중에 함
-  - 1차 배포 (2.3)
-    - 도메인 사기
-    - 클라우드 활용
-      - node로 프론트서버
+  - 1차 배포 (2.3) (O)
+    - 도메인 사기 (O)
+    - 클라우드 활용 (O)
+      - vercel 씀
   - 배포 하고
     - SEO , 접근성, 성능 최적화
     - 에러 모니터링 설정 sentry
-
-  
-
-  

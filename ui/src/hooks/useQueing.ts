@@ -42,7 +42,7 @@ export const useQueuing = ({ websocketUrl, onOpen, startMsg, onQueue, onClose }:
           return [...prev, ...t]
         })
       }
-    }, 500)
+    }, 1000)
     return timer
   }, [])
 
@@ -50,6 +50,7 @@ export const useQueuing = ({ websocketUrl, onOpen, startMsg, onQueue, onClose }:
     if (lastMessage != null) {
       if (isRealtime(lastMessage)) {
         GLOBALQUEUE.push(lastMessage)
+        // console.log('global q:', GLOBALQUEUE)
       } else if (isOpen(lastMessage)) {
         if (startMsg != null) {
           sendMessage(startMsg)
@@ -60,7 +61,7 @@ export const useQueuing = ({ websocketUrl, onOpen, startMsg, onQueue, onClose }:
         onClose?.(lastMessage)
         setTimeout(() => {
           clearInterval(timer)
-        }, 2000)
+        }, 5000)
       }
     }
   }, [lastMessage, onClose, onOpen, sendMessage, startMsg, startTick])

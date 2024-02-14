@@ -42,19 +42,19 @@ export const ResultPanel: FC<ResultPanelProps> = memo(({ startTestMsg }) => {
   useQueuing({
     websocketUrl: testWebsocketUrl,
     startMsg: startTestMsg,
-    onQueue: queue => {
+    onQueue: useCallback((queue: Array<MessageEvent<any>>) => {
       setAPITestResponses(prev => {
         const added = queue.map(msg => {
           const response = parseTestResponse(JSON.parse(msg?.data))
           response.totalTime = msg?.timeStamp as number
-          return parseTestResponse(JSON.parse(msg?.data))
+          return response
         })
         return [...prev, ...added]
       })
-    },
-    onOpen: msg => {
+    }, []),
+    onOpen: useCallback((msg: MessageEvent<any>) => {
       startTimeRef.current = msg?.timeStamp
-    },
+    }, []),
   })
 
   //// websocket

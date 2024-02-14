@@ -30,7 +30,6 @@ const isDestinationError = (
       message: string
     } => {
   const [code, message] = parseStatus(response.status)
-  console.log(code, message)
   if (isErrorCode(code)) {
     return {
       name: code,
@@ -56,7 +55,6 @@ export const APIResponseViewer: FC<APIResponseViewerProps> = ({ response }) => {
     return <Error error={response} />
   }
   const destinationError = isDestinationError(response)
-  console.log(destinationError)
   if (typeof destinationError !== 'boolean') {
     return <Error error={destinationError} />
   }
