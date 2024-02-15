@@ -4,13 +4,11 @@ import com.ap.adaptor.dto.*
 import com.ap.adaptor.service.AdaptorService
 import com.ap.adaptor.utils.logger
 import com.fasterxml.jackson.databind.ObjectMapper
-import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 import kotlinx.coroutines.*
 import org.springframework.stereotype.Component
 import org.springframework.web.reactive.socket.WebSocketHandler
 import org.springframework.web.reactive.socket.WebSocketSession
 import reactor.core.publisher.Mono
-import java.util.concurrent.Executors
 import kotlin.IllegalArgumentException
 import kotlin.system.measureTimeMillis
 
@@ -75,7 +73,7 @@ class WebSocketHandler(
 //                        adaptorService.responsesForPerForm(performData.requestDataList, session, it)
 //                    }
                     async {
-                        adaptorService.responsesForPerForm(performData.requestDataList, session, it)
+                        adaptorService.responsesForPerForm(performData.requestDataList, session, it, performData.userCount)
                     }
                 }
                 list.awaitAll()

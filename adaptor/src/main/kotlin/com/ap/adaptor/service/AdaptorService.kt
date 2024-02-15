@@ -8,7 +8,6 @@ import com.ap.adaptor.utils.UrlUtils
 import com.ap.adaptor.utils.logger
 import com.fasterxml.jackson.databind.ObjectMapper
 import io.netty.channel.ChannelOption
-import io.netty.handler.ssl.SslContextBuilder
 import io.netty.handler.timeout.ReadTimeoutException
 import io.netty.handler.timeout.ReadTimeoutHandler
 import io.netty.handler.timeout.WriteTimeoutHandler
@@ -32,7 +31,6 @@ import reactor.netty.http.client.HttpClient
 import reactor.netty.resources.ConnectionProvider
 import java.net.ConnectException
 import java.net.HttpCookie
-import java.net.http.WebSocketHandshakeException
 import kotlin.system.measureTimeMillis
 
 @Service
@@ -46,7 +44,8 @@ class AdaptorService(
     suspend fun responsesForPerForm(
         requestDataList: RequestDataList,
         session: WebSocketSession,
-        userIdx: Int
+        userIdx: Int,
+        userCount: Int
     ) = coroutineScope {
         val requestList = requestDataList.requestList
         var responsesResult = mutableListOf<ResponseData>()
@@ -56,7 +55,7 @@ class AdaptorService(
         when (requestDataList.performType) {
             PerformType.SEQ -> {
                 for (i in 0 until requestList.size) {
-                    val responseWithTime = async { responseWithTime(requestList[i]) }
+                    val responseWithTime = async { responseWithTime(requestList[i], userCount) }
                     val deferredValue = responseWithTime.await()
 
                     responsesResult.add(deferredValue)
@@ -82,7 +81,7 @@ class AdaptorService(
             }
             PerformType.CONCUR -> {
                 totalTime = measureTimeMillis {
-                    val deferredValue = requestList.map { async { responseWithTime(it) } }
+                    val deferredValue = requestList.map { async { responseWithTime(it, userCount) } }
                     val totalResponseWithTime = deferredValue.awaitAll()
 
                     responsesResult = totalResponseWithTime as MutableList<ResponseData>
@@ -140,13 +139,13 @@ class AdaptorService(
     }
 
 
-    suspend fun responseWithTime(requestData: RequestData): ResponseData {
+    suspend fun responseWithTime(requestData: RequestData, userCount: Int ?= null): ResponseData {
         val stopWatch = StopWatch()
         var response: MutableMap<String, Any> = mutableMapOf()
         var status = HttpStatus.OK.toString()
         stopWatch.start()
         try {
-            response = callApi(requestData)
+            response = callApi(requestData, userCount)
             log.info("API Call success : $response")
         } catch (e: WebClientResponseException) {
             status = e.statusCode.toString()
@@ -183,7 +182,7 @@ class AdaptorService(
     }
 
 
-    suspend fun callApi(requestData: RequestData): MutableMap<String, Any> {
+    suspend fun callApi(requestData: RequestData, userCount: Int?): MutableMap<String, Any> {
         val connectionTime = requestData.time.connectionTime
         val readTime = requestData.time.readTime
         val writeTime = requestData.time.writeTime
@@ -198,10 +197,17 @@ class AdaptorService(
         val body = requestData.body
 
         val connectionProvider =
-            ConnectionProvider.builder("myConnectionPool").maxConnections(10000).pendingAcquireMaxCount(10000).build()
+            ConnectionProvider.builder("myConnectionPool").maxConnections(userCount?:10000).pendingAcquireMaxCount(10000).build()
 
-        val httpClient = HttpClient.create(connectionProvider)
+        val httpClient = if(userCount == null){
+            HttpClient.create()
+        }else{
+            HttpClient.create(connectionProvider)
+        }
+
+//        val httpClient = HttpClient.create(connectionProvider)
 //        val httpClient = HttpClient.create()
+        httpClient
             .option(ChannelOption.CONNECT_TIMEOUT_MILLIS, connectionTime * 1000)
             .doOnConnected { conn ->
                 conn
