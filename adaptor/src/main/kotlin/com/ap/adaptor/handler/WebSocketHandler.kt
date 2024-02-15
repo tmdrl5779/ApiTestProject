@@ -64,17 +64,17 @@ class WebSocketHandler(
 
     private suspend fun callApi(performData: PerformData, session: WebSocketSession) {
 
-        val threadPool = Executors.newFixedThreadPool(performData.userCount)
+//        val threadPool = Executors.newFixedThreadPool(performData.userCount)
 
         coroutineScope() {
             val userCallApiTime = measureTimeMillis{
                 val list = List(performData.userCount) {
-                    async (threadPool.asCoroutineDispatcher()){
-                        adaptorService.responsesForPerForm(performData.requestDataList, session, it, performData.userCount)
-                    }
-//                    async {
+//                    async (threadPool.asCoroutineDispatcher()){
 //                        adaptorService.responsesForPerForm(performData.requestDataList, session, it, performData.userCount)
 //                    }
+                    async {
+                        adaptorService.responsesForPerForm(performData.requestDataList, session, it, performData.userCount)
+                    }
                 }
                 list.awaitAll()
             }
@@ -82,7 +82,7 @@ class WebSocketHandler(
             log.info("User ${performData.userCount} finish API Call Total Time : $userCallApiTime")
         }
 
-        threadPool.shutdown()
+//        threadPool.shutdown()
     }
 
     private suspend fun parseRequestData(payload: String): PerformData? = withContext(Dispatchers.IO){
