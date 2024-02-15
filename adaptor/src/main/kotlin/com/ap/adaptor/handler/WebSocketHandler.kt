@@ -9,6 +9,7 @@ import org.springframework.stereotype.Component
 import org.springframework.web.reactive.socket.WebSocketHandler
 import org.springframework.web.reactive.socket.WebSocketSession
 import reactor.core.publisher.Mono
+import java.util.concurrent.Executors
 import kotlin.IllegalArgumentException
 import kotlin.system.measureTimeMillis
 
@@ -63,18 +64,17 @@ class WebSocketHandler(
 
     private suspend fun callApi(performData: PerformData, session: WebSocketSession) {
 
-//        val threadPool = Executors.newFixedThreadPool(Int.MAX_VALUE)
-//        val threadPool = Executors.newCachedThreadPool()
+        val threadPool = Executors.newFixedThreadPool(performData.userCount)
 
         coroutineScope() {
             val userCallApiTime = measureTimeMillis{
                 val list = List(performData.userCount) {
-//                    async (threadPool.asCoroutineDispatcher()){
-//                        adaptorService.responsesForPerForm(performData.requestDataList, session, it)
-//                    }
-                    async {
+                    async (threadPool.asCoroutineDispatcher()){
                         adaptorService.responsesForPerForm(performData.requestDataList, session, it, performData.userCount)
                     }
+//                    async {
+//                        adaptorService.responsesForPerForm(performData.requestDataList, session, it, performData.userCount)
+//                    }
                 }
                 list.awaitAll()
             }
@@ -82,7 +82,7 @@ class WebSocketHandler(
             log.info("User ${performData.userCount} finish API Call Total Time : $userCallApiTime")
         }
 
-//        threadPool.shutdown()
+        threadPool.shutdown()
     }
 
     private suspend fun parseRequestData(payload: String): PerformData? = withContext(Dispatchers.IO){
