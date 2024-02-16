@@ -18,7 +18,7 @@ const isClose: MsgTypeChecker = msg => {
   return msg?.data.includes('close')
 }
 
-interface UseQueuingProps {
+interface UseQueueingProps {
   websocketUrl: string
   onOpen?: (msg: MessageEvent<any>) => void
   onQueue?: (queue: Array<MessageEvent<any>>) => void
@@ -26,7 +26,7 @@ interface UseQueuingProps {
   onClose?: (msg: MessageEvent<any>) => void
 }
 
-export const useQueuing = ({ websocketUrl, onOpen, startMsg, onQueue, onClose }: UseQueuingProps) => {
+export const useQueueing = ({ websocketUrl, onOpen, startMsg, onQueue, onClose }: UseQueueingProps) => {
   const { sendMessage, lastMessage, getWebSocket } = useWebSocket(websocketUrl)
 
   const [queue, setQueue] = useState<any[]>([])

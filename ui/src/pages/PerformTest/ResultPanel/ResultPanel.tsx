@@ -1,7 +1,7 @@
 import { Blinker, Funnel, Tabs, TabsItem } from '@/components'
 import { color } from '@/data/variables.style'
 import { parseResponse, ServerResponse } from '@/features/API'
-import { useQueuing } from '@/hooks'
+import { useQueueing } from '@/hooks'
 import { css } from '@emotion/react'
 import { FC, memo, useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import useWebSocket from 'react-use-websocket'
@@ -39,7 +39,7 @@ export const ResultPanel: FC<ResultPanelProps> = memo(({ startTestMsg }) => {
   const [step, setStep] = useState<(typeof steps)[number]>(steps[0])
   const startTimeRef = useRef(0)
   // websocket
-  useQueuing({
+  useQueueing({
     websocketUrl: testWebsocketUrl,
     startMsg: startTestMsg,
     onQueue: useCallback((queue: Array<MessageEvent<any>>) => {
