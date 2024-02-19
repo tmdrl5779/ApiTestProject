@@ -167,6 +167,8 @@ Response
   - 공통
     - 재렌더링도 다 잡아야함
   - 결과 페이지
+    - 공통
+      - progress에 숫자들 위아래 왓다갓다 토스처럼
     - 그래프
       - API 별로도 볼 수 있으면 좋을 듯
         - 오른쪽에 legends 놓고 label, total 눌러서 switch 하도록?
