@@ -41,7 +41,7 @@ export const ResultPanel: FC<ResultPanelProps> = memo(({ goToEdit, startTestMsg 
   const testMetaData = useRecoilValue(MetaDataForTestState)
   const [APITestResponses, setAPITestResponses] = useState<APITestResponse[]>([])
   const [step, setStep] = useState<(typeof steps)[number]>(steps[0])
-  const startTimeRef = useRef(0)
+  const startTimeRef = useRef(Date.now())
   // websocket
   useQueueing({
     websocketUrl: testWebsocketUrl,
@@ -50,7 +50,7 @@ export const ResultPanel: FC<ResultPanelProps> = memo(({ goToEdit, startTestMsg 
       setAPITestResponses(prev => {
         const added = queue.map(msg => {
           const response = parseTestResponse(JSON.parse(msg?.data))
-          response.totalTime = msg?.timeStamp as number
+          response.timeStamp = msg?.timeStamp as number
           return response
         })
         return [...prev, ...added]

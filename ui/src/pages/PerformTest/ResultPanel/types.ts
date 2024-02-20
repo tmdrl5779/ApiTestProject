@@ -5,4 +5,5 @@ export interface APITestResponse {
   totalTime: number
   result: boolean
   userId: string
+  timeStamp: number
 }

@@ -1,59 +1,9 @@
 import { FC, useMemo } from 'react'
 import { GraphData } from './utils/composeGraphData'
-import {
-  Chart as ChartJS,
-  CategoryScale,
-  LinearScale,
-  PointElement,
-  LineElement,
-  Title,
-  Tooltip,
-  Legend,
-} from 'chart.js'
-import { Line } from 'react-chartjs-2'
+
 import { color, statusColor } from '@/data/variables.style'
 import { css } from '@emotion/react'
-
-ChartJS.register(CategoryScale, LinearScale, PointElement, LineElement, Title, Tooltip, Legend)
-
-const plugins = {
-  legend: {
-    position: 'right' as const,
-  },
-  tooltip: {
-    mode: 'index',
-    intersect: false,
-  },
-  hover: {
-    mode: 'index',
-    intersec: false,
-  },
-}
-
-const options = {
-  responsive: true,
-  maintainAspectRatio: true,
-  aspectRatio: 2,
-
-  scales: {
-    x: {
-      title: {
-        display: true,
-        text: 'ms',
-      },
-    },
-    y: {
-      title: {
-        display: true,
-        text: 'count',
-      },
-      min: 0,
-      ticks: {
-        stepSize: 1,
-      },
-    },
-  },
-}
+import ReactECharts from 'echarts-for-react'
 
 export interface ResultGraphProps {
   graphData: GraphData
@@ -61,30 +11,85 @@ export interface ResultGraphProps {
 
 export const ResultGraph: FC<ResultGraphProps> = ({ graphData }) => {
   const { labels, success, fail } = graphData
-  const data = useMemo(
-    () => ({
-      labels,
-      plugins,
-      datasets: [
-        {
-          label: 'SUCCESS',
-          data: success,
-          borderColor: statusColor.GOOD,
-          backgroundColor: statusColor.GOOD,
+
+  const options = {
+    darkMode: true,
+    grid: { left: '5%', right: '5%' },
+    xAxis: {
+      type: 'value',
+      data: labels,
+      axisLabel: {
+        formatter: '{value}s',
+      },
+      axisLine: {
+        lineStyle: {
+          color: color.secondaryText,
         },
-        {
-          label: 'FAIL',
-          data: fail,
-          borderColor: statusColor.FAIL,
-          backgroundColor: statusColor.FAIL,
+      },
+      splitLine: {
+        show: false,
+      },
+      name: '시간',
+      nameLocation: 'end',
+      nameTextStyle: {
+        // fontWeight: 'bold',
+        fontSize: 16,
+        color: color.primaryText,
+      },
+    },
+    yAxis: {
+      type: 'value',
+      scale: true,
+      axisLabel: {
+        formatter: '{value}ms',
+      },
+      axisLine: {
+        lineStyle: {
+          color: color.secondaryText,
         },
-      ],
-    }),
-    [fail, labels, success]
-  )
+      },
+      splitLine: {
+        show: false,
+      },
+      name: '응답 시간',
+      nameLocation: 'end',
+      nameTextStyle: {
+        // fontWeight: 'bold',
+        fontSize: 16,
+        color: color.primaryText,
+      },
+    },
+    series: [
+      {
+        data: success,
+        type: 'scatter',
+        smooth: true,
+        color: statusColor.GOOD,
+      },
+      {
+        data: fail,
+        type: 'scatter',
+        smooth: true,
+        color: statusColor.FAIL,
+      },
+    ],
+
+    tooltip: {
+      trigger: 'item',
+    },
+  }
   return (
     <div css={wrapperCss}>
-      <Line options={options} data={data} />
+      <ReactECharts
+        option={options}
+        notMerge={true}
+        lazyUpdate={true}
+        style={{
+          height: '100%',
+          width: '100%',
+        }}
+        opts={{}}
+      />
     </div>
   )
 }
