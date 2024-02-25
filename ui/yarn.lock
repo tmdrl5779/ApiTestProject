@@ -4490,6 +4490,18 @@ __metadata:
   languageName: node
   linkType: hard
 
+"compression-webpack-plugin@npm:^11.0.0":
+  version: 11.0.0
+  resolution: "compression-webpack-plugin@npm:11.0.0"
+  dependencies:
+    schema-utils: "npm:^4.2.0"
+    serialize-javascript: "npm:^6.0.2"
+  peerDependencies:
+    webpack: ^5.1.0
+  checksum: b022d4827ee40790611c09bbd3ed2c7b5dad30fbc4acd596d75e33e51a6bd1d0c46c3e93218571b4db96024e5d5cdb1929ee059f764af9f0c5f7ebd9d00d9a8f
+  languageName: node
+  linkType: hard
+
 "compression@npm:^1.7.4":
   version: 1.7.4
   resolution: "compression@npm:1.7.4"
@@ -6123,6 +6135,7 @@ __metadata:
     babel-loader: "npm:^9.1.0"
     chart.js: "npm:^4.4.1"
     clean-webpack-plugin: "npm:^4.0.0"
+    compression-webpack-plugin: "npm:^11.0.0"
     cross-env: "npm:^7.0.3"
     css-loader: "npm:^6.7.3"
     css-minimizer-webpack-plugin: "npm:^4.2.2"
@@ -10945,7 +10958,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"schema-utils@npm:^4.0.0":
+"schema-utils@npm:^4.0.0, schema-utils@npm:^4.2.0":
   version: 4.2.0
   resolution: "schema-utils@npm:4.2.0"
   dependencies:
@@ -11022,7 +11035,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"serialize-javascript@npm:^6.0.0, serialize-javascript@npm:^6.0.1":
+"serialize-javascript@npm:^6.0.0, serialize-javascript@npm:^6.0.1, serialize-javascript@npm:^6.0.2":
   version: 6.0.2
   resolution: "serialize-javascript@npm:6.0.2"
   dependencies:

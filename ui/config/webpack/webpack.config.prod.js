@@ -9,6 +9,7 @@ const CssMinimizerPlugin = require('css-minimizer-webpack-plugin')
 const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin
 const { CleanWebpackPlugin } = require('clean-webpack-plugin')
 const TerserPlugin = require('terser-webpack-plugin')
+const CompressionPlugin = require('compression-webpack-plugin')
 
 module.exports = merge(common, {
   mode: 'production',
@@ -68,6 +69,13 @@ module.exports = merge(common, {
       statsFilename: 'bundle-stats.json',
     }),
     new CleanWebpackPlugin(),
+    new CompressionPlugin({
+      filename: '[path][base].gz',
+      algorithm: 'gzip',
+      test: /\.js$|\.css$|\.html$/,
+      threshold: 10240,
+      minRatio: 0.8,
+    }),
   ],
 
   optimization: {
@@ -101,5 +109,10 @@ module.exports = merge(common, {
         parallel: os.cpus().length - 1,
       }),
     ],
+  },
+  externals: {
+    react: 'React',
+    'react-dom': 'ReactDOM',
+    axios: 'axios',
   },
 })

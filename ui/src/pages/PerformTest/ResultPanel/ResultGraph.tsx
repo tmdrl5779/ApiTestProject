@@ -1,4 +1,4 @@
-import { FC, useMemo } from 'react'
+import { FC, lazy, useMemo } from 'react'
 import { GraphData } from './utils/composeGraphData'
 
 import { color, statusColor } from '@/data/variables.style'
