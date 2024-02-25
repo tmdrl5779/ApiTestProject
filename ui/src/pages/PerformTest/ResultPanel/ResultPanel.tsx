@@ -4,12 +4,14 @@ import { color } from '@/data/variables.style'
 import { parseResponse, ServerResponse } from '@/features/API'
 import { useQueueing } from '@/hooks'
 import { css } from '@emotion/react'
-import { FC, memo, useCallback, useEffect, useMemo, useRef, useState } from 'react'
+import { FC, lazy, memo, useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import useWebSocket from 'react-use-websocket'
 import { useRecoilValue } from 'recoil'
-import { ResultGraph } from './ResultGraph'
-import { ResultTree } from './ResultTree'
-import { SummaryReport } from './SummaryReport'
+
+const ResultGraph = lazy(() => import('./ResultGraph').then(module => ({ default: module['ResultGraph'] })))
+const ResultTree = lazy(() => import('./ResultTree').then(module => ({ default: module['ResultTree'] })))
+const SummaryReport = lazy(() => import('./SummaryReport').then(module => ({ default: module['SummaryReport'] })))
+
 import { APITestResponse } from './types'
 import { composeGraphData } from './utils/composeGraphData'
 import { composeSummaryReport } from './utils/composeSummaryReport'

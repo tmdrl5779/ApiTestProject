@@ -3,7 +3,13 @@ import { GraphData } from './utils/composeGraphData'
 
 import { color, statusColor } from '@/data/variables.style'
 import { css } from '@emotion/react'
-import ReactECharts from 'echarts-for-react'
+import ReactEChartsCore from 'echarts-for-react/lib/core'
+import * as echarts from 'echarts/core'
+import { ScatterChart } from 'echarts/charts'
+import { GridComponent, TooltipComponent, TitleComponent, DatasetComponent } from 'echarts/components'
+import { CanvasRenderer } from 'echarts/renderers'
+
+echarts.use([TitleComponent, TooltipComponent, GridComponent, ScatterChart, CanvasRenderer])
 
 export interface ResultGraphProps {
   graphData: GraphData
@@ -80,7 +86,8 @@ export const ResultGraph: FC<ResultGraphProps> = ({ graphData }) => {
   }
   return (
     <div css={wrapperCss}>
-      <ReactECharts
+      <ReactEChartsCore
+        echarts={echarts}
         option={options}
         notMerge={true}
         lazyUpdate={true}

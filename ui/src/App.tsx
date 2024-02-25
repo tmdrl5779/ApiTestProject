@@ -1,8 +1,11 @@
 import '../src/assets/global.css'
 import { GNB, SNB, Layout, Content } from './layouts'
-import { APIs, APIMerge, PerformTest } from './pages'
+// import { APIs, APIMerge, PerformTest } from './pages'
+const APIs = lazy(() => import('./pages').then(module => ({ default: module['APIs'] })))
+const APIMerge = lazy(() => import('./pages').then(module => ({ default: module['APIMerge'] })))
+const PerformTest = lazy(() => import('./pages').then(module => ({ default: module['PerformTest'] })))
 import { ApiOutlinedIcon, BarChartOutlinedIcon, MergeCellsOutlinedIcon } from './data/icons'
-import { useCallback, useState } from 'react'
+import { lazy, useCallback, useState } from 'react'
 import { Funnel } from './components/Funnel'
 import { AnimatePresence, motion } from 'framer-motion'
 import { css } from '@emotion/react'

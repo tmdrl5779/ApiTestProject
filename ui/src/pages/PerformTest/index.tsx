@@ -1,8 +1,8 @@
 import { Button, Funnel, Progress } from '@/components'
 import { css } from '@emotion/react'
-import { useCallback, useEffect, useState } from 'react'
-import { EditPanel } from './EditPanel'
-import { ResultPanel } from './ResultPanel'
+import { lazy, useCallback, useEffect, useState } from 'react'
+const EditPanel = lazy(() => import('./EditPanel').then(module => ({ default: module['EditPanel'] })))
+const ResultPanel = lazy(() => import('./ResultPanel').then(module => ({ default: module['ResultPanel'] })))
 
 export const PerformTest: React.FC = () => {
   const [step, setStep] = useState<'edit' | 'result'>('edit')
