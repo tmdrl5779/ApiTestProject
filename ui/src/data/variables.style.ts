@@ -9,6 +9,7 @@ export const color = {
   secondaryText: '#B3B3B3',
   topGradient: '#404040',
   pale: 'rgba(255, 255, 255, 0.1)',
+  graphLine: 'rgba(255, 255, 255, 0.2)',
 }
 
 export const height = {

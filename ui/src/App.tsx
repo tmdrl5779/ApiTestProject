@@ -7,7 +7,7 @@ import { ApiOutlinedIcon, BarChartOutlinedIcon, MergeCellsOutlinedIcon } from '.
 import { lazy, useCallback, useState } from 'react'
 import { Funnel } from './components/Funnel'
 import { css } from '@emotion/react'
-import { Blinker, Tabs } from './components'
+import { Blinker, Modal, Tabs } from './components'
 import { RecoilRoot } from 'recoil'
 import { GlobalErrorBoundary } from './components/ErrorBoundary/GloablErrorBoundary'
 

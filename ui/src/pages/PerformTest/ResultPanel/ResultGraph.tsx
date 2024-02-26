@@ -6,21 +6,74 @@ import { css } from '@emotion/react'
 import ReactEChartsCore from 'echarts-for-react/lib/core'
 import * as echarts from 'echarts/core'
 import { ScatterChart } from 'echarts/charts'
-import { GridComponent, TooltipComponent, TitleComponent, DatasetComponent } from 'echarts/components'
+import {
+  GridComponent,
+  TooltipComponent,
+  TitleComponent,
+  DataZoomComponent,
+  DataZoomInsideComponent,
+  DataZoomSliderComponent,
+} from 'echarts/components'
 import { CanvasRenderer } from 'echarts/renderers'
+import { Modal, useModal } from '@/components'
 
-echarts.use([TitleComponent, TooltipComponent, GridComponent, ScatterChart, CanvasRenderer])
+echarts.use([
+  TitleComponent,
+  TooltipComponent,
+  GridComponent,
+  ScatterChart,
+  CanvasRenderer,
+  DataZoomComponent,
+  DataZoomInsideComponent,
+  DataZoomSliderComponent,
+])
 
 export interface ResultGraphProps {
   graphData: GraphData
 }
 
 export const ResultGraph: FC<ResultGraphProps> = ({ graphData }) => {
+  const { isModalOpen, openModal, closeModal } = useModal()
   const { labels, success, fail } = graphData
+
+  const onEvents = useMemo(
+    () => ({
+      click: (params: { dataIndex: number; seriesId: string }) => {
+        console.log(params.dataIndex, params.seriesId)
+        openModal()
+      },
+    }),
+    []
+  )
 
   const options = {
     darkMode: true,
     grid: { left: '5%', right: '5%' },
+    dataZoom: [
+      {
+        type: 'slider',
+        show: true,
+        xAxisIndex: [0],
+      },
+      {
+        type: 'slider',
+        show: true,
+        yAxisIndex: [0],
+        left: '96%',
+      },
+      {
+        type: 'inside',
+        xAxisIndex: [0],
+        start: 1,
+        end: 35,
+      },
+      {
+        type: 'inside',
+        yAxisIndex: [0],
+        start: 29,
+        end: 36,
+      },
+    ],
     xAxis: {
       type: 'value',
       data: labels,
@@ -34,14 +87,17 @@ export const ResultGraph: FC<ResultGraphProps> = ({ graphData }) => {
       },
       splitLine: {
         show: false,
+        lineStyle: {
+          color: color.graphLine,
+        },
       },
-      name: '시간',
-      nameLocation: 'end',
-      nameTextStyle: {
-        // fontWeight: 'bold',
-        fontSize: 16,
-        color: color.primaryText,
-      },
+      // name: '시간',
+      // nameLocation: 'end',
+      // nameTextStyle: {
+      //   // fontWeight: 'bold',
+      //   fontSize: 12,
+      //   color: color.primaryText,
+      // },
     },
     yAxis: {
       type: 'value',
@@ -55,7 +111,10 @@ export const ResultGraph: FC<ResultGraphProps> = ({ graphData }) => {
         },
       },
       splitLine: {
-        show: false,
+        show: true,
+        lineStyle: {
+          color: color.graphLine,
+        },
       },
       name: '응답 시간',
       nameLocation: 'end',
@@ -67,19 +126,21 @@ export const ResultGraph: FC<ResultGraphProps> = ({ graphData }) => {
     },
     series: [
       {
+        id: 'success',
         data: success,
         type: 'scatter',
         smooth: true,
         color: statusColor.GOOD,
       },
       {
+        id: 'fail',
         data: fail,
         type: 'scatter',
         smooth: true,
         color: statusColor.FAIL,
       },
     ],
-
+    valueFormatter: (value: string) => `응답속도 ${value}ms`,
     tooltip: {
       trigger: 'item',
     },
@@ -96,7 +157,9 @@ export const ResultGraph: FC<ResultGraphProps> = ({ graphData }) => {
           width: '100%',
         }}
         opts={{}}
+        onEvents={onEvents}
       />
+      {/* <Modal /> */}
     </div>
   )
 }
@@ -106,5 +169,8 @@ const wrapperCss = css`
   width: 100%;
   height: 100%;
   overflow: hidden;
+  display: flex;
+  justify-content: center;
+  align-items: center;
   // padding: 0 50px;
 `
