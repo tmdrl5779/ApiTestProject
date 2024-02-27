@@ -1,4 +1,4 @@
-import { FC, lazy, useMemo } from 'react'
+import { FC, lazy, useMemo, useState } from 'react'
 import { GraphData } from './utils/composeGraphData'
 
 import { color, statusColor } from '@/data/variables.style'
@@ -15,7 +15,9 @@ import {
   DataZoomSliderComponent,
 } from 'echarts/components'
 import { CanvasRenderer } from 'echarts/renderers'
-import { Modal, useModal } from '@/components'
+import { Blinker, Modal, Tabs, useModal } from '@/components'
+import { APITestResponse } from './types'
+import { APIResponseViewer } from '@/features/API'
 
 echarts.use([
   TitleComponent,
@@ -34,13 +36,14 @@ export interface ResultGraphProps {
 
 export const ResultGraph: FC<ResultGraphProps> = ({ graphData }) => {
   const { isModalOpen, openModal, closeModal } = useModal()
-  const { labels, success, fail } = graphData
+  const [detailShowing, setDetailShowing] = useState<APITestResponse | null>(null)
+  const { labels, success, fail, successDetail, failDetail } = graphData
 
   const onEvents = useMemo(
     () => ({
-      click: (params: { dataIndex: number; seriesId: string }) => {
-        console.log(params.dataIndex, params.seriesId)
-        openModal()
+      click: (params: { dataIndex: number; seriesId: 'success' | 'fail' }) => {
+        const { dataIndex: idx, seriesId: id } = params
+        console.log(idx, id)
       },
     }),
     []
@@ -91,13 +94,6 @@ export const ResultGraph: FC<ResultGraphProps> = ({ graphData }) => {
           color: color.graphLine,
         },
       },
-      // name: '시간',
-      // nameLocation: 'end',
-      // nameTextStyle: {
-      //   // fontWeight: 'bold',
-      //   fontSize: 12,
-      //   color: color.primaryText,
-      // },
     },
     yAxis: {
       type: 'value',
@@ -159,7 +155,11 @@ export const ResultGraph: FC<ResultGraphProps> = ({ graphData }) => {
         opts={{}}
         onEvents={onEvents}
       />
-      {/* <Modal /> */}
+      {detailShowing ? (
+        <Modal isOpen={isModalOpen} close={closeModal}>
+          {detailShowing.toString()}
+        </Modal>
+      ) : null}
     </div>
   )
 }

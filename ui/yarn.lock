@@ -1585,6 +1585,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@emotion/is-prop-valid@npm:^1.2.1":
+  version: 1.2.1
+  resolution: "@emotion/is-prop-valid@npm:1.2.1"
+  dependencies:
+    "@emotion/memoize": "npm:^0.8.1"
+  checksum: fe231c472d38b3bbe519bcc9a5585cd41c45604147f3a065e333caf0f695d668aa21bc4229e657c1b6ea7398e096899e6ad54662548c73f11f6ba594aebd76a1
+  languageName: node
+  linkType: hard
+
 "@emotion/memoize@npm:0.7.4":
   version: 0.7.4
   resolution: "@emotion/memoize@npm:0.7.4"
@@ -6110,6 +6119,7 @@ __metadata:
     "@babel/preset-react": "npm:^7.18.6"
     "@babel/preset-typescript": "npm:^7.18.6"
     "@emotion/babel-plugin": "npm:^11.11.0"
+    "@emotion/is-prop-valid": "npm:^1.2.1"
     "@emotion/react": "npm:^11.11.1"
     "@monaco-editor/react": "npm:^4.6.0"
     "@pmmmwh/react-refresh-webpack-plugin": "npm:^0.5.10"
