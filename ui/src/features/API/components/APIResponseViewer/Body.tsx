@@ -67,7 +67,7 @@ export const Body: FC<BodyProps> = ({ body }) => {
               ) : null}
             </>
           ) : (
-            <p>{stringifiedBody}</p>
+            <span>{stringifiedBody}</span>
           )}
         </Blinker>
       </div>
@@ -102,5 +102,6 @@ const bodyHeaderCss = css`
 
 const bodyContentCss = css`
   height: calc(100% - 40px - 16px);
+  color: ${color.primaryText};
   ${overlayScrollBarYCss};
 `

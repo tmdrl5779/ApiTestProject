@@ -7,4 +7,5 @@ export const tableWrapperScrollableCss = css`
   min-height: 100%;
   max-height: 100%;
   ${overlayScrollBarYCss}
+  overflow-x: hidden;
 `

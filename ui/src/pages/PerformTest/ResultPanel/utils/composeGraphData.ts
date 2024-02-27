@@ -5,8 +5,7 @@ export interface GraphData {
   labels: number[]
   success: Array<[number, number]>
   fail: Array<[number, number]>
-  successDetail: APITestResponse[]
-  failDetail: APITestResponse[]
+  detail: { success: APITestResponse[]; fail: APITestResponse[] }
 }
 
 const getTimeDiff = (endTime: number, startTime: number): number => Number(((endTime - startTime) / 1000).toFixed(2))
@@ -21,7 +20,9 @@ export const composeGraphData = (startTime: number, apiTestResponses: APITestRes
     fail: apiTestResponses
       .filter(testResponse => testResponse.result === false)
       .map(testResponse => [getTimeDiff(testResponse.timeStamp, startTime), testResponse.totalTime]),
-    successDetail: apiTestResponses.filter(testResponse => testResponse.result === true),
-    failDetail: apiTestResponses.filter(testResponse => testResponse.result === false),
+    detail: {
+      success: apiTestResponses.filter(testResponse => testResponse.result === true),
+      fail: apiTestResponses.filter(testResponse => testResponse.result === false),
+    },
   }
 }

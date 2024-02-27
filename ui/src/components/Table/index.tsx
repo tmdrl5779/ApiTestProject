@@ -35,6 +35,7 @@ export const Table: FC<TableProps> = ({ columns, data, _css, style }) => {
 const tableCss = css`
   width: 100%;
   border-collapse: collapse;
+  color: ${color.primaryText};
   thead tr {
     font-weight: bold;
     background: ${color.navBar};

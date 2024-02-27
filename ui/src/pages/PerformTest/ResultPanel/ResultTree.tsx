@@ -8,6 +8,7 @@ import { FC, memo, useCallback, useEffect, useMemo, useState } from 'react'
 import { APITestResponse } from './types'
 import { areEqual, FixedSizeList as List } from 'react-window'
 import AutoSizer from 'react-virtualized-auto-sizer'
+import { ResponseListViewer } from './ResponseListViewer'
 
 interface ResponseGroupItemProps {
   index: number
@@ -54,12 +55,12 @@ interface ResultTreeProps {
 }
 
 export const ResultTree: FC<ResultTreeProps> = ({ APITestResponses }) => {
-  const [showed, setShowed] = useState<false | { tIdx: number; rIdx: number }>(false)
+  const [showed, setShowed] = useState<false | number>(false)
 
   const [isInitialized, setIsInitialized] = useState(false)
   useEffect(() => {
     if (!isInitialized && APITestResponses.length > 0) {
-      setShowed({ tIdx: 0, rIdx: 0 })
+      setShowed(0)
       setIsInitialized(true)
     }
   }, [APITestResponses, isInitialized])
@@ -67,30 +68,16 @@ export const ResultTree: FC<ResultTreeProps> = ({ APITestResponses }) => {
   const onClickResponseGroupItem = useCallback((e: React.MouseEvent<HTMLElement>) => {
     if (e.target instanceof HTMLElement && e.target.hasAttribute('id')) {
       const tIdx = parseInt(e.target.id) ?? 0
-      setShowed({ tIdx, rIdx: 0 })
+      setShowed(tIdx)
     }
   }, [])
-
-  const onClickResponseListItem = useCallback((code: string) => {
-    const rIdx = parseInt(code) ?? 0
-    setShowed(prev => {
-      return prev ? { ...prev, rIdx } : { tIdx: 0, rIdx: 0 }
-    })
-  }, [])
-
-  const showedResponseTabItems = showed
-    ? APITestResponses[showed.tIdx]?.responseList.map((response, rIdx) => ({
-        title: `${response.httpMethod} ${response.url} ${response.status}`,
-        code: `${rIdx}`,
-      }))
-    : []
 
   const responseGroupItems = useMemo(
     () =>
       APITestResponses.map((responseGroup, index) => ({
         userId: responseGroup.userId,
         result: responseGroup.result,
-        isActive: showed && showed?.tIdx === index,
+        isActive: showed !== false && showed === index,
       })),
     [APITestResponses, showed]
   )
@@ -115,24 +102,10 @@ export const ResultTree: FC<ResultTreeProps> = ({ APITestResponses }) => {
         </AnimatePresence>
       </motion.div>
       <div css={responseListCss}>
-        {showed ? (
+        {showed !== false ? (
           <ErrorBoundary>
-            <Blinker _key={`${showed.tIdx}`}>
-              <Tabs
-                items={showedResponseTabItems}
-                selectedCode={`${showed.rIdx}`}
-                onSelect={onClickResponseListItem}
-                background={color.background}
-                type="card"
-                tabPosition="top"
-                _css={responseTabCss}
-                renderTabTitle={renderResponseTabTitle}
-              />
-              <Blinker _key={`${showed.rIdx}`}>
-                <APIResponseViewer
-                  response={APITestResponses[showed.tIdx]?.responseList[showed.rIdx] as FetchApiResponse}
-                />
-              </Blinker>
+            <Blinker _key={`${showed}`}>
+              <ResponseListViewer list={APITestResponses[showed]?.responseList as FetchApiResponse[]} />
             </Blinker>
           </ErrorBoundary>
         ) : null}
@@ -148,7 +121,6 @@ const responseGroupCss = css`
   border-right: 1px solid ${color.pale};
   // ${overlayScrollBarYCss};
 `
-// TODO: accordion header와 css 겹침 card로 컴포넌트로 따로 빼기
 const responseGroupItemCss = css`
   background: ${color.navBar};
   border: 1px solid ${color.pale};
@@ -185,8 +157,4 @@ const responseListCss = css`
   height: 100%;
   padding: 0px 8px;
   overflow: hidden;
-`
-
-const responseTabCss = css`
-  border-bottom: 1px solid ${color.pale};
 `
