@@ -10,6 +10,7 @@ import { css } from '@emotion/react'
 import { Blinker, Modal, Tabs } from './components'
 import { RecoilRoot } from 'recoil'
 import { GlobalErrorBoundary } from './components/ErrorBoundary/GloablErrorBoundary'
+import { Analytics } from '@vercel/analytics/react'
 
 const navItems = [
   {
@@ -63,6 +64,7 @@ function App() {
           </Layout>
         </div>
       </RecoilRoot>
+      <Analytics />
     </GlobalErrorBoundary>
   )
 }

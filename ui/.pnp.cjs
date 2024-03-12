@@ -52,6 +52,7 @@ const RAW_RUNTIME_STATE =
           ["@types/testing-library__jest-dom", "npm:5.14.9"],\
           ["@typescript-eslint/eslint-plugin", "virtual:232eb8affebc2f984b45d8a377b1ef04eee2ff685843fee439d0ba8539dbafd9c0966ff861496beff5c4b8b90c5efd5385f78ab9dbf07b3d6e454433e97e476e#npm:5.62.0"],\
           ["@typescript-eslint/parser", "virtual:232eb8affebc2f984b45d8a377b1ef04eee2ff685843fee439d0ba8539dbafd9c0966ff861496beff5c4b8b90c5efd5385f78ab9dbf07b3d6e454433e97e476e#npm:5.62.0"],\
+          ["@vercel/analytics", "virtual:232eb8affebc2f984b45d8a377b1ef04eee2ff685843fee439d0ba8539dbafd9c0966ff861496beff5c4b8b90c5efd5385f78ab9dbf07b3d6e454433e97e476e#npm:1.2.2"],\
           ["ajv", "npm:8.12.0"],\
           ["axios", "npm:1.6.5"],\
           ["babel-jest", "virtual:232eb8affebc2f984b45d8a377b1ef04eee2ff685843fee439d0ba8539dbafd9c0966ff861496beff5c4b8b90c5efd5385f78ab9dbf07b3d6e454433e97e476e#npm:29.7.0"],\
@@ -4914,6 +4915,33 @@ const RAW_RUNTIME_STATE =
         "linkType": "HARD"\
       }]\
     ]],\
+    ["@vercel/analytics", [\
+      ["npm:1.2.2", {\
+        "packageLocation": "./.yarn/cache/@vercel-analytics-npm-1.2.2-7ca24912db-18b9e00624.zip/node_modules/@vercel/analytics/",\
+        "packageDependencies": [\
+          ["@vercel/analytics", "npm:1.2.2"]\
+        ],\
+        "linkType": "SOFT"\
+      }],\
+      ["virtual:232eb8affebc2f984b45d8a377b1ef04eee2ff685843fee439d0ba8539dbafd9c0966ff861496beff5c4b8b90c5efd5385f78ab9dbf07b3d6e454433e97e476e#npm:1.2.2", {\
+        "packageLocation": "./.yarn/__virtual__/@vercel-analytics-virtual-c469e6b518/0/cache/@vercel-analytics-npm-1.2.2-7ca24912db-18b9e00624.zip/node_modules/@vercel/analytics/",\
+        "packageDependencies": [\
+          ["@vercel/analytics", "virtual:232eb8affebc2f984b45d8a377b1ef04eee2ff685843fee439d0ba8539dbafd9c0966ff861496beff5c4b8b90c5efd5385f78ab9dbf07b3d6e454433e97e476e#npm:1.2.2"],\
+          ["@types/next", null],\
+          ["@types/react", "npm:18.2.48"],\
+          ["next", null],\
+          ["react", "npm:18.2.0"],\
+          ["server-only", "npm:0.0.1"]\
+        ],\
+        "packagePeers": [\
+          "@types/next",\
+          "@types/react",\
+          "next",\
+          "react"\
+        ],\
+        "linkType": "HARD"\
+      }]\
+    ]],\
     ["@webassemblyjs/ast", [\
       ["npm:1.11.6", {\
         "packageLocation": "./.yarn/cache/@webassemblyjs-ast-npm-1.11.6-d3fd2bb49a-4c1303971c.zip/node_modules/@webassemblyjs/ast/",\
@@ -8801,6 +8829,7 @@ const RAW_RUNTIME_STATE =
           ["@types/testing-library__jest-dom", "npm:5.14.9"],\
           ["@typescript-eslint/eslint-plugin", "virtual:232eb8affebc2f984b45d8a377b1ef04eee2ff685843fee439d0ba8539dbafd9c0966ff861496beff5c4b8b90c5efd5385f78ab9dbf07b3d6e454433e97e476e#npm:5.62.0"],\
           ["@typescript-eslint/parser", "virtual:232eb8affebc2f984b45d8a377b1ef04eee2ff685843fee439d0ba8539dbafd9c0966ff861496beff5c4b8b90c5efd5385f78ab9dbf07b3d6e454433e97e476e#npm:5.62.0"],\
+          ["@vercel/analytics", "virtual:232eb8affebc2f984b45d8a377b1ef04eee2ff685843fee439d0ba8539dbafd9c0966ff861496beff5c4b8b90c5efd5385f78ab9dbf07b3d6e454433e97e476e#npm:1.2.2"],\
           ["ajv", "npm:8.12.0"],\
           ["axios", "npm:1.6.5"],\
           ["babel-jest", "virtual:232eb8affebc2f984b45d8a377b1ef04eee2ff685843fee439d0ba8539dbafd9c0966ff861496beff5c4b8b90c5efd5385f78ab9dbf07b3d6e454433e97e476e#npm:29.7.0"],\
@@ -14893,6 +14922,15 @@ const RAW_RUNTIME_STATE =
           ["escape-html", "npm:1.0.3"],\
           ["parseurl", "npm:1.3.3"],\
           ["send", "npm:0.18.0"]\
+        ],\
+        "linkType": "HARD"\
+      }]\
+    ]],\
+    ["server-only", [\
+      ["npm:0.0.1", {\
+        "packageLocation": "./.yarn/cache/server-only-npm-0.0.1-24bf42bde2-c432348956.zip/node_modules/server-only/",\
+        "packageDependencies": [\
+          ["server-only", "npm:0.0.1"]\
         ],\
         "linkType": "HARD"\
       }]\
