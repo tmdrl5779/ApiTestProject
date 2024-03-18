@@ -154,7 +154,7 @@ Response
 ```
 
 ### 할 일
-끝
+- lazy로 dynamic import 하는 애들 suspense 로 감싸줘야함
 
   ## 일정
   Next 강의 다 들은 후에 다시 옴
