@@ -4,7 +4,7 @@ import { color } from '@/data/variables.style'
 import { parseResponse, ServerResponse } from '@/features/API'
 import { useQueueing } from '@/hooks'
 import { css } from '@emotion/react'
-import { FC, lazy, memo, useCallback, useEffect, useMemo, useRef, useState } from 'react'
+import { FC, lazy, memo, Suspense, useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import useWebSocket from 'react-use-websocket'
 import { useRecoilValue } from 'recoil'
 
@@ -96,19 +96,21 @@ export const ResultPanel: FC<ResultPanelProps> = memo(({ goToEdit, startTestMsg 
         />
         <div css={contentCss}>
           <Blinker _key={step.code}>
-            <Funnel step={step.code}>
-              <div css={flexCss}>
-                <Funnel.Step name="ResultTree">
-                  <ResultTree APITestResponses={APITestResponses} />
-                </Funnel.Step>
-                <Funnel.Step name="SummaryReport">
-                  <SummaryReport summaryReport={summaryReport} />
-                </Funnel.Step>
-                <Funnel.Step name="ResultGraph">
-                  <ResultGraph graphData={graphData} />
-                </Funnel.Step>
-              </div>
-            </Funnel>
+            <Suspense fallback={<p>로딩 중...</p>}>
+              <Funnel step={step.code}>
+                <div css={flexCss}>
+                  <Funnel.Step name="ResultTree">
+                    <ResultTree APITestResponses={APITestResponses} />
+                  </Funnel.Step>
+                  <Funnel.Step name="SummaryReport">
+                    <SummaryReport summaryReport={summaryReport} />
+                  </Funnel.Step>
+                  <Funnel.Step name="ResultGraph">
+                    <ResultGraph graphData={graphData} />
+                  </Funnel.Step>
+                </div>
+              </Funnel>
+            </Suspense>
           </Blinker>
         </div>
       </section>
