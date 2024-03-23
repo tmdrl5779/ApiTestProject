@@ -75,6 +75,7 @@ export const useQueueing = ({ websocketUrl, onOpen, startMsg, onQueue, onClose }
     return () => {
       getWebSocket()?.close()
       clearInterval(timer)
+      GLOBALQUEUE = []
     }
   }, [getWebSocket])
 
