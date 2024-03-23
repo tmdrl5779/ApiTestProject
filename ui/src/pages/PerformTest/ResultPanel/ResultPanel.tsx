@@ -96,7 +96,7 @@ export const ResultPanel: FC<ResultPanelProps> = memo(({ goToEdit, startTestMsg 
         />
         <div css={contentCss}>
           <Blinker _key={step.code}>
-            <Suspense fallback={<p>로딩 중...</p>}>
+            <Suspense fallback={<span>로딩 중...</span>}>
               <Funnel step={step.code}>
                 <div css={flexCss}>
                   <Funnel.Step name="ResultTree">
