@@ -208,8 +208,8 @@ class AdaptorService(
 //            HttpClient.create(connectionProvider)
 //        }
 
-        val httpClient = HttpClient.create(connectionProvider)
-//        val httpClient = HttpClient.create()
+//        val httpClient = HttpClient.create(connectionProvider)
+        val httpClient = HttpClient.create()
         httpClient
             .option(ChannelOption.CONNECT_TIMEOUT_MILLIS, connectionTime * 1000)
             .doOnConnected { conn ->
